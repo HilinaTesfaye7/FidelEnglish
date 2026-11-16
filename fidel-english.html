@@ -1151,7 +1151,7 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
-const APP_VERSION = "2026.11.16-c";
+const APP_VERSION = "2026.11.16-d";
 const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);
 function audioBase(){ return null; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
@@ -1849,7 +1849,7 @@ function answer(k){
   const detail = q.type === 3 ? `You heard: <b>${esc(q.word[0])}</b>` : `${esc(q.word[0])} = <span class="am">${esc(q.word[1])}</span>`;
   $("#fb").innerHTML = S.mode === "place" ? "" : `
     <div class="feedback ${ok?"good":"bad"}">
-      ${(() => { const c = pickOne(ok ? CHEER_RIGHT : CHEER_WRONG); return `<b class="pop"><span class="cheer">${ok ? "✓" : "✗"} ${c[0]}</span> ${ok ? "Correct! " : "Not quite. "}<span style="font-weight:400">${c[1]}</span></b>`; })()}
+      ${(() => { const c = pickOne(ok ? CHEER_RIGHT : CHEER_WRONG); return `<b class="pop"><span class="cheer">${ok ? "✓" : "✗"} ${c[0]}</span></b>`; })()}
       <span>${detail}</span>
     </div>`;
   $("#fb").insertAdjacentHTML("beforeend", `<button class="btn primary" id="qnext" style="margin-top:12px;width:100%">${last ? `<span>See result<small>ውጤት ይመልከቱ</small></span>` : nextBtn()}</button>`);
@@ -1953,7 +1953,7 @@ function renderSpeak(){
     const r = SP.result;
     const pass = r.pct >= PASS_SPEAK;
     if (!r.cheer) r.cheer = pickOne(pass ? CHEER_RIGHT : CHEER_WRONG);
-    const msg = r.pct === 100 ? ["✓ " + r.cheer[0], "Perfect! Pass"] : pass ? ["✓ " + r.cheer[0], "Pass! " + r.cheer[1]] : ["✗ " + r.cheer[0], r.cheer[0].includes("እንደገና") ? "" : `<span class="am">እንደገና ይሞክሩ</span>`];
+    const msg = r.pct === 100 ? ["✓ " + r.cheer[0], `<span class="am">ፍጹም! አልፈዋል</span>`] : pass ? ["✓ " + r.cheer[0], `<span class="am">አልፈዋል</span>`] : ["✗ " + r.cheer[0], r.cheer[0].includes("እንደገና") ? "" : `<span class="am">እንደገና ይሞክሩ</span>`];
     body = `<div class="feedback ${pass?"good":"bad"} pop"><b><span class="cheer">${msg[0]}</span> ${msg[1]}</b><span>${r.pct}% correct</span>
         <span>You said: “${esc(r.said)}”</span></div>
       <div class="words">${r.res.map(([c,ok]) => `<span class="w ${ok?"ok":"no"}">${esc(c)}</span>`).join("")}</div>
@@ -2067,7 +2067,6 @@ function showResult({ L, big, pct, again, extra, kind }){
       <div class="label">${kind ? kind+" · " : ""}${esc(L.en)} · <span class="am">${esc(L.am)}</span></div>
       <div class="score pop">${big}</div>
       <div class="cheer pop" style="color:var(--gold)">${msg[1]}</div>
-      <h2 style="font-size:20px">${msg[0]}</h2>
       <p style="margin:6px 0 0;color:var(--muted);font-size:14px">${store.streak} day streak · <span class="am">${store.streak} ተከታታይ ቀን</span></p>
     </div>
     ${extra || ""}
