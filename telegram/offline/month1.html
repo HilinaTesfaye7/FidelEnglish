@@ -279,15 +279,36 @@ const ICON_TARGET = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"
 let tts = null, dict = null, sampleFn = null, capsReady = false, micDenied = false;
 const hasSpeech = "speechSynthesis" in window;
 let voice = null;
-function pickVoice(){ if(!hasSpeech) return; const vs = speechSynthesis.getVoices();
-  voice = vs.find(v=>/en[-_]US/i.test(v.lang)) || vs.find(v=>/^en/i.test(v.lang)) || null; }
+// Prefer a voice installed on the phone/computer (works without internet), then any English voice.
+function pickVoice(){ if(!hasSpeech) return; const en = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
+  voice = en.find(v => v.localService && /en[-_]US/i.test(v.lang)) || en.find(v => v.localService)
+       || en.find(v => /en[-_]US/i.test(v.lang)) || en[0] || null; }
 if (hasSpeech){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
-function browserSpeak(text, slow){
+let speakTimer = null;
+function browserSpeak(text, slow, retry){
   if (!hasSpeech){ toast("Sound is not available on this browser · ድምፅ አይሰራም"); return; }
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-US"; if (voice) u.voice = voice; u.rate = slow ? 0.55 : 0.9;
-  speechSynthesis.speak(u);
+  clearTimeout(speakTimer);
+  if (!voice) pickVoice();
+  const busy = speechSynthesis.speaking || speechSynthesis.pending;
+  if (busy) speechSynthesis.cancel();
+  const go = () => {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US"; if (voice && !retry) u.voice = voice; u.rate = slow ? 0.55 : 0.9;
+    let started = false;
+    u.onstart = () => { started = true; };
+    u.onerror = e => { if (!retry && e.error !== "interrupted" && e.error !== "canceled") browserSpeak(text, slow, true); };
+    try { speechSynthesis.resume(); } catch(e){}
+    speechSynthesis.speak(u);
+    // Chrome sometimes stays silent: try once more with the default voice, then tell the learner
+    speakTimer = setTimeout(() => {
+      if (started || speechSynthesis.speaking) return;
+      speechSynthesis.cancel();
+      if (!retry) browserSpeak(text, slow, true);
+      else toast("No sound? Turn up the volume and try again · ድምፁን ይጨምሩና እንደገና ይሞክሩ");
+    }, 1800);
+  };
+  // Chrome drops a sound started right after cancel(), so wait a moment when something was playing
+  if (busy) setTimeout(go, 150); else go();
 }
 function speak(text, slow){
   text = String(text).replace(/\.\.\.$/, "");
@@ -300,7 +321,7 @@ function speak(text, slow){
   }
   browserSpeak(text, slow);
 }
-function stopSound(){ try { if (tts) tts.stop(); } catch(e){} if (hasSpeech) speechSynthesis.cancel(); }
+function stopSound(){ try { if (tts) tts.stop(); } catch(e){} clearTimeout(speakTimer); if (hasSpeech && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel(); }
 
 const mic = { target:null, text:"", partial:"", state:"idle", timer:null };
 function micStart(target){
@@ -332,9 +353,12 @@ function onDictState({ state, reason }){
 function onDictPartial({ text }){ mic.partial = text; showHeard(); }
 // The phone's own speech recognition (Chrome, Android, iPhone Safari). Same shape as the Claude dictation
 // capability, so the speaking practice works the same way with either.
+// Where the learner can record with automatic checking, when this page can't (downloaded file, Telegram).
+// The downloaded course replaces this with a link to the online course.
+function onlineCourseUrl(){ return (LICENSE && LICENSE.web) ? LICENSE.web.replace(/\/$/, "") + "/?m=" + (+store.months || 0) + "&t=0&b=" + encodeURIComponent(LICENSE.bot || "") : null; }
 function makeBrowserDictation(){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) return null;
+  if (!SR || location.protocol === "file:") return null;   // Chrome blocks speech checking in files opened from the computer
   let rec = null, active = false, onS = () => {}, onP = () => {}, onF = () => {};
   return {
     browser: true,
@@ -1082,10 +1106,14 @@ function renderSpeak(){
       <div class="heard" id="heard"></div></div>`;
   } else {
     const inTG = !!(window.Telegram && Telegram.WebApp && Telegram.WebApp.initData);
-    body = `<div class="feedback bad" style="background:var(--gold-soft);color:var(--fg)"><b>🎤 ${inTG ? "Telegram can't use the microphone on this phone." : micDenied ? "The microphone is turned off for this page." : "This browser can't check your speaking."}</b>
-        <span>${inTG ? "Open the course in Chrome to record yourself and get ✓ or ✗." : micDenied ? "Allow the microphone in your browser settings, then reload." : "Open the course in Google Chrome to record yourself and get ✓ or ✗."}</span>
-        <span class="am">${inTG ? "ድምፅዎን ለመቅረጽና ለመፈተሽ ኮርሱን በ Chrome ይክፈቱ።" : "ለመፈተሽ ኮርሱን በ Google Chrome ይክፈቱ።"}</span></div>
+    const isFile = location.protocol === "file:", online = onlineCourseUrl();
+    const why = inTG ? ["Telegram can't use the microphone on this phone.", "Open the course in Chrome to record yourself and get ✓ or ✗.", "ድምፅዎን ለመቅረጽና ለመፈተሽ ኮርሱን በ Chrome ይክፈቱ።"]
+      : isFile ? ["Recording works in the online course.", "This downloaded copy is for learning without internet. To record yourself and get ✓ or ✗, open the online course (needs internet).", "ለመቅረጽና ለመፈተሽ የኦንላይን ኮርሱን ይክፈቱ (ኢንተርኔት ያስፈልጋል)።"]
+      : micDenied ? ["The microphone is turned off for this page.", "Tap the 🔒 lock next to the web address, allow the Microphone, then reload the page.", "ከአድራሻው አጠገብ ያለውን 🔒 ይንኩ፣ ማይክሮፎንን ይፍቀዱ፣ ከዚያ ገጹን እንደገና ይክፈቱ።"]
+      : ["This browser can't check your speaking.", "Open the course in Google Chrome to record yourself and get ✓ or ✗.", "ለመፈተሽ ኮርሱን በ Google Chrome ይክፈቱ።"];
+    body = `<div class="feedback bad" style="background:var(--gold-soft);color:var(--fg)"><b>🎤 ${why[0]}</b><span>${why[1]}</span><span class="am">${why[2]}</span></div>
       ${inTG ? `<button class="btn primary" id="openChrome"><span>Open in Chrome<small>በ Chrome ክፈት</small></span></button>` : ""}
+      ${isFile && online ? `<a class="btn primary" style="text-decoration:none" href="${esc(online)}" target="_blank" rel="noopener"><span>Open the online course<small>የኦንላይን ኮርሱን ክፈት</small></span></a>` : ""}
       <p class="micnote">For now: tap Listen and repeat it out loud 3 times.<br><span class="am">ለአሁን፦ ያዳምጡና 3 ጊዜ ጮክ ብለው ይድገሙ።</span></p>`;
   }
   $("#v-speak").innerHTML = `

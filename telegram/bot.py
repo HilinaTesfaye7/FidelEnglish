@@ -238,7 +238,8 @@ def send_course_file(chat, us):
         html = open(path, encoding="utf-8").read()
     except FileNotFoundError:
         send(chat, "Sorry, the download is not ready yet. Please learn in Telegram for now."); print("Missing", path, flush=True); return
-    lic = {"name": us.get("name", ""), "phone": us.get("phone") or "", "months": n, "bot": BOT_USERNAME or ""}
+    lic = {"name": us.get("name", ""), "phone": us.get("phone") or "", "months": n, "bot": BOT_USERNAME or "",
+           "web": CFG.get("webapp_url", "")}
     html = html.replace('"__FIDEL_LICENSE__"', json.dumps(lic, ensure_ascii=False).replace("</", "<\\/"), 1)
     api("sendChatAction", chat_id=chat, action="upload_document")
     name = "Fidel-English-Month-1.html" if n == 1 else "Fidel-English-Months-1-%d.html" % n

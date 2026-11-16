@@ -96,6 +96,9 @@ def build_offline(months, data):
            + ";\nconst SCENARIOS = " + js_json(data["SCENARIOS"]) + ";\n" + SRC[j:])
     rep, get = patcher(head(False) + src)
     rep('const KEY = "fidel-english-v1";', 'const KEY = "fidel-english-offline";')
+    # recording needs a web page, so the downloaded copy links to the online course with the same months
+    rep('function onlineCourseUrl(){ return null; }',
+        'function onlineCourseUrl(){ return (LICENSE && LICENSE.web) ? LICENSE.web.replace(/\\/$/, "") + "/?m=" + (+store.months || 0) + "&t=0&b=" + encodeURIComponent(LICENSE.bot || "") : null; }')
     rep('let isOwner = false;', '''let isOwner = false;
 const LICENSE = "__FIDEL_LICENSE__";
 store.months = %d; store.trialStart = 1;
