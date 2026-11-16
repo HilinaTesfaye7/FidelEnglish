@@ -1961,7 +1961,7 @@ function renderSpeak(){
     const r = SP.result;
     const pass = r.pct >= PASS_SPEAK;
     if (!r.cheer) r.cheer = pickOne(pass ? CHEER_RIGHT : CHEER_WRONG);
-    const msg = r.pct === 100 ? ["✓ " + r.cheer[0], "Perfect! Pass"] : pass ? ["✓ " + r.cheer[0], "Pass! " + r.cheer[1]] : ["✗ " + r.cheer[0], "Not yet. Try again"];
+    const msg = r.pct === 100 ? ["✓ " + r.cheer[0], "Perfect! Pass"] : pass ? ["✓ " + r.cheer[0], "Pass! " + r.cheer[1]] : ["✗ " + r.cheer[0], r.cheer[0].includes("እንደገና") ? "" : `<span class="am">እንደገና ይሞክሩ</span>`];
     body = `<div class="feedback ${pass?"good":"bad"} pop"><b><span class="cheer">${msg[0]}</span> ${msg[1]}</b><span>${r.pct}% correct</span>
         <span>You said: “${esc(r.said)}”</span></div>
       <div class="words">${r.res.map(([c,ok]) => `<span class="w ${ok?"ok":"no"}">${esc(c)}</span>`).join("")}</div>
