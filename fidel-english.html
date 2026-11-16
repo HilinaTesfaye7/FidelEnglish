@@ -210,6 +210,9 @@ h1,h2{text-wrap:balance;margin:0}
 .modal .box .big{font-size:72px;line-height:1.1}
 .modal .box h2{font-size:21px}
 .modal .box p{margin:0;color:var(--muted)}
+html.playing #say,html.playing #slow,html.playing #qsay,html.playing #qslow{animation:pulse .8s ease-in-out infinite;border-color:var(--accent)}
+@keyframes pulse{50%{box-shadow:0 0 0 6px var(--accent-soft)}}
+.version{font-size:11px;color:var(--muted);text-align:center;margin:0}
 .cheer{font-family:var(--font-am);font-size:30px;font-weight:700;line-height:1.2}
 .feedback .cheer{font-size:24px}
 .party{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:40}
@@ -1129,7 +1132,8 @@ function browserSpeak(text, slow, retry){
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "en-US"; if (voice && !retry) u.voice = voice; u.rate = slow ? 0.55 : 0.9;
     let started = false;
-    u.onstart = () => { started = true; };
+    u.onstart = () => { started = true; soundState(true); };
+    u.onend = () => soundState(false);
     u.onerror = e => { if (!retry && e.error !== "interrupted" && e.error !== "canceled") browserSpeak(text, slow, true); };
     try { speechSynthesis.resume(); } catch(e){}
     speechSynthesis.speak(u);
@@ -1147,10 +1151,12 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
+const APP_VERSION = "2026.11.16-b";
 const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);
 function audioBase(){ return null; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
 let player = null;
+function soundState(on){ document.documentElement.classList.toggle("playing", !!on); }
 function playRecording(text, slow){
   const base = audioBase(), id = audioId(text);
   if (!base || !AUDIO_IDS.has(id)) return false;
@@ -1159,7 +1165,9 @@ function playRecording(text, slow){
   let fellBack = false;
   const fallback = () => { if (fellBack || player !== a) return; fellBack = true; browserSpeak(text, slow); };
   a.preservesPitch = true; a.playbackRate = slow ? 0.7 : 1;
-  a.onerror = fallback;
+  a.onerror = () => { soundState(false); fallback(); };
+  a.onplaying = () => soundState(true);
+  a.onended = a.onpause = () => soundState(false);
   const pr = a.play(); if (pr && pr.catch) pr.catch(err => { if (!err || err.name !== "AbortError") fallback(); });
   return true;
 }
@@ -1618,6 +1626,7 @@ function renderHome(){
     html += `</div>` + m4html;
   }
   html += `<p class="foot">Every lesson: learn the cards, take the quiz, then practise speaking. Finish Month 4's final exam to get your certificate.<br><span class="am">በእያንዳንዱ ትምህርት፡ ካርዶቹን ይማሩ፣ ፈተናውን ይውሰዱ፣ መናገር ይለማመዱ። በወር 4 የመጨረሻውን ፈተና አልፈው ሰርተፊኬት ያግኙ።</span></p>`;
+  html += `<p class="version">Fidel English · version ${APP_VERSION}</p>`;
   $("#v-home").innerHTML = html;
   show("home");
 }
