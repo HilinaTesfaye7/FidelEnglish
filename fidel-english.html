@@ -1173,6 +1173,7 @@ function playRecording(text, slow){
 }
 function speak(text, slow){
   text = String(text).replace(/\.\.\.$/, "").trim();
+  if (dict && dict.browser && dict.active()){ mic.target = null; dict.release(); }
   if (tts){
     tts.speak(text, { language:"en", rate: slow ? 0.7 : 0.95 }).catch(e => {
       const c = e && e.code;
@@ -1249,7 +1250,8 @@ function makeBrowserDictation(){
         } catch(err){ reject({ code:"unavailable" }); }
       });
     },
-    stop(){ try { if (rec) rec.stop(); } catch(e){} return Promise.resolve(); }
+    stop(){ try { if (rec) rec.stop(); } catch(e){} return Promise.resolve(); },
+    release(){ try { if (rec){ rec.onend = null; rec.abort(); } } catch(e){} if (active){ active = false; onS({ state:"idle", reason:"stopped" }); } }
   };
 }
 function onDictFinal({ text, alts }){
