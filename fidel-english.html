@@ -1151,7 +1151,7 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
-const APP_VERSION = "2026.11.16-b";
+const APP_VERSION = "2026.11.16-c";
 const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);
 function audioBase(){ return null; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
@@ -1692,8 +1692,8 @@ function renderCard(){
       <button class="btn gold" id="spk">${ICON_MIC(20)}<span>Speaking practice<small>መናገር ይለማመዱ</small></span></button>
     </div>`;
   $("#card").onclick = () => { S.flipped = !S.flipped; renderCard(); };
-  $("#say").onclick = () => speak(sayText(L, w), false);
-  $("#slow").onclick = () => speak(sayText(L, w), true);
+  $("#v-cards #say").onclick = () => speak(sayText(L, w), false);
+  $("#v-cards #slow").onclick = () => speak(sayText(L, w), true);
   $("#prev").onclick = () => { if (S.i>0){ S.i--; S.flipped=false; renderCard(); } };
   if ($("#next")) $("#next").onclick = () => { S.i++; S.flipped=false; renderCard(); };
   if ($("#go")) $("#go").onclick = () => startQuiz(L, "lesson");
@@ -1992,8 +1992,8 @@ function renderSpeak(){
       ${SP.result ? "" : `<button class="btn" id="skipItem"><span>${canMic ? "Skip" : (last ? "Finish" : "Next")}<small>${canMic ? "እለፍ" : (last ? "ጨርስ" : "ቀጣይ")}</small></span></button>`}
       ${SP.result ? `<button class="btn ${SP.result.pct >= PASS_SPEAK ? "primary" : ""}" id="nextItem">${last ? `<span>Finish<small>ጨርስ</small></span>` : nextBtn()}</button>` : ""}
     </div>`;
-  $("#say").onclick = () => speak(w[0], false);
-  $("#slow").onclick = () => speak(w[0], true);
+  $("#v-speak #say").onclick = () => speak(w[0], false);
+  $("#v-speak #slow").onclick = () => speak(w[0], true);
   if ($("#micBtn")) $("#micBtn").onclick = () => micStart("speak");
   if ($("#retry")) $("#retry").onclick = () => { SP.result = null; renderSpeak(); };
   if ($("#skipItem")) $("#skipItem").onclick = nextSpeakItem;
