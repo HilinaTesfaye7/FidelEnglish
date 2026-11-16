@@ -79,7 +79,7 @@ def lesson_data():
     d = json.loads(out.decode("utf-8"))
     pron = [l["id"] for l in d["LESSONS"] if l["level"] == "pron"]
     for l in d["LESSONS"]:
-        l["month"] = {"beg": 1, "int": 2, "adv": 3}.get(l["level"]) or (1 if pron.index(l["id"]) < 5 else 2)
+        l["month"] = l.get("month") or {"beg": 1, "int": 2, "adv": 3}.get(l["level"]) or (1 if pron.index(l["id"]) < 5 else 2)
     return d
 
 def js_json(v): return json.dumps(v, ensure_ascii=False).replace("</", "<\\/")

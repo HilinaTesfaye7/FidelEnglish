@@ -26,8 +26,8 @@ NUDGE_DAYS = 25
 REMIND_HOUR = int(CFG.get("reminder_hour", 19))                    # Addis Ababa time
 EAT = timezone(timedelta(hours=3))
 DAY_MS = 86400000
-MONTH_NAMES = {1: "Month 1 · Beginner", 2: "Month 2 · Intermediate", 3: "Month 3 · Advanced", 4: "Month 4 · Final exam + certificate"}
-MONTH_AM = {1: "ወር 1 · ጀማሪ", 2: "ወር 2 · መካከለኛ", 3: "ወር 3 · ከፍተኛ", 4: "ወር 4 · የመጨረሻ ፈተናና ሰርተፊኬት"}
+MONTH_NAMES = {1: "Month 1 · Beginner", 2: "Month 2 · Intermediate", 3: "Month 3 · Advanced", 4: "Month 4 · Real-life words, final exam + certificate"}
+MONTH_AM = {1: "ወር 1 · ጀማሪ", 2: "ወር 2 · መካከለኛ", 3: "ወር 3 · ከፍተኛ", 4: "ወር 4 · የዕለት ቃላት፣ ፈተናና ሰርተፊኬት"}
 
 def now_ms(): return int(time.time() * 1000)
 def fmt_date(ms): return datetime.fromtimestamp(ms / 1000, EAT).strftime("%d %B %Y")
@@ -161,7 +161,7 @@ def show_plans(chat, us):
     if n >= MONTHS:
         send(chat, "🎓 You already have the full course! · ሙሉውን ኮርስ ከፍተዋል!", learn_buttons(us)); return
     text = ("📚 <b>Fidel English — 4-month course</b>\n"
-            "Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 Final exam + certificate 🎓\n\n"
+            "Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 Real-life words, final exam + certificate 🎓\n\n"
             "📘 <b>Open %s — %d Birr</b>\nYours forever once opened. Finished early? Open the next month any time.\n"
             "%s — %d ብር። አንዴ ከተከፈተ ለዘላለም የእርስዎ ነው።" % (MONTH_NAMES[n + 1], PRICE, MONTH_AM[n + 1], PRICE))
     rows = [[{"text": "📘 %s · %d Birr" % (MONTH_NAMES[n + 1].split(" · ")[0], PRICE), "callback_data": "plan:month"}]]

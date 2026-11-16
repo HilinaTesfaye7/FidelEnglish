@@ -1010,6 +1010,79 @@ LESSONS.forEach(l => {
   if (ps && l.pairs){ const have = new Set(l.pairs.map(p => p.join("|"))); ps.forEach(p => { if (!have.has(p.join("|"))) l.pairs.push(p); }); }
 });
 
+// ---------- Month 4: new vocabulary (5 lessons × 40) ----------
+LESSONS.push(
+  { id:"m4-money", level:"int", month:4, en:"Money and banking", am:"ገንዘብና ባንክ",
+    tip:["'Borrow' = you take money from someone. 'Lend' = you give money to someone. We say 'send money', 'transfer money' and 'pay a bill'.",
+         "'borrow' ማለት መበደር (እርስዎ ይወስዳሉ)፣ 'lend' ማለት ማበደር (እርስዎ ይሰጣሉ)። 'send money' = ገንዘብ መላክ።"],
+    words:[["coins","ሳንቲሞች"],["cash","ጥሬ ገንዘብ"],["bank account","የባንክ ሂሳብ"],["savings","ቁጠባ"],["income","ገቢ"],
+    ["bill","የሚከፈል ሂሳብ"],["tax","ግብር"],["profit","ትርፍ"],["discount","ቅናሽ"],["receipt","ደረሰኝ"],
+    ["fee","የአገልግሎት ክፍያ"],["loan","ብድር"],["to borrow","መበደር"],["to lend","ማበደር"],["to save money","ገንዘብ መቆጠብ"],
+    ["to spend money","ገንዘብ መጠቀም"],["to withdraw money","ከባንክ ገንዘብ ማውጣት"],["to transfer money","ገንዘብ ማስተላለፍ"],["exchange rate","የምንዛሪ ተመን"],["debt","ዕዳ"],
+    ["budget","በጀት"],["ATM","ኤቲኤም (የገንዘብ ማውጫ ማሽን)"],["PIN number","የሚስጥር ቁጥር"],["balance","ቀሪ ሂሳብ"],["change","መልስ (የተረፈ ገንዘብ)"],
+    ["How much does it cost?","ስንት ያወጣል?"],["Where is the nearest ATM?","በአቅራቢያ ያለው ኤቲኤም የት ነው?"],["I sent you the money.","ገንዘቡን ልኬልዎታለሁ።"],
+    ["Please send me the receipt.","እባክዎ ደረሰኙን ይላኩልኝ።"],["Is there a fee?","ክፍያ አለው?"],["I want to open a bank account.","የባንክ ሂሳብ መክፈት እፈልጋለሁ።"],
+    ["I'm saving money for a new phone.","ለአዲስ ስልክ ገንዘብ እየቆጠብኩ ነው።"],["Can you lend me 500 birr?","500 ብር ሊያበድሩኝ ይችላሉ?"],["I will pay you back next week.","በሚቀጥለው ሳምንት እመልስልዎታለሁ።"],
+    ["That's too expensive.","ያ በጣም ውድ ነው።"],["Is this the final price?","ይህ የመጨረሻ ዋጋ ነው?"],["I don't have change.","ዝርዝር የለኝም።"],
+    ["My balance is low.","ቀሪ ሂሳቤ አነስተኛ ነው።"],["I forgot my PIN number.","የሚስጥር ቁጥሬን ረሳሁት።"],["Payday is at the end of the month.","የደመወዝ ቀን በወሩ መጨረሻ ነው።"]] },
+
+  { id:"m4-tech", level:"int", month:4, en:"Phones, apps and the internet", am:"ስልክ፣ መተግበሪያና ኢንተርኔት",
+    tip:["Many tech words are the same in English and Amharic: app, Wi-Fi, data. Learn the verbs: download, upload, log in, charge.",
+         "ብዙ የቴክኖሎጂ ቃላት በአማርኛም አንድ ናቸው። ግሶቹን ይማሩ፦ download = ማውረድ፣ log in = መግባት፣ charge = ቻርጅ ማድረግ።"],
+    words:[["smartphone","ስማርት ስልክ"],["app","መተግበሪያ"],["the internet","ኢንተርኔት"],["Wi-Fi","ዋይፋይ"],["password","የይለፍ ቃል"],
+    ["username","የተጠቃሚ ስም"],["screen","ስክሪን (ማያ ገጽ)"],["battery","ባትሪ"],["charger","ቻርጀር"],["to charge","ቻርጅ ማድረግ"],
+    ["to download","ማውረድ"],["to upload","ወደ ኢንተርኔት መጫን"],["to log in","ወደ አካውንት መግባት"],["to log out","ከአካውንት መውጣት"],["to send a message","መልዕክት መላክ"],
+    ["to delete","መሰረዝ"],["to update","ማዘመን"],["account","አካውንት (መለያ)"],["link","ሊንክ (ማገናኛ)"],["mobile data","የሞባይል ዳታ"],
+    ["network","ኔትወርክ"],["video call","የቪዲዮ ጥሪ"],["voice message","የድምፅ መልዕክት"],["to share","ማጋራት"],["to search","መፈለግ"],
+    ["My screen is broken.","ስክሪኔ ተሰብሯል።"],["Can I charge my phone here?","ስልኬን እዚህ ቻርጅ ማድረግ እችላለሁ?"],["Is there free Wi-Fi here?","እዚህ ነፃ ዋይፋይ አለ?"],
+    ["The internet is very slow today.","ዛሬ ኢንተርኔቱ በጣም ቀርፋፋ ነው።"],["There is no network here.","እዚህ ኔትወርክ የለም።"],["I forgot my password.","የይለፍ ቃሌን ረሳሁት።"],
+    ["Send me the link, please.","እባክዎ ሊንኩን ይላኩልኝ።"],["Download the app from the Play Store.","መተግበሪያውን ከፕሌይ ስቶር ያውርዱ።"],["I'll send you a voice message.","የድምፅ መልዕክት እልክልዎታለሁ።"],
+    ["Let's do a video call.","የቪዲዮ ጥሪ እናድርግ።"],["My phone isn't working.","ስልኬ አይሰራም።"],["I need to buy more data.","ተጨማሪ ዳታ መግዛት አለብኝ።"],
+    ["Don't share your password with anyone.","የይለፍ ቃልዎን ለማንም አያጋሩ።"],["Did you get my message?","መልዕክቴ ደረሰዎት?"],["Please turn off your phone.","እባክዎ ስልክዎን ያጥፉ።"]] },
+
+  { id:"m4-feel", level:"int", month:4, en:"Feelings and emotions", am:"ስሜቶች",
+    tip:["Say 'I'm...' or 'I feel...': I'm tired. I feel nervous. Add 'so' or 'really' to make it stronger: I'm so happy!",
+         "'I'm...' ወይም 'I feel...' ይበሉ። ለማጠንከር 'so' ወይም 'really' ይጨምሩ፦ I'm so happy! = በጣም ደስ ብሎኛል!"],
+    words:[["anxious","ስጋት ውስጥ ያለ"],["heartbroken","ልቡ የተሰበረ"],["furious","በጣም የተናደደ"],["tired","የደከመ"],["bored","የሰለቸው"],
+    ["worried","የተጨነቀ"],["nervous","የተረበሸ"],["scared","የፈራ"],["excited","በጉጉት የተሞላ"],["proud","የኮራ"],
+    ["surprised","የተገረመ"],["confused","ግራ የተጋባ"],["lonely","ብቸኝነት የተሰማው"],["homesick","ቤቱ የናፈቀው"],["calm","የተረጋጋ"],
+    ["jealous","የቀና (ምቀኛ)"],["embarrassed","ያፈረ"],["grateful","አመስጋኝ"],["disappointed","ቅር የተሰኘ"],["stressed","ውጥረት ውስጥ ያለ"],
+    ["relaxed","ዘና ያለ"],["hopeful","ተስፈኛ"],["upset","የተበሳጨ"],["shy","ዓይናፋር"],["in love","በፍቅር የወደቀ"],
+    ["How do you feel today?","ዛሬ እንዴት ይሰማዎታል?"],["I'm so happy for you!","ለእርስዎ በጣም ደስ ብሎኛል!"],["I feel a bit tired.","ትንሽ ደክሞኛል።"],
+    ["Don't worry, everything will be fine.","አይጨነቁ፣ ሁሉም ነገር መልካም ይሆናል።"],["I'm nervous about my exam.","ስለ ፈተናዬ እጨነቃለሁ።"],["I'm proud of you.","በእርስዎ እኮራለሁ።"],
+    ["I miss my family.","ቤተሰቤ ናፈቀኝ።"],["That makes me angry.","ያ ያናድደኛል።"],["Cheer up!","አይዞዎት!"],
+    ["What's wrong?","ምን ሆነዋል?"],["I'm really excited about the trip.","ስለ ጉዞው በጣም ጓጉቻለሁ።"],["I was so embarrassed!","በጣም አፈርኩ!"],
+    ["Calm down, please.","እባክዎ ይረጋጉ።"],["I'm bored. Let's go out.","ሰለቸኝ። እንውጣ።"],["Thank you, I'm very grateful.","አመሰግናለሁ፣ በጣም አመስጋኝ ነኝ።"]] },
+
+  { id:"m4-nature", level:"int", month:4, en:"Weather and nature", am:"የአየር ሁኔታና ተፈጥሮ",
+    tip:["Use 'It's' for the weather: It's sunny. It's raining. It's cold. The big rainy season (kiremt) is 'the rainy season'.",
+         "ለአየር ሁኔታ 'It's' ይጠቀሙ፦ It's sunny = ፀሐያማ ነው፣ It's raining = እየዘነበ ነው። ክረምት = the rainy season።"],
+    words:[["season","ወቅት"],["sunny","ፀሐያማ"],["cloudy","ደመናማ"],["rain","ዝናብ"],["wind","ነፋስ"],
+    ["storm","አውሎ ነፋስ"],["humid","እርጥበታማ"],["fog","ጭጋግ"],["warm","ሞቅ ያለ"],["temperature","የሙቀት መጠን"],
+    ["rainy season","ክረምት (የዝናብ ወቅት)"],["dry season","በጋ (ደረቅ ወቅት)"],["drought","ድርቅ"],["flood","ጎርፍ"],["mountain","ተራራ"],
+    ["waterfall","ፏፏቴ"],["lake","ሐይቅ"],["forest","ደን"],["desert","በረሃ"],["lightning","መብረቅ"],
+    ["rainbow","ቀስተ ደመና"],["umbrella","ዣንጥላ"],["environment","አካባቢ"],["pollution","ብክለት"],["to plant a tree","ዛፍ መትከል"],
+    ["Is it going to rain tomorrow?","ነገ ይዘንባል?"],["It's raining.","እየዘነበ ነው።"],["It's very hot today.","ዛሬ በጣም ሞቃት ነው።"],
+    ["It's cold in the morning.","ጠዋት ላይ ቀዝቃዛ ነው።"],["Take an umbrella.","ዣንጥላ ይያዙ።"],["The rainy season starts in June.","ክረምቱ በሰኔ ይጀምራል።"],
+    ["It might rain later.","ቆይቶ ሊዘንብ ይችላል።"],["The sky is clear.","ሰማዩ ጥርት ያለ ነው።"],["Addis Ababa is cool all year.","አዲስ አበባ ዓመቱን ሙሉ ቀዝቀዝ ያለ ነው።"],
+    ["The roads are flooded.","መንገዶቹን ጎርፍ ሞልቷቸዋል።"],["We need to protect the environment.","አካባቢን መጠበቅ አለብን።"],["Don't throw rubbish on the street.","ቆሻሻ መንገድ ላይ አይጣሉ።"],
+    ["Let's plant a tree together.","አብረን ዛፍ እንትከል።"],["The view from the mountain is beautiful.","ከተራራው ላይ ያለው እይታ ያምራል።"],["Lake Tana is the biggest lake in Ethiopia.","ጣና በኢትዮጵያ ትልቁ ሐይቅ ነው።"]] },
+
+  { id:"m4-school", level:"int", month:4, en:"School, university and exams", am:"ትምህርት ቤት፣ ዩኒቨርሲቲና ፈተና",
+    tip:["You 'take' an exam, then you 'pass' it or 'fail' it. 'Teach' = give lessons. 'Learn' = get new knowledge. 'Study' = work to learn.",
+         "ፈተና 'take' ያደርጋሉ (ይፈተናሉ)፤ 'pass' = ማለፍ፣ 'fail' = መውደቅ። 'teach' = ማስተማር፣ 'learn' = መማር፣ 'study' = ማጥናት።"],
+    words:[["principal","ርዕሰ መምህር"],["tutor","አስጠኚ"],["classroom","የመማሪያ ክፍል"],["subject","የትምህርት ዓይነት"],["homework","የቤት ስራ"],
+    ["exam","ፈተና"],["grade","ውጤት"],["to pass","ማለፍ"],["to fail","መውደቅ"],["to study","ማጥናት"],
+    ["to graduate","መመረቅ"],["college","ኮሌጅ"],["degree","ዲግሪ"],["scholarship","የትምህርት እድል (ስኮላርሺፕ)"],["deadline","የመጨረሻ ቀን"],
+    ["timetable","የትምህርት ፕሮግራም"],["notebook","ደብተር"],["dictionary","መዝገበ ቃላት"],["lecture","ገለጻ (ሌክቸር)"],["assignment","የተሰጠ ስራ"],
+    ["semester","ሴሚስተር (መንፈቀ ዓመት)"],["certificate","ሰርተፊኬት"],["mathematics","ሂሳብ"],["biology","ባዮሎጂ"],["history","ታሪክ"],
+    ["I passed my exam!","ፈተናዬን አለፍኩ!"],["When is the deadline?","የመጨረሻው ቀን መቼ ነው?"],["I have a lot of homework tonight.","ዛሬ ማታ ብዙ የቤት ስራ አለብኝ።"],
+    ["What's your favourite subject?","የሚወዱት የትምህርት ዓይነት ምንድን ነው?"],["I'm studying for the national exam.","ለብሔራዊ ፈተና እያጠናሁ ነው።"],["Can you explain that again, please?","እባክዎ እንደገና ሊያስረዱኝ ይችላሉ?"],
+    ["I don't understand this question.","ይህ ጥያቄ አልገባኝም።"],["I want to study medicine.","ሕክምና መማር እፈልጋለሁ።"],["She got a scholarship to study abroad.","ውጭ አገር ለመማር የትምህርት እድል አገኘች።"],
+    ["I graduated last year.","ባለፈው ዓመት ተመረቅሁ።"],["Please open your books to page ten.","እባካችሁ መጽሐፋችሁን ገጽ አስር ላይ ክፈቱ።"],["May I go to the library?","ወደ ቤተ መጻሕፍት መሄድ እችላለሁ?"],
+    ["Let's study together.","አብረን እናጥና።"],["What grade did you get?","ምን ውጤት አገኙ?"],["I need to revise for my test.","ለፈተናዬ መከለስ አለብኝ።"]] }
+);
+
 const WORDMAP = {};
 LESSONS.forEach(l => l.words.forEach(w => { if (!WORDMAP[w[0]]) WORDMAP[w[0]] = { w, level:l.level }; }));
 
@@ -1113,7 +1186,7 @@ function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; cle
 
 // ---------- 4-month course: trial, months, payments ----------
 // Month 1: Beginner + first 5 pronunciation lessons. Month 2: Intermediate + last 5 pronunciation lessons.
-// Month 3: Advanced. Month 4: speaking challenge, big review, final exam and certificate.
+// Month 3: Advanced. Month 4: 5 real-life vocabulary lessons, speaking challenge, big review, final exam and certificate.
 // Each payment (300 Birr) opens the next month at once; 1000 Birr opens all 4. Opened months stay open.
 // The 3-day free trial opens Month 1. store.months is set by the payment (Telegram bot). The page owner sees everything.
 const TRIAL_DAYS = 3, PRICE_MONTH = 300, PRICE_FULL = 1000, MONTHS_TOTAL = 4;
@@ -1132,7 +1205,7 @@ const MONTHS = [
   { n:1, en:"Month 1", am:"ወር 1", sub:"Beginner", subAm:"ጀማሪ" },
   { n:2, en:"Month 2", am:"ወር 2", sub:"Intermediate", subAm:"መካከለኛ" },
   { n:3, en:"Month 3", am:"ወር 3", sub:"Advanced", subAm:"ከፍተኛ" },
-  { n:4, en:"Month 4", am:"ወር 4", sub:"Exam + certificate", subAm:"ፈተናና ሰርተፊኬት" }
+  { n:4, en:"Month 4", am:"ወር 4", sub:"Real-life words + exam", subAm:"የዕለት ቃላትና ፈተና" }
 ];
 const PRON_IDS = LESSONS.filter(l => l.level === "pron").map(l => l.id);
 function monthOf(l){
@@ -1445,26 +1518,28 @@ function renderHome(){
       `<button class="lvl" data-month="${m.n}" aria-pressed="${m.n === M.n}">${canUseMonth(m.n) ? "" : "🔒 "}${m.en}<small>${m.am} · ${m.subAm}</small></button>`).join("")}</div>
     <div class="label">${M.en} · ${esc(M.sub)}${list.length ? ` — ${doneM}/${list.length} done` : ""}</div>`;
   if (!mOpen) html += `<button class="action gold" data-pay="${M.n}"><span class="ic">🔒</span><span style="flex:1;min-width:0"><b>${M.en} is locked</b><span class="s">Pay ${PRICE_MONTH} Birr to open it · <span class="am">ለመክፈት ${PRICE_MONTH} ብር ይክፈሉ</span></span></span></button>`;
+  let m4html = "";
   if (M.n === 4){
     const ex = store.best.exam;
-    html += `<div class="actions">
+    m4html = `<div class="label">Finish the course · <span class="am">ኮርሱን ይጨርሱ</span></div><div class="actions">
       <button class="action" data-m4="challenge"><span class="ic">${ICON_MIC(22)}</span><span style="flex:1;min-width:0"><b>Speaking challenge</b><span class="s">8 sentences from the whole course · <span class="am">የመናገር ፈተና</span></span></span></button>
       <button class="action" data-m4="mix"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Big review</b><span class="s">20 questions from all months · <span class="am">ከሁሉም ወራት ክለሳ</span></span></span></button>
       <button class="action gold" data-m4="exam"><span class="ic">${ICON_TARGET}</span><span style="flex:1;min-width:0"><b>Final exam${ex != null ? ` · best ${ex}%` : ""}</b><span class="s">30 questions · pass with ${PASS_MARK}% · <span class="am">በ${PASS_MARK}% ያልፋሉ</span></span></span></button>
       ${store.cert ? `<button class="action gold" data-m4="cert"><span class="ic">🎓</span><span style="flex:1;min-width:0"><b>Your certificate</b><span class="s am">ሰርተፊኬትዎ</span></span></button>` : ""}
     </div>`;
-  } else {
+  }
+  {
     html += `<div class="lessons">`;
     list.forEach((l, k) => {
       const q = store.best[l.id], sp = store.speak[l.id];
       const kind = l.grammar ? `<span class="tag">Grammar</span>` : l.level === "pron" ? `<span class="tag">Sounds</span>` : "";
-      const unit = l.level === "beg" || l.level === "pron" ? "words" : "sentences";
+      const unit = l.month === 4 ? "words and phrases" : l.level === "beg" || l.level === "pron" ? "words" : "sentences";
       html += `<button class="lesson ${q != null ? "done" : ""} ${mOpen ? "" : "locked"}" data-open="${l.id}">
         <span class="num">${mOpen ? k + 1 : "🔒"}</span>
         <span class="lt"><b>${esc(l.en)}</b><span>${kind}<span class="am">${esc(l.am)}</span> · ${l.words.length} ${l.grammar ? "examples" : unit}</span></span>
         <span class="pills"><span class="pill ${q != null ? "on" : ""}">Quiz ${q != null ? q + "%" : "–"}</span><span class="pill ${sp != null ? "on" : ""}">Speak ${sp != null ? sp + "%" : "–"}</span></span></button>`;
     });
-    html += `</div>`;
+    html += `</div>` + m4html;
   }
   html += `<p class="foot">Every lesson: learn the cards, take the quiz, then practise speaking. Finish Month 4's final exam to get your certificate.<br><span class="am">በእያንዳንዱ ትምህርት፡ ካርዶቹን ይማሩ፣ ፈተናውን ይውሰዱ፣ መናገር ይለማመዱ። በወር 4 የመጨረሻውን ፈተና አልፈው ሰርተፊኬት ያግኙ።</span></p>`;
   $("#v-home").innerHTML = html;

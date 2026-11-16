@@ -352,7 +352,7 @@ function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; cle
 
 // ---------- 4-month course: trial, months, payments ----------
 // Month 1: Beginner + first 5 pronunciation lessons. Month 2: Intermediate + last 5 pronunciation lessons.
-// Month 3: Advanced. Month 4: speaking challenge, big review, final exam and certificate.
+// Month 3: Advanced. Month 4: 5 real-life vocabulary lessons, speaking challenge, big review, final exam and certificate.
 // Each payment (300 Birr) opens the next month at once; 1000 Birr opens all 4. Opened months stay open.
 // The 3-day free trial opens Month 1. store.months is set by the payment (Telegram bot). The page owner sees everything.
 const TRIAL_DAYS = 3, PRICE_MONTH = 300, PRICE_FULL = 1000, MONTHS_TOTAL = 4;
@@ -367,7 +367,7 @@ const MONTHS = [
   { n:1, en:"Month 1", am:"ወር 1", sub:"Beginner", subAm:"ጀማሪ" },
   { n:2, en:"Month 2", am:"ወር 2", sub:"Intermediate", subAm:"መካከለኛ" },
   { n:3, en:"Month 3", am:"ወር 3", sub:"Advanced", subAm:"ከፍተኛ" },
-  { n:4, en:"Month 4", am:"ወር 4", sub:"Exam + certificate", subAm:"ፈተናና ሰርተፊኬት" }
+  { n:4, en:"Month 4", am:"ወር 4", sub:"Real-life words + exam", subAm:"የዕለት ቃላትና ፈተና" }
 ];
 const PRON_IDS = LESSONS.filter(l => l.level === "pron").map(l => l.id);
 function monthOf(l){
@@ -679,26 +679,28 @@ function renderHome(){
       `<button class="lvl" data-month="${m.n}" aria-pressed="${m.n === M.n}">${canUseMonth(m.n) ? "" : "🔒 "}${m.en}<small>${m.am} · ${m.subAm}</small></button>`).join("")}</div>
     <div class="label">${M.en} · ${esc(M.sub)}${list.length ? ` — ${doneM}/${list.length} done` : ""}</div>`;
   if (!mOpen) html += `<button class="action gold" data-pay="${M.n}"><span class="ic">🔒</span><span style="flex:1;min-width:0"><b>${M.en} is locked</b><span class="s">Pay ${PRICE_MONTH} Birr to open it · <span class="am">ለመክፈት ${PRICE_MONTH} ብር ይክፈሉ</span></span></span></button>`;
+  let m4html = "";
   if (M.n === 4){
     const ex = store.best.exam;
-    html += `<div class="actions">
+    m4html = `<div class="label">Finish the course · <span class="am">ኮርሱን ይጨርሱ</span></div><div class="actions">
       <button class="action" data-m4="challenge"><span class="ic">${ICON_MIC(22)}</span><span style="flex:1;min-width:0"><b>Speaking challenge</b><span class="s">8 sentences from the whole course · <span class="am">የመናገር ፈተና</span></span></span></button>
       <button class="action" data-m4="mix"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Big review</b><span class="s">20 questions from all months · <span class="am">ከሁሉም ወራት ክለሳ</span></span></span></button>
       <button class="action gold" data-m4="exam"><span class="ic">${ICON_TARGET}</span><span style="flex:1;min-width:0"><b>Final exam${ex != null ? ` · best ${ex}%` : ""}</b><span class="s">30 questions · pass with ${PASS_MARK}% · <span class="am">በ${PASS_MARK}% ያልፋሉ</span></span></span></button>
       ${store.cert ? `<button class="action gold" data-m4="cert"><span class="ic">🎓</span><span style="flex:1;min-width:0"><b>Your certificate</b><span class="s am">ሰርተፊኬትዎ</span></span></button>` : ""}
     </div>`;
-  } else {
+  }
+  {
     html += `<div class="lessons">`;
     list.forEach((l, k) => {
       const q = store.best[l.id], sp = store.speak[l.id];
       const kind = l.grammar ? `<span class="tag">Grammar</span>` : l.level === "pron" ? `<span class="tag">Sounds</span>` : "";
-      const unit = l.level === "beg" || l.level === "pron" ? "words" : "sentences";
+      const unit = l.month === 4 ? "words and phrases" : l.level === "beg" || l.level === "pron" ? "words" : "sentences";
       html += `<button class="lesson ${q != null ? "done" : ""} ${mOpen ? "" : "locked"}" data-open="${l.id}">
         <span class="num">${mOpen ? k + 1 : "🔒"}</span>
         <span class="lt"><b>${esc(l.en)}</b><span>${kind}<span class="am">${esc(l.am)}</span> · ${l.words.length} ${l.grammar ? "examples" : unit}</span></span>
         <span class="pills"><span class="pill ${q != null ? "on" : ""}">Quiz ${q != null ? q + "%" : "–"}</span><span class="pill ${sp != null ? "on" : ""}">Speak ${sp != null ? sp + "%" : "–"}</span></span></button>`;
     });
-    html += `</div>`;
+    html += `</div>` + m4html;
   }
   html += `<p class="foot" style="margin:0">📥 Offline course · Months 1–2 · Licensed to ${esc((LICENSE && LICENSE.name) || "")} ${esc((LICENSE && LICENSE.phone) || "")}<br>Personal copy, please do not share · <span class="am">የግል ቅጂ ነው፣ አያጋሩ</span></p><p class="foot">Every lesson: learn the cards, take the quiz, then practise speaking. Finish Month 4's final exam to get your certificate.<br><span class="am">በእያንዳንዱ ትምህርት፡ ካርዶቹን ይማሩ፣ ፈተናውን ይውሰዱ፣ መናገር ይለማመዱ። በወር 4 የመጨረሻውን ፈተና አልፈው ሰርተፊኬት ያግኙ።</span></p>`;
   $("#v-home").innerHTML = html;
