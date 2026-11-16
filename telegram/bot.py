@@ -21,6 +21,12 @@ PRICE = int(CFG.get("price_month", CFG.get("price_basic", 300)))   # one month
 PRICE_FULL = int(CFG.get("price_full", 1000))                      # all 4 months at once
 PRICE_PREMIUM = int(CFG.get("price_premium", 1000))                # AI tutor: shown only, can't be bought yet
 TRIAL_DAYS = int(CFG.get("trial_days", 3))
+CLUB_LINK = (CFG.get("speaking_club_link") or "").strip()            # Telegram group invite link
+TUTOR_MODEL = CFG.get("tutor_model", "claude-haiku-5-5")
+TUTOR_DAILY_LIMIT = int(CFG.get("tutor_daily_limit", 30))           # messages per student per day
+TUTOR_HISTORY = 20                                                   # messages the tutor remembers
+# Haiku 5.5 price per million tokens (prompts up to 100K tokens), for the /stats cost estimate
+TUTOR_PRICE_IN, TUTOR_PRICE_OUT = 0.10, 0.50
 MONTHS = 4
 NUDGE_DAYS = 25
 REMIND_HOUR = int(CFG.get("reminder_hour", 19))                    # Addis Ababa time
@@ -108,11 +114,110 @@ def course_button(us):
     return [{"text": "📚 Open course · ትምህርቱን ክፈት", "web_app": {"url": url}}]
 
 DOWNLOAD_BTN = {"text": "📥 Download course · ኮርሱን አውርድ", "callback_data": "dl"}
+TUTOR_BTN = {"text": "🦁 Chat with Anbessa, your AI tutor · ከ AI አስተማሪ ጋር ይወያዩ", "callback_data": "tutor"}
+END_TUTOR_BTN = [[{"text": "⏹ End chat · ውይይቱን ጨርስ", "callback_data": "end_tutor"}]]
+
+# ---------- AI tutor (Claude) ----------
+_tutor_client = None
+def tutor_client():
+    """The Claude client, or None when the tutor isn't set up (no SDK or no API key)."""
+    global _tutor_client
+    if _tutor_client is None:
+        key = (CFG.get("anthropic_api_key") or os.environ.get("ANTHROPIC_API_KEY") or "").strip()
+        if not key or key.startswith("PASTE"): return None
+        try:
+            import anthropic
+        except ImportError:
+            print("The AI tutor needs the Claude SDK: run  pip install anthropic", flush=True); return None
+        _tutor_client = anthropic.Anthropic(api_key=key, timeout=60.0, max_retries=2)
+    return _tutor_client
+
+LEVEL_STYLE = {
+    1: "The student is a BEGINNER. Use very simple words and short sentences (5-10 words). "
+       "After your English reply, add the Amharic translation of your reply on a new line in brackets.",
+    2: "The student is INTERMEDIATE. Use everyday English with common phrasal verbs and different tenses. "
+       "Add Amharic only for a hard word, in brackets.",
+    3: "The student is ADVANCED. Speak naturally like a friendly native speaker, with idioms. "
+       "Point out English that is correct but sounds unnatural. No Amharic unless asked.",
+}
+
+def tutor_system(us):
+    level = LEVEL_STYLE[min(3, max(1, months_open(us)))]
+    return ("You are Anbessa, a warm, funny English tutor and friend inside the Fidel English Telegram bot. "
+            "Your students are Ethiopians whose first language is Amharic, learning to speak English with confidence. "
+            "Chat like a kind friend: be curious about their life, family, work, food, faith, football, music and dreams. "
+            "Keep every reply short: 2-4 sentences, then ask ONE question to keep the conversation going. "
+            "If the student made a mistake, first answer naturally, then add one line that starts with '✏️ Better:' "
+            "and shows the corrected sentence. Fix only the most important mistake, and praise good English often. "
+            "If they write in Amharic, answer in simple English and gently ask them to try in English. "
+            "Use the student's name sometimes. Stay friendly and respectful; keep topics suitable for all ages. "
+            "Write plain text only: no markdown, no lists, no headings. "
+            + level + " The student's name is " + (us.get("name") or "friend") + ".")
+
+def start_tutor(chat, us):
+    if months_open(us) == 0:
+        send(chat, "🦁 The AI tutor is for paid students. Open Month 1 to chat with Anbessa!\nAI አስተማሪው ለከፈሉ ተማሪዎች ነው።",
+             [[{"text": "💳 Pay · ይክፈሉ", "callback_data": "sub"}]]); return
+    if not tutor_client():
+        send(chat, "🦁 The AI tutor is coming very soon! · AI አስተማሪው በቅርቡ ይመጣል!"); return
+    us["state"] = "tutor"; us["tutor_hist"] = []; save()
+    send(chat, "🦁 <b>Hi %s! I'm Anbessa, your English friend.</b>\n"
+               "Let's chat in English. Write to me about anything: your day, your family, your work...\n"
+               "I will help you when you make a mistake. ✏️\n\n"
+               "ሰላም! በእንግሊዝኛ እንወያይ። ስህተት ሲሰሩ እረዳዎታለሁ።\n\n"
+               "👉 So, how are you today? What did you do this morning?" % esc(us["name"]), END_TUTOR_BTN)
+
+def end_tutor(chat, us):
+    us["state"] = None; save()
+    send(chat, "👋 Great chat! See you next time. · ጥሩ ውይይት ነበር! በሚቀጥለው እንገናኝ።", learn_buttons(us))
+
+def tutor_reply(chat, uid, us, text):
+    today = datetime.now(EAT).strftime("%Y-%m-%d")
+    if us.get("tutor_day") != today: us["tutor_day"], us["tutor_count"] = today, 0
+    if us["tutor_count"] >= TUTOR_DAILY_LIMIT:
+        send(chat, "🦁 You've sent %d messages today, great work! Let's talk again tomorrow.\nለዛሬ በቂ ነው፣ ነገ እንገናኝ!" % TUTOR_DAILY_LIMIT, END_TUTOR_BTN); return
+    client = tutor_client()
+    if not client:
+        end_tutor(chat, us); return
+    hist = (us.get("tutor_hist") or []) + [{"role": "user", "content": text[:1500]}]
+    api("sendChatAction", chat_id=chat, action="typing")
+    import anthropic
+    try:
+        resp = client.messages.create(
+            model=TUTOR_MODEL, max_tokens=1024,
+            system=tutor_system(us),
+            thinking={"type": "disabled"},          # a short friendly chat doesn't need thinking; keeps cost low
+            output_config={"effort": "low"},
+            messages=hist)
+    except anthropic.RateLimitError:
+        send(chat, "🦁 I'm a little busy right now. Please send that again in a minute.\nእባክዎ ትንሽ ቆይተው ይላኩ።"); return
+    except anthropic.AuthenticationError:
+        print("Tutor: the Anthropic API key is wrong or has no credit.", flush=True)
+        send(chat, "🦁 Sorry, the tutor is resting now. Please try again later.\nይቅርታ፣ እባክዎ ቆይተው ይሞክሩ።"); return
+    except anthropic.APIStatusError as e:
+        print("Tutor API error:", e.status_code, str(e)[:200], flush=True)
+        send(chat, "🦁 Sorry, something went wrong. Please try again.\nይቅርታ፣ እንደገና ይሞክሩ።"); return
+    except anthropic.APIConnectionError:
+        send(chat, "🦁 I can't connect right now. Please try again soon.\nአሁን መገናኘት አልቻልኩም።"); return
+    u = DB.setdefault("tutor_usage", {"input": 0, "output": 0, "messages": 0})
+    u["input"] += resp.usage.input_tokens; u["output"] += resp.usage.output_tokens; u["messages"] += 1
+    if resp.stop_reason == "refusal":
+        reply = "Let's talk about something else! What do you like to do on weekends?"
+    else:
+        reply = "".join(b.text for b in resp.content if b.type == "text").strip() or "Sorry, can you say that again?"
+    hist.append({"role": "assistant", "content": reply})
+    us["tutor_hist"] = hist[-TUTOR_HISTORY:]
+    while us["tutor_hist"] and us["tutor_hist"][0]["role"] != "user": us["tutor_hist"].pop(0)
+    us["tutor_count"] += 1; save()
+    send(chat, esc(reply), END_TUTOR_BTN)
 
 def learn_buttons(us):
     """Learn in Telegram, and (for paid months) download the course to learn without internet."""
     rows = [course_button(us)]
-    if months_open(us) > 0: rows.append([DOWNLOAD_BTN])
+    if months_open(us) > 0:
+        rows.append([DOWNLOAD_BTN])
+        rows.append([TUTOR_BTN])
+        if CLUB_LINK: rows.append([{"text": "🎤 Join our speaking club · የንግግር ክበብ", "url": CLUB_LINK}])
     return rows
 
 def send_course_file(chat, us):
@@ -259,6 +364,7 @@ def on_message(m):
     if m.get("contact"): on_contact(chat, uid, us, m["contact"]); return
     if not us.get("phone") and int(uid) != ADMIN: ask_phone(chat); return
     if text.startswith("/start"):
+        if us.get("state") == "tutor": us["state"] = None; save()
         arg = text[6:].strip()
         if arg in ("month", "full"): pay_instructions(chat, us, arg)
         elif arg in ("basic", "premium", "pay"): show_plans(chat, us)
@@ -269,6 +375,15 @@ def on_message(m):
         us["reminders"] = False; save(); send(chat, "🔕 Reminders are off. Send /reminders_on to turn them on."); return
     if text == "/reminders_on":
         us["reminders"] = True; save(); send(chat, "🔔 Reminders are on."); return
+    if text == "/tutor": start_tutor(chat, us); return
+    if text in ("/end", "/end_chat"): end_tutor(chat, us); return
+    if us.get("state") == "tutor":
+        if text and not text.startswith("/"): tutor_reply(chat, uid, us, text)
+        elif m.get("voice") or m.get("audio") or m.get("video_note"):
+            send(chat, "🎤 I can only read typed messages for now. Please type in English!\nለአሁን የተጻፈ መልዕክት ብቻ አነባለሁ።", END_TUTOR_BTN)
+        else:
+            send(chat, "🦁 Please type a message in English, or tap ⏹ End chat.\nእባክዎ በእንግሊዝኛ ይጻፉ።", END_TUTOR_BTN)
+        return
     if m.get("photo"):
         photo = m["photo"][-1]["file_id"]
         txn = (m.get("caption") or "").strip()
@@ -295,8 +410,12 @@ def on_callback(cb):
     elif data in ("plan:month", "plan:basic"): pay_instructions(chat, us, "month")
     elif data == "plan:full": pay_instructions(chat, us, "full")
     elif data == "dl": send_course_file(chat, us)
+    elif data == "tutor": start_tutor(chat, us)
+    elif data == "end_tutor": end_tutor(chat, us)
     elif data == "help":
-        send(chat, "❓ <b>Help</b>\n• Tap 📚 Open course to learn here in Telegram.\n• Paid months: tap 📥 Download course to learn without internet.\n• The course has 4 months. Each payment opens the next month.\n"
+        send(chat, "❓ <b>Help</b>\n• Tap 📚 Open course to learn here in Telegram.\n• Paid months: tap 📥 Download course to learn without internet.\n"
+                   "• Paid months: tap 🦁 Chat with Anbessa to practise English with your AI tutor (/tutor). Up to %d messages a day.\n" % TUTOR_DAILY_LIMIT +
+                   "• The course has 4 months. Each payment opens the next month.\n"
                    "• To pay: 💳 Pay → choose → pay with Telebirr → send the screenshot.\n• /reminders_off — stop daily reminders\n\n"
                    "Questions? Write to %s" % esc(CFG.get("support_contact", "the owner")))
 
@@ -307,9 +426,12 @@ def stats(chat):
     waiting = sum(1 for p in DB["payments"].values() if p["status"] == "waiting")
     recent = sum(p.get("amount", PRICE) for p in DB["payments"].values() if p["status"] == "approved" and t - p["at"] < 30 * DAY_MS)
     total = sum(p.get("amount", PRICE) for p in DB["payments"].values() if p["status"] == "approved")
+    tu = DB.get("tutor_usage", {"input": 0, "output": 0, "messages": 0})
+    cost = tu["input"] / 1e6 * TUTOR_PRICE_IN + tu["output"] / 1e6 * TUTOR_PRICE_OUT
     send(chat, "📊 <b>Stats</b>\nStudents: %d\nIn free trial: %d\nMonths open — 1: %d · 2: %d · 3: %d · 4: %d\n"
-               "Waiting for approval: %d\nLast 30 days: %d Birr\nAll time: %d Birr"
-         % (len(us), trial, by_month[0], by_month[1], by_month[2], by_month[3], waiting, recent, total))
+               "Waiting for approval: %d\nLast 30 days: %d Birr\nAll time: %d Birr\n\n"
+               "🦁 AI tutor: %d replies, about $%.2f so far (check the real bill at console.anthropic.com)"
+         % (len(us), trial, by_month[0], by_month[1], by_month[2], by_month[3], waiting, recent, total, tu["messages"], cost))
 
 # ---------- reminders ----------
 def reminders():
@@ -339,7 +461,12 @@ def main():
     if not me: print("Could not connect. Check bot_token in config.json."); sys.exit(1)
     BOT_USERNAME = me["username"]
     api("setMyCommands", commands=[{"command": "start", "description": "Open the menu · ምናሌ"},
+                                   {"command": "tutor", "description": "Chat with Anbessa, your AI tutor"},
+                                   {"command": "end", "description": "End the tutor chat"},
                                    {"command": "reminders_off", "description": "Stop daily reminders"}])
+    print("AI tutor: %s" % ("ON (%s, %d messages/day)" % (TUTOR_MODEL, TUTOR_DAILY_LIMIT) if tutor_client() else
+                            "OFF (add anthropic_api_key to config.json and run: pip install anthropic)"), flush=True)
+    print("Speaking club button: %s" % ("ON" if CLUB_LINK else "OFF (add speaking_club_link to config.json)"), flush=True)
     print("Bot @%s is running. Press Ctrl+C to stop." % BOT_USERNAME, flush=True)
     offset, last_check = None, 0
     while True:
