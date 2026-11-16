@@ -358,7 +358,7 @@ function onDictPartial({ text }){ mic.partial = text; showHeard(); }
 function onlineCourseUrl(){ return (LICENSE && LICENSE.web) ? LICENSE.web.replace(/\/$/, "") + "/?m=" + (+store.months || 0) + "&t=0&b=" + encodeURIComponent(LICENSE.bot || "") : null; }
 function makeBrowserDictation(){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR || location.protocol === "file:") return null;   // Chrome blocks speech checking in files opened from the computer
+  if (!SR || !/^https?:$/.test(location.protocol)) return null;   // Chrome blocks speech checking in files opened from the computer
   let rec = null, active = false, onS = () => {}, onP = () => {}, onF = () => {};
   return {
     browser: true,
@@ -1106,7 +1106,7 @@ function renderSpeak(){
       <div class="heard" id="heard"></div></div>`;
   } else {
     const inTG = !!(window.Telegram && Telegram.WebApp && Telegram.WebApp.initData);
-    const isFile = location.protocol === "file:", online = onlineCourseUrl();
+    const isFile = !/^https?:$/.test(location.protocol), online = onlineCourseUrl();
     const why = inTG ? ["Telegram can't use the microphone on this phone.", "Open the course in Chrome to record yourself and get ✓ or ✗.", "ድምፅዎን ለመቅረጽና ለመፈተሽ ኮርሱን በ Chrome ይክፈቱ።"]
       : isFile ? ["Recording works in the online course.", "This downloaded copy is for learning without internet. To record yourself and get ✓ or ✗, open the online course (needs internet).", "ለመቅረጽና ለመፈተሽ የኦንላይን ኮርሱን ይክፈቱ (ኢንተርኔት ያስፈልጋል)።"]
       : micDenied ? ["The microphone is turned off for this page.", "Tap the 🔒 lock next to the web address, allow the Microphone, then reload the page.", "ከአድራሻው አጠገብ ያለውን 🔒 ይንኩ፣ ማይክሮፎንን ይፍቀዱ፣ ከዚያ ገጹን እንደገና ይክፈቱ።"]
