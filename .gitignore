@@ -3,3 +3,4 @@ telegram/config.json
 telegram/data.json
 telegram/data.json.tmp
 __pycache__/
+.claude/

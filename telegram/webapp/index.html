@@ -80,6 +80,8 @@ h1,h2{text-wrap:balance;margin:0}
 .plan .price small{font-size:14px;font-weight:500;color:var(--muted)}
 .plan ul{margin:0;padding-left:20px;font-size:14px;display:flex;flex-direction:column;gap:4px}
 .plan .tagb{align-self:flex-start;font-size:12px;font-weight:700;background:var(--gold);color:var(--surface);border-radius:99px;padding:3px 10px}
+.lesson.locked{opacity:.6}
+.lesson.locked .num{background:var(--line)}
 .paynote{font-size:13px;color:var(--muted);text-align:center}
 
 .lessons{display:flex;flex-direction:column;gap:10px}
@@ -1109,62 +1111,130 @@ function showHeard(){
 let toastTimer;
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.hidden=true,3000); }
 
-// ---------- trial & subscription ----------
-// 3-day free trial with everything. After that: Basic 300 Birr/month (lessons) or Premium 1000 Birr/month (lessons + AI tutor).
-// store.plan is set only by a real payment (server + Chapa, not built yet). The page owner is never locked.
-const TRIAL_DAYS = 3, PRICE_BASIC = 300, PRICE_PREMIUM = 1000;
+// ---------- 4-month course: trial, months, payments ----------
+// Month 1: Beginner + first 5 pronunciation lessons. Month 2: Intermediate + last 5 pronunciation lessons.
+// Month 3: Advanced. Month 4: speaking challenge, big review, final exam and certificate.
+// Each payment (300 Birr) opens the next month at once; 1000 Birr opens all 4. Opened months stay open.
+// The 3-day free trial opens Month 1. store.months is set by the payment (Telegram bot). The page owner sees everything.
+const TRIAL_DAYS = 3, PRICE_MONTH = 300, PRICE_FULL = 1000, MONTHS_TOTAL = 4;
 let isOwner = false;
 const TG = (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) ? Telegram.WebApp : null;
 const QS = new URLSearchParams(location.search);
+const FROM_BOT = QS.has("m");
 if (TG){ try { TG.ready(); TG.expand(); } catch(e){} }
-(function(){
-  const p = QS.get("p"), u = +QS.get("u");
-  if (!p || !u) return;
-  if (p === "trial"){ store.trialStart = u - TRIAL_DAYS * 86400000; store.plan = null; store.planUntil = null; }
-  else { store.plan = p; store.planUntil = u; store.trialStart = 1; }
+if (FROM_BOT){
+  store.months = Math.max(0, Math.min(4, +QS.get("m") || 0));
+  const t = +QS.get("t") || 0;
+  store.trialStart = t ? t - TRIAL_DAYS * 86400000 : 1;
   saveStore();
-})();
+}
+const MONTHS = [
+  { n:1, en:"Month 1", am:"ወር 1", sub:"Beginner", subAm:"ጀማሪ" },
+  { n:2, en:"Month 2", am:"ወር 2", sub:"Intermediate", subAm:"መካከለኛ" },
+  { n:3, en:"Month 3", am:"ወር 3", sub:"Advanced", subAm:"ከፍተኛ" },
+  { n:4, en:"Month 4", am:"ወር 4", sub:"Exam + certificate", subAm:"ፈተናና ሰርተፊኬት" }
+];
+const PRON_IDS = LESSONS.filter(l => l.level === "pron").map(l => l.id);
+function monthOf(l){
+  if (!l) return 1;
+  if (l.month) return l.month;
+  if (l.level === "beg") return 1;
+  if (l.level === "int") return 2;
+  if (l.level === "adv") return 3;
+  if (l.level === "pron") return PRON_IDS.indexOf(l.id) < 5 ? 1 : 2;
+  return 4;
+}
+function monthsOpen(){ return Math.max(0, Math.min(MONTHS_TOTAL, +store.months || 0)); }
 function trialLeft(){ return Math.max(0, TRIAL_DAYS - (Date.now() - store.trialStart) / 86400000); }
+function canUseMonth(m){ return isOwner || m <= monthsOpen() || (m === 1 && trialLeft() > 0); }
 function canUse(feature){
-  if (isOwner || trialLeft() > 0) return true;
-  const planOk = !!store.plan && (!store.planUntil || store.planUntil > Date.now());
-  if (!planOk) return false;
+  if (isOwner) return true;
   if (feature === "tutor") return store.plan === "premium";
-  return true;
+  return canUseMonth(1);
 }
-function gate(feature, fn){ if (canUse(feature)) { fn(); return; } showPaywall(feature); }
-function showPaywall(feature){
+function nextMonth(){ return Math.min(MONTHS_TOTAL, monthsOpen() + 1); }
+function gate(feature, fn){ if (canUse(feature)) { fn(); return; } showPaywall(feature === "tutor" ? "tutor" : nextMonth()); }
+function showPaywall(want){
   stopSound();
-  const ended = trialLeft() <= 0 && !store.plan;
-  const head = feature === "tutor" && store.plan === "basic"
-    ? `<h1>The AI tutor is in Premium</h1><p class="am">AI አስተማሪው በፕሪሚየም ውስጥ ነው</p>`
-    : ended ? `<h1>Your 3-day free trial has ended</h1><p class="am">የ3 ቀን ነፃ ሙከራዎ አልቋል። ለመቀጠል ይመዝገቡ።</p>`
-    : `<h1>Choose your plan</h1><p class="am">ዕቅድዎን ይምረጡ</p>`;
-  $("#v-pay").innerHTML = `<div class="goal">${head}</div>
+  if (want === "tutor"){
+    $("#v-pay").innerHTML = `<div class="goal"><h1>AI tutor</h1><p class="am">AI አስተማሪ</p></div>
+      <div class="plan"><h2>Premium + AI tutor · <span class="am">ፕሪሚየም</span></h2><p>Coming soon · <span class="am">በቅርቡ ይመጣል</span></p></div>`;
+    show("pay"); return;
+  }
+  const open = monthsOpen(), nm = nextMonth(), m = typeof want === "number" ? want : nm;
+  const head = (!open && trialLeft() <= 0)
+    ? `<h1>Your 3-day free trial has ended</h1><p class="am">የ3 ቀን ነፃ ሙከራዎ አልቋል። ለመቀጠል ይክፈሉ።</p>`
+    : `<h1>${MONTHS[m-1].en} is locked 🔒</h1><p class="am">${MONTHS[m-1].am} ተቆልፏል</p>`;
+  const order = m > nm ? `<p style="margin:0">Months open one after another. Next to open: <b>${MONTHS[nm-1].en}</b>.<br><span class="am">ወራቶቹ በቅደም ተከተል ይከፈታሉ። ቀጣዩ፦ ${MONTHS[nm-1].am}</span></p>` : "";
+  $("#v-pay").innerHTML = `<div class="goal">${head}<p style="font-size:14px">${open} of ${MONTHS_TOTAL} months open · <span class="am">${open}/${MONTHS_TOTAL} ወራት ተከፍተዋል</span></p></div>${order}
     <div class="plans">
-      <div class="plan ${feature!=="tutor"?"best":""}">
-        <h2>Basic · <span class="am">መሰረታዊ</span></h2>
-        <div class="price">${PRICE_BASIC} Birr <small>/ month · በወር ${PRICE_BASIC} ብር</small></div>
-        <ul><li>All ${LESSONS.length} lessons · <span class="am">ሁሉም ትምህርቶች</span></li>
-          <li>Endless quizzes and speaking practice · <span class="am">ፈተናና የመናገር ልምምድ</span></li>
-          <li>Pronunciation lessons · <span class="am">የአነባበብ ትምህርቶች</span></li></ul>
-        <button class="btn ${feature!=="tutor"?"primary":""}" data-plan="basic">Subscribe · <span class="am">ይመዝገቡ</span></button>
+      <div class="plan best">
+        <h2>Open ${MONTHS[nm-1].en} · <span class="am">${MONTHS[nm-1].am}ን ይክፈቱ</span></h2>
+        <div class="price">${PRICE_MONTH} Birr <small>· ${PRICE_MONTH} ብር</small></div>
+        <ul><li>${MONTHS[nm-1].sub} · <span class="am">${MONTHS[nm-1].subAm}</span></li>
+          <li>Yours forever once opened · <span class="am">አንዴ ከተከፈተ ለዘላለም የእርስዎ ነው</span></li>
+          <li>Finished early? Open the next month any time · <span class="am">ቀጣዩን ወር በማንኛውም ጊዜ ይክፈቱ</span></li></ul>
+        <button class="btn primary" data-plan="month">Pay ${PRICE_MONTH} Birr · <span class="am">ይክፈሉ</span></button>
       </div>
-      <div class="plan ${feature==="tutor"?"best":""}">
-        ${feature==="tutor"?"":`<span class="tagb">+ AI tutor</span>`}
-        <h2>Premium · <span class="am">ፕሪሚየም</span></h2>
-        <div class="price">${PRICE_PREMIUM} Birr <small>/ month · በወር ${PRICE_PREMIUM} ብር</small></div>
-        <ul><li>Everything in Basic · <span class="am">በመሰረታዊ ያለው ሁሉ</span></li>
-          <li>Talk with your AI tutor every day · <span class="am">ከ AI አስተማሪ ጋር በየቀኑ ይወያዩ</span></li></ul>
-        <button class="btn ${feature==="tutor"?"primary":"gold"}" data-plan="premium">Subscribe · <span class="am">ይመዝገቡ</span></button>
-      </div>
+      ${open === 0 ? `<div class="plan">
+        <span class="tagb">Save ${PRICE_MONTH * MONTHS_TOTAL - PRICE_FULL} Birr</span>
+        <h2>Full course · 4 months · <span class="am">ሙሉ ኮርስ</span></h2>
+        <div class="price">${PRICE_FULL} Birr <small>· one payment · አንድ ጊዜ</small></div>
+        <ul><li>All 4 months open now · <span class="am">ሁሉም 4 ወራት አሁን ይከፈታሉ</span></li>
+          <li>Final exam and certificate · <span class="am">የመጨረሻ ፈተናና ሰርተፊኬት</span></li></ul>
+        <button class="btn gold" data-plan="full">Pay ${PRICE_FULL} Birr · <span class="am">ይክፈሉ</span></button>
+      </div>` : ""}
     </div>
-    <p class="paynote">Pay with Telebirr, CBE Birr, M-Pesa or card · <span class="am">በቴሌብር፣ በሲቢኢ ብር፣ በኤም-ፔሳ ወይም በካርድ ይክፈሉ</span><br>Cancel any time · <span class="am">በማንኛውም ጊዜ ማቋረጥ ይችላሉ</span></p>`;
+    <p class="paynote">Pay with Telebirr in our Telegram bot · <span class="am">በቴሌግራም ቦታችን በቴሌብር ይክፈሉ</span></p>`;
   show("pay");
-  const pc = document.querySelectorAll("#v-pay .plan")[1];
-  if (pc) pc.innerHTML = `<h2>Premium + AI tutor · <span class="am">ፕሪሚየም</span></h2><p>Coming soon · <span class="am">በቅርቡ ይመጣል</span></p>`;
 }
-document.addEventListener("click", e => { const b = e.target.closest("[data-plan]"); if (b){ const bot = QS.get("b"); if (TG && bot){ TG.openTelegramLink("https://t.me/" + bot + "?start=" + b.dataset.plan); try { TG.close(); } catch(e){} } else toast("Open the course from the Telegram bot to subscribe · ከቴሌግራም ቦቱ ይክፈቱ"); } });
+document.addEventListener("click", e => { const b = e.target.closest("[data-plan]"); if (b){ const bot = QS.get("b"); if (TG && bot){ TG.openTelegramLink("https://t.me/" + bot + "?start=" + b.dataset.plan); try { TG.close(); } catch(e){} } else toast("Open the course from our Telegram bot to pay · ከቴሌግራም ቦቱ ይክፈሉ"); } });
+
+// ---------- Month 4: speaking challenge, big review, final exam, certificate ----------
+const PASS_MARK = 70;
+function month4(what){
+  if (!canUseMonth(4)){ showPaywall(4); return; }
+  if (what === "cert") return showCertificate();
+  if (what === "challenge"){
+    const words = shuffle(LESSONS.filter(l => l.level === "int" || l.level === "adv").flatMap(l => l.words)).slice(0, 8);
+    return startSpeaking({ id:"challenge", en:"Speaking challenge", am:"የመናገር ፈተና", level:"adv", month:4, words });
+  }
+  const exam = what === "exam", n = exam ? 30 : 20;
+  const items = shuffle(LESSONS.filter(l => l.level !== "pron").flatMap(l => l.words)).slice(0, n).map((w, i) => buildQuestion(w, i % 3));
+  startQuiz({ id: exam ? "exam" : "mix", en: exam ? "Final exam" : "Big review", am: exam ? "የመጨረሻ ፈተና" : "ትልቅ ክለሳ", words:[], month:4 }, exam ? "exam" : "review", items);
+}
+async function showCertificate(){
+  const c = store.cert; if (!c) return;
+  const name = (store.profile && store.profile.name) || c.name || "Student";
+  try { if (document.fonts) await document.fonts.ready; } catch(e){}
+  const W = 1200, H = 850, cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const g = cv.getContext("2d");
+  g.fillStyle = "#FFFDF6"; g.fillRect(0, 0, W, H);
+  g.strokeStyle = "#A8700F"; g.lineWidth = 14; g.strokeRect(30, 30, W - 60, H - 60);
+  g.strokeStyle = "#1F6B4F"; g.lineWidth = 3; g.strokeRect(58, 58, W - 116, H - 116);
+  g.textAlign = "center";
+  g.font = "84px serif"; g.fillText("🦁", W / 2, 180);
+  g.fillStyle = "#1F6B4F"; g.font = "700 54px Lexend, sans-serif"; g.fillText("Certificate of Completion", W / 2, 275);
+  g.fillStyle = "#5B6B62"; g.font = "600 30px 'Noto Sans Ethiopic', Nyala, sans-serif"; g.fillText("የማጠናቀቂያ ሰርተፊኬት", W / 2, 325);
+  g.font = "400 28px Lexend, sans-serif"; g.fillText("This certifies that", W / 2, 400);
+  g.fillStyle = "#16231D"; g.font = "700 62px Lexend, 'Noto Sans Ethiopic', sans-serif"; g.fillText(name, W / 2, 485);
+  g.strokeStyle = "#A8700F"; g.lineWidth = 2; g.beginPath(); g.moveTo(W / 2 - 300, 510); g.lineTo(W / 2 + 300, 510); g.stroke();
+  g.fillStyle = "#5B6B62"; g.font = "400 28px Lexend, sans-serif";
+  g.fillText("has completed the 4-month Fidel English course", W / 2, 565);
+  g.font = "600 26px 'Noto Sans Ethiopic', Nyala, sans-serif"; g.fillText("የ4 ወር የፊደል ኢንግሊሽ ኮርስን አጠናቀዋል", W / 2, 610);
+  g.font = "400 26px Lexend, sans-serif"; g.fillText("Final exam score: " + c.score + "%", W / 2, 660);
+  g.textAlign = "left"; g.font = "400 22px Lexend, sans-serif";
+  g.fillText(new Date(c.date).toLocaleDateString("en-GB", { day:"numeric", month:"long", year:"numeric" }), 110, 760);
+  g.textAlign = "right"; g.fillStyle = "#A8700F"; g.font = "700 26px Lexend, sans-serif"; g.fillText("Fidel English", W - 110, 760);
+  const url = cv.toDataURL("image/png");
+  $("#v-result").innerHTML = `<div class="label">Your certificate · <span class="am">ሰርተፊኬትዎ</span></div>
+    <img src="${url}" alt="Certificate of completion for ${esc(name)}" style="width:100%;border-radius:12px;border:1px solid var(--line)">
+    <a class="btn primary" style="text-decoration:none" href="${url}" download="Fidel-English-certificate.png">Save image · <span class="am">ምስሉን አስቀምጥ</span></a>
+    <p class="foot" style="margin:0">On a phone you can also press and hold the picture to save or share it.<br><span class="am">ምስሉን ተጭነው በመያዝ ማስቀመጥ ወይም ማጋራት ይችላሉ።</span></p>
+    <button class="btn" id="chome">All lessons · <span class="am">ሁሉም ትምህርቶች</span></button>`;
+  $("#chome").onclick = renderHome;
+  show("result");
+}
 
 // ---------- account, profile, reminders ----------
 // Account data is kept on this phone only until the server is built.
@@ -1227,7 +1297,7 @@ function renderSignup(){
       contact = raw.toLowerCase();
     }
     store.profile = { name, method:SU.method, contact, avatar:"🦁", goal:10, remind:"19:00", created:Date.now() };
-    if (!QS.get("p")) store.trialStart = Date.now(); store.nudged = dayStr(new Date()); saveStore();
+    if (!FROM_BOT) store.trialStart = Date.now(); store.nudged = dayStr(new Date()); saveStore();
     renderHome();
     modal(`<div class="big" aria-hidden="true">🦁</div><h2>Selam ${esc(name)}!</h2><p>Your 3-day free trial has started. Let's begin!</p><p class="am">የ3 ቀን ነፃ ሙከራዎ ተጀምሯል። እንጀምር!</p>`,
       [{ label:"Find my level · ደረጃዬን ልወቅ", fn:startPlacement }, { label:"Go to lessons · ወደ ትምህርቶች" }]);
@@ -1237,8 +1307,7 @@ function renderSignup(){
 function renderProfile(){
   const P = store.profile, left = trialLeft();
   const planTxt = isOwner ? "Owner · full access"
-    : store.plan === "premium" ? `Premium · ${PRICE_PREMIUM} Birr / month`
-    : store.plan === "basic" ? `Basic · ${PRICE_BASIC} Birr / month`
+    : monthsOpen() ? `${monthsOpen()} of ${MONTHS_TOTAL} months open`
     : left > 0 ? `Free trial · ${Math.ceil(left)} day(s) left` : "Trial ended";
   $("#v-profile").innerHTML = `
     <div class="hero"><div class="big" aria-hidden="true">${P.avatar}</div><h1>${esc(P.name)}</h1><p>${esc(P.contact)}</p>
@@ -1273,7 +1342,7 @@ function renderProfile(){
       remind: $("#pfRemind").value });
     saveStore(); toast("Saved · ተቀምጧል"); renderProfile();
   };
-  $("#pfPlans").onclick = () => showPaywall(store.plan === "basic" ? "tutor" : "lessons");
+  $("#pfPlans").onclick = () => showPaywall(nextMonth());
   $("#pfOut").onclick = () => modal(`<h2>Sign out?</h2><p>Your progress stays on this phone.</p><p class="am">መውጣት ይፈልጋሉ? ውጤትዎ በዚህ ስልክ ላይ ይቀመጣል።</p>`,
     [{ label:"Sign out · ውጣ", fn:() => { delete store.profile; saveStore(); if (TG) { try { TG.close(); } catch(e){} } else renderSignup(); } }, { label:"Cancel · ተው" }]);
 }
@@ -1295,7 +1364,7 @@ function checkMissed(){
   }
 }
 function continueLearning(){
-  const nextL = LESSONS.find(l => l.level === store.level && store.best[l.id] == null) || LESSONS.find(l => store.best[l.id] == null) || LESSONS[0];
+  const nextL = LESSONS.find(l => canUseMonth(monthOf(l)) && store.best[l.id] == null) || LESSONS[0];
   openLesson(nextL.id);
 }
 function checkReminder(){
@@ -1335,29 +1404,30 @@ function bumpStreak(){
 // ---------- home ----------
 function renderHome(){
   $("#streak").textContent = liveStreak();
-  const lv = levelOf(store.level);
-  const list = LESSONS.filter(l => l.level === lv.id);
+  if (!store.month) store.month = ({ beg:1, int:2, adv:3, pron:1 })[store.level] || 1;
+  const M = MONTHS[store.month - 1], mOpen = canUseMonth(M.n);
+  const list = LESSONS.filter(l => monthOf(l) === M.n);
   const doneAll = LESSONS.filter(l => store.best[l.id] != null).length;
-  const doneLv = list.filter(l => store.best[l.id] != null).length;
-  const nextL = list.find(l => store.best[l.id] == null);
+  const doneM = list.filter(l => store.best[l.id] != null).length;
+  const nextL = LESSONS.find(l => canUseMonth(monthOf(l)) && store.best[l.id] == null);
   const wrongN = Object.keys(store.wrong).filter(k => WORDMAP[k]).length;
   let acts = "";
   if (!store.placed) acts += `<button class="action gold" id="aPlace"><span class="ic">${ICON_TARGET}</span><span style="flex:1;min-width:0"><b>Find your level</b><span class="s am">ደረጃዎን ይወቁ · 3-minute test</span></span></button>`;
   if (nextL) acts += `<button class="action" data-open="${nextL.id}"><span class="ic">${ICON_PLAY}</span><span style="flex:1;min-width:0"><b>Next lesson: ${esc(nextL.en)}</b><span class="s am">ቀጣይ ትምህርት፡ ${esc(nextL.am)}</span></span></button>`;
-  if (wrongN) acts += `<button class="action" id="aReview"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Review your mistakes (${wrongN})</b><span class="s am">ስህተቶችዎን ይከልሱ</span></span></button>`;
+  if (wrongN && canUse("lessons")) acts += `<button class="action" id="aReview"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Review your mistakes (${wrongN})</b><span class="s am">ስህተቶችዎን ይከልሱ</span></span></button>`;
   if (capsReady){
     acts += sampleFn
       ? `<button class="action gold" id="openTutor"><span class="ic">${ICON_CHAT}</span><span style="flex:1;min-width:0"><b>Talk with your AI tutor</b><span class="s am">ከ AI አስተማሪ ጋር በእንግሊዝኛ ይወያዩ</span></span></button>`
       : `<div class="action off"><span class="ic">${ICON_CHAT}</span><span style="flex:1;min-width:0"><b>AI tutor</b><span class="s">Coming soon · በቅርቡ ይመጣል</span></span></div>`;
   }
-  const left = trialLeft();
+  const open = monthsOpen(), left = trialLeft();
   let banner = "";
-  if (!isOwner && !store.plan){
-    banner = left > 0
-      ? `<div class="trial"><span><b>Free trial: ${Math.ceil(left)} day${Math.ceil(left)===1?"":"s"} left</b><br><span class="am">ነፃ ሙከራ፡ ${Math.ceil(left)} ቀን ቀረው</span></span><button id="aPlans">See plans</button></div>`
-      : `<div class="trial"><span><b>Trial ended</b> · <span class="am">ሙከራው አልቋል</span><br>From ${PRICE_BASIC} Birr / month</span><button id="aPlans">Subscribe</button></div>`;
-  } else if (store.plan === "basic" && !isOwner && !QS.get("p")){
-    banner = `<div class="trial"><span>Add the AI tutor · <span class="am">AI አስተማሪ ይጨምሩ</span></span><button id="aPlans">${PRICE_PREMIUM} Birr</button></div>`;
+  if (!isOwner && open < MONTHS_TOTAL){
+    const d = Math.ceil(left);
+    const txt = !open && left > 0 ? `<b>Free trial: ${d} day${d === 1 ? "" : "s"} left</b><br><span class="am">ነፃ ሙከራ (ወር 1)፡ ${d} ቀን ቀረው</span>`
+      : !open ? `<b>Trial ended</b> · <span class="am">ሙከራው አልቋል</span><br>Open Month 1 for ${PRICE_MONTH} Birr`
+      : `<b>${open} of ${MONTHS_TOTAL} months open</b><br><span class="am">${open}/${MONTHS_TOTAL} ወራት ተከፍተዋል</span>`;
+    banner = `<div class="trial"><span>${txt}</span><button id="aPlans">${open ? "Open " + MONTHS[nextMonth() - 1].en : left > 0 ? "See plans" : "Pay"}</button></div>`;
   }
   const P = store.profile || {};
   const doneToday = store.last === dayStr(new Date());
@@ -1365,35 +1435,49 @@ function renderHome(){
     ? [`Great job today, ${P.name || "friend"}! See you tomorrow.`, "ዛሬ ጎበዝ ነበሩ! ነገ እንገናኝ።"]
     : [`Selam ${P.name || ""}! Let's learn ${P.goal || 10} minutes today.`, `ዛሬ ${P.goal || 10} ደቂቃ እንማር!`];
   const mascot = `<div class="mascot"><span class="face" aria-hidden="true">🦁</span><div class="bubble">${esc(say[0])}<span class="am">${esc(say[1])}</span></div></div>`;
-  let html = mascot + banner + `<div class="goal"><h1>Speak English with confidence</h1>
-    <p class="am">እንግሊዝኛን በልበ ሙሉነት ይናገሩ</p>
+  let html = mascot + banner + `<div class="goal"><h1>Speak English in 4 months</h1>
+    <p class="am">በ4 ወር እንግሊዝኛ ይናገሩ</p>
     <p style="font-size:14px">Course progress: ${doneAll} of ${LESSONS.length} lessons · <span class="am">${doneAll}/${LESSONS.length} ተጠናቋል</span></p>
-    <div class="bar"><i style="width:${doneAll/LESSONS.length*100}%"></i></div></div>
+    <div class="bar"><i style="width:${doneAll / LESSONS.length * 100}%"></i></div></div>
     <div class="actions">${acts}</div>
-    <div class="label">Choose a section · <span class="am">ክፍል ይምረጡ</span></div>
-    <div class="levels" role="group" aria-label="Section">${LEVELS.map(l =>
-      `<button class="lvl" data-level="${l.id}" aria-pressed="${l.id===lv.id}">${l.en}<small>${l.am}</small></button>`).join("")}</div>
-    <div class="label">${esc(lv.en)} · <span class="am">${esc(lv.am)}</span> — ${doneLv}/${list.length} done</div>
-    <div class="lessons">`;
-  list.forEach((l, k) => {
-    const q = store.best[l.id], sp = store.speak[l.id];
-    const kind = l.grammar ? `<span class="tag">Grammar</span>` : "";
-    const unit = l.level === "beg" || l.level === "pron" ? "words" : "sentences";
-    html += `<button class="lesson ${q!=null?"done":""}" data-open="${l.id}">
-      <span class="num">${k+1}</span>
-      <span class="lt"><b>${esc(l.en)}</b><span>${kind}<span class="am">${esc(l.am)}</span> · ${l.words.length} ${l.grammar?"examples":unit}</span></span>
-      <span class="pills"><span class="pill ${q!=null?"on":""}">Quiz ${q!=null?q+"%":"–"}</span><span class="pill ${sp!=null?"on":""}">Speak ${sp!=null?sp+"%":"–"}</span></span></button>`;
-  });
-  html += `</div><p class="foot">Every lesson: learn the cards, take the quiz, then practise speaking. Every quiz has new questions, so practise as many times as you like.<br><span class="am">በእያንዳንዱ ትምህርት፡ ካርዶቹን ይማሩ፣ ፈተናውን ይውሰዱ፣ መናገር ይለማመዱ። እያንዳንዱ ፈተና አዲስ ጥያቄዎች አሉት። በየቀኑ ከ AI አስተማሪው ጋር ይወያዩ።</span></p>`;
+    <div class="label">Your 4-month course · <span class="am">የ4 ወር ኮርስዎ</span></div>
+    <div class="levels" role="group" aria-label="Month">${MONTHS.map(m =>
+      `<button class="lvl" data-month="${m.n}" aria-pressed="${m.n === M.n}">${canUseMonth(m.n) ? "" : "🔒 "}${m.en}<small>${m.am} · ${m.subAm}</small></button>`).join("")}</div>
+    <div class="label">${M.en} · ${esc(M.sub)}${list.length ? ` — ${doneM}/${list.length} done` : ""}</div>`;
+  if (!mOpen) html += `<button class="action gold" data-pay="${M.n}"><span class="ic">🔒</span><span style="flex:1;min-width:0"><b>${M.en} is locked</b><span class="s">Pay ${PRICE_MONTH} Birr to open it · <span class="am">ለመክፈት ${PRICE_MONTH} ብር ይክፈሉ</span></span></span></button>`;
+  if (M.n === 4){
+    const ex = store.best.exam;
+    html += `<div class="actions">
+      <button class="action" data-m4="challenge"><span class="ic">${ICON_MIC(22)}</span><span style="flex:1;min-width:0"><b>Speaking challenge</b><span class="s">8 sentences from the whole course · <span class="am">የመናገር ፈተና</span></span></span></button>
+      <button class="action" data-m4="mix"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Big review</b><span class="s">20 questions from all months · <span class="am">ከሁሉም ወራት ክለሳ</span></span></span></button>
+      <button class="action gold" data-m4="exam"><span class="ic">${ICON_TARGET}</span><span style="flex:1;min-width:0"><b>Final exam${ex != null ? ` · best ${ex}%` : ""}</b><span class="s">30 questions · pass with ${PASS_MARK}% · <span class="am">በ${PASS_MARK}% ያልፋሉ</span></span></span></button>
+      ${store.cert ? `<button class="action gold" data-m4="cert"><span class="ic">🎓</span><span style="flex:1;min-width:0"><b>Your certificate</b><span class="s am">ሰርተፊኬትዎ</span></span></button>` : ""}
+    </div>`;
+  } else {
+    html += `<div class="lessons">`;
+    list.forEach((l, k) => {
+      const q = store.best[l.id], sp = store.speak[l.id];
+      const kind = l.grammar ? `<span class="tag">Grammar</span>` : l.level === "pron" ? `<span class="tag">Sounds</span>` : "";
+      const unit = l.level === "beg" || l.level === "pron" ? "words" : "sentences";
+      html += `<button class="lesson ${q != null ? "done" : ""} ${mOpen ? "" : "locked"}" data-open="${l.id}">
+        <span class="num">${mOpen ? k + 1 : "🔒"}</span>
+        <span class="lt"><b>${esc(l.en)}</b><span>${kind}<span class="am">${esc(l.am)}</span> · ${l.words.length} ${l.grammar ? "examples" : unit}</span></span>
+        <span class="pills"><span class="pill ${q != null ? "on" : ""}">Quiz ${q != null ? q + "%" : "–"}</span><span class="pill ${sp != null ? "on" : ""}">Speak ${sp != null ? sp + "%" : "–"}</span></span></button>`;
+    });
+    html += `</div>`;
+  }
+  html += `<p class="foot">Every lesson: learn the cards, take the quiz, then practise speaking. Finish Month 4's final exam to get your certificate.<br><span class="am">በእያንዳንዱ ትምህርት፡ ካርዶቹን ይማሩ፣ ፈተናውን ይውሰዱ፣ መናገር ይለማመዱ። በወር 4 የመጨረሻውን ፈተና አልፈው ሰርተፊኬት ያግኙ።</span></p>`;
   $("#v-home").innerHTML = html;
   show("home");
 }
 $("#v-home").addEventListener("click", e => {
-  const lvb = e.target.closest("[data-level]");
-  if (lvb){ store.level = lvb.dataset.level; saveStore(); renderHome(); return; }
+  const mb = e.target.closest("[data-month]");
+  if (mb){ store.month = +mb.dataset.month; saveStore(); renderHome(); return; }
+  const pb = e.target.closest("[data-pay]"); if (pb){ showPaywall(+pb.dataset.pay); return; }
+  const m4 = e.target.closest("[data-m4]"); if (m4){ month4(m4.dataset.m4); return; }
   const b = e.target.closest("[data-open]"); if (b){ openLesson(b.dataset.open); return; }
   if (e.target.closest("#openTutor")) openTutor();
-  if (e.target.closest("#aPlans")) showPaywall(store.plan === "basic" ? "tutor" : "lessons");
+  if (e.target.closest("#aPlans")) showPaywall(nextMonth());
   if (e.target.closest("#aPlace")) startPlacement();
   if (e.target.closest("#aReview")) startReview();
 });
@@ -1421,7 +1505,7 @@ const sayText = (L, w) => (L.speakHint && w[2]) ? w[2] : w[0];
 
 // ---------- flashcards ----------
 const S = { lesson:null, i:0, flipped:false, tipOpen:true, quiz:[], qi:0, score:0, answered:false, mode:"lesson" };
-function openLesson(id){ gate("lessons", () => openLessonNow(id)); }
+function openLesson(id){ const L = LESSONS.find(l => l.id === id); const m = monthOf(L); if (!canUseMonth(m)){ showPaywall(m); return; } openLessonNow(id); }
 function openLessonNow(id){ S.lesson = LESSONS.find(l=>l.id===id); S.i=0; S.flipped=false; S.tipOpen=true; renderCard(); show("cards"); }
 function renderCard(){
   const L = S.lesson, w = L.words[S.i], n = L.words.length, last = S.i===n-1;
@@ -1554,7 +1638,7 @@ function renderQ(){
     <button class="slowlink" id="qslow">${ICON_SLOW.replace(/22/g,"18")} Slow · <span class="am">በዝግታ</span></button>`;
   const optCls = q.type === 0 ? "opt am" : "opt";
   const optText = o => typeof o === "string" ? o : q.type === 0 ? o[1] : o[0];
-  const title = S.mode === "place" ? "Level test" : S.mode === "review" ? "Review" : "Question";
+  const title = S.mode === "place" ? "Level test" : S.mode === "review" ? "Review" : S.mode === "exam" ? "Final exam" : "Question";
   const body = q.type === 4
     ? `<div class="built" id="built" aria-label="Your sentence"></div><div class="tiles" id="tiles"></div>
        <div class="row"><button class="btn" id="oclear"><span>Clear<small>አጥፋ</small></span></button>
@@ -1615,7 +1699,21 @@ function finishQuiz(){
   const n = S.quiz.length, pct = Math.round(S.score / n * 100), L = S.lesson;
   bumpStreak();
   if (S.mode === "review"){
-    showResult({ L, big:`${S.score}/${n}`, pct, again:startReview, kind:"Review" });
+    showResult({ L, big:`${S.score}/${n}`, pct, again: L.id === "mix" ? () => month4("mix") : startReview, kind:"Review" });
+    return;
+  }
+  if (S.mode === "exam"){
+    const passed = pct >= PASS_MARK;
+    store.best.exam = Math.max(store.best.exam || 0, pct);
+    if (passed){
+      if (!store.cert) store.cert = { name:(store.profile && store.profile.name) || "Student", score:pct, date:Date.now() };
+      else if (pct > store.cert.score) store.cert.score = pct;
+    }
+    saveStore();
+    showResult({ L, big:`${pct}%`, pct, again:() => month4("exam"), kind:"Final exam", extra: passed
+      ? `<button class="btn gold" id="rcert">🎓 <span>You passed! See your certificate<small>አልፈዋል! ሰርተፊኬትዎን ይመልከቱ</small></span></button>`
+      : `<p class="foot" style="margin:0">You need ${PASS_MARK}% to pass. Do the big review and try again!<br><span class="am">ለማለፍ ${PASS_MARK}% ያስፈልጋል። ይከልሱና እንደገና ይሞክሩ!</span></p>` });
+    if (passed) $("#rcert").onclick = showCertificate;
     return;
   }
   store.best[L.id] = Math.max(store.best[L.id] || 0, pct); saveStore();
@@ -1655,7 +1753,7 @@ function finishPlacement(){
     </div>
     <p class="foot" style="margin:0">Also do the Pronunciation section. It fixes the sounds that are hardest for Amharic speakers.<br><span class="am">የአነባበብ ክፍሉንም ይስሩ። ለአማርኛ ተናጋሪዎች ከባድ የሆኑትን ድምፆች ያስተካክላል።</span></p>
     <button class="btn primary" id="pStart"><span>Start ${L.en} lessons<small>${L.am} ትምህርቶችን ይጀምሩ</small></span></button>`;
-  $("#pStart").onclick = () => { store.level = rec; saveStore(); renderHome(); };
+  $("#pStart").onclick = () => { store.level = rec; store.month = ({ beg:1, int:2, adv:3 })[rec] || 1; saveStore(); renderHome(); };
   show("result");
 }
 
@@ -1676,7 +1774,7 @@ function compare(target, said){
   return { res, pct: total ? Math.round(hit / total * 100) : 0 };
 }
 function startSpeaking(L){
-  if (!canUse("lessons")){ showPaywall("lessons"); return; }
+  if (!canUseMonth(monthOf(L))){ showPaywall(monthOf(L)); return; }
   SP.lesson = L; SP.items = shuffle(L.words).slice(0, 8); SP.i = 0; SP.best = SP.items.map(() => 0); SP.result = null;
   renderSpeak(); show("speak");
 }

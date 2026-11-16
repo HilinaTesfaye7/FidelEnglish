@@ -5,7 +5,9 @@
   "telebirr_name": "YOUR NAME",
   "webapp_url": "https://YOUR-PROJECT.vercel.app",
   "support_contact": "@your_telegram_username",
-  "price_basic": 300,
+  "price_month": 300,
+  "price_full": 1000,
+  "price_premium": 1000,
   "trial_days": 3,
   "reminder_hour": 19
 }
