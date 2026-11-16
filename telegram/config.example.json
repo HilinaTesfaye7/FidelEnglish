@@ -1,0 +1,11 @@
+{
+  "bot_token": "PASTE_YOUR_BOT_TOKEN_HERE",
+  "admin_id": "PASTE_YOUR_TELEGRAM_ID_HERE",
+  "telebirr_number": "09XX XXX XXX",
+  "telebirr_name": "YOUR NAME",
+  "webapp_url": "https://YOUR-PROJECT.vercel.app",
+  "support_contact": "@your_telegram_username",
+  "price_basic": 300,
+  "trial_days": 3,
+  "reminder_hour": 19
+}

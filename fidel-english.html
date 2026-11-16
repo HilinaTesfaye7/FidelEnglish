@@ -1,0 +1,1863 @@
+<title>Fidel English</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&family=Noto+Sans+Ethiopic:wght@400;600;700&display=swap">
+<style>
+/* Layout: one phone-width column, one task per screen, sticky top bar with streak */
+:root{
+  --bg:#F3F5F1; --surface:#FFFFFF; --fg:#16231D; --muted:#5B6B62; --line:#DCE3DD;
+  --accent:#1F6B4F; --accent-ink:#FFFFFF; --accent-soft:#E1EFE8;
+  --gold:#A8700F; --gold-soft:#FBF0D9;
+  --good:#1E7A46; --good-soft:#E2F4E8; --bad:#B23A2E; --bad-soft:#FBE5E2;
+  --font-en:"Lexend","Noto Sans Ethiopic",system-ui,sans-serif;
+  --font-am:"Noto Sans Ethiopic","Nyala","Ebrima",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1713; --surface:#18231D; --fg:#E7EFEA; --muted:#9AAFA3; --line:#2A3A31;
+  --accent:#4FB58A; --accent-ink:#0B1410; --accent-soft:#1D3329;
+  --gold:#E2B04F; --gold-soft:#33291A;
+  --good:#5CC98A; --good-soft:#173324; --bad:#F07A6C; --bad-soft:#3A1E1B; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0F1713; --surface:#18231D; --fg:#E7EFEA; --muted:#9AAFA3; --line:#2A3A31;
+  --accent:#4FB58A; --accent-ink:#0B1410; --accent-soft:#1D3329;
+  --gold:#E2B04F; --gold-soft:#33291A;
+  --good:#5CC98A; --good-soft:#173324; --bad:#F07A6C; --bad-soft:#3A1E1B; color-scheme:dark;}
+
+body{background:var(--bg);color:var(--fg);font-family:var(--font-en);font-size:16px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.am{font-family:var(--font-am)}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.app{max-width:520px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;gap:10px;padding-block:14px;border-bottom:1px solid var(--line)}
+.back{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line)}
+.brand{flex:1;min-width:0}
+.brand b{display:block;font-size:18px;font-weight:700;letter-spacing:-.01em}
+.brand span{display:block;font-size:13px;color:var(--muted)}
+.chip{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:var(--gold-soft);color:var(--gold);font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+
+h1,h2{text-wrap:balance;margin:0}
+.view{display:flex;flex-direction:column;gap:16px;padding-top:18px}
+.goal{background:var(--accent);color:var(--accent-ink);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.goal h1{font-size:22px;font-weight:700}
+.goal p{margin:0;opacity:.92}
+.goal .bar{height:8px;border-radius:99px;background:rgba(255,255,255,.25);overflow:hidden;margin-top:6px}
+.goal .bar i{display:block;height:100%;background:var(--accent-ink);border-radius:99px}
+.label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+
+.levels{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:5px}
+.lvl{border-radius:12px;padding:8px 4px;text-align:center;line-height:1.25;font-weight:500;font-size:15px}
+.lvl small{display:block;font-family:var(--font-am);font-weight:400;font-size:12px;color:var(--muted)}
+.lvl[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.lvl[aria-pressed="true"] small{color:var(--accent-ink);opacity:.85}
+
+.action{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.action .ic{flex:none;width:44px;height:44px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.action b{display:block;font-size:16px}
+.action span.s{display:block;font-size:14px;color:var(--muted)}
+.action.gold{background:var(--gold-soft);border-color:var(--gold)}
+.action.gold .ic{background:var(--gold);color:var(--surface)}
+.action.off{cursor:default}
+.action.off .ic{background:var(--line);color:var(--muted)}
+.actions{display:flex;flex-direction:column;gap:10px}
+.trial{display:flex;align-items:center;gap:10px;background:var(--gold-soft);border:1px solid var(--gold);border-radius:14px;padding:10px 14px;font-size:14px}
+.trial b{color:var(--gold)}
+.trial button{margin-left:auto;font-weight:700;color:var(--gold);white-space:nowrap}
+.plans{display:flex;flex-direction:column;gap:12px}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.plan.best{border:2px solid var(--gold)}
+.plan h2{font-size:18px;margin:0}
+.plan .price{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}
+.plan .price small{font-size:14px;font-weight:500;color:var(--muted)}
+.plan ul{margin:0;padding-left:20px;font-size:14px;display:flex;flex-direction:column;gap:4px}
+.plan .tagb{align-self:flex-start;font-size:12px;font-weight:700;background:var(--gold);color:var(--surface);border-radius:99px;padding:3px 10px}
+.paynote{font-size:13px;color:var(--muted);text-align:center}
+
+.lessons{display:flex;flex-direction:column;gap:10px}
+.lesson{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.lesson:active{transform:scale(.99)}
+.num{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:700}
+.lesson.done .num{background:var(--accent);color:var(--accent-ink)}
+.lt{flex:1;min-width:0}
+.lt b{display:block;font-weight:500}
+.lt span{display:block;color:var(--muted);font-size:14px}
+.tag{display:inline-block;font-family:var(--font-en);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-right:4px}
+.pills{flex:none;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.pill{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--bg);color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill.on{background:var(--good-soft);color:var(--good)}
+
+.progress{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .3s}
+
+.tip{background:var(--accent-soft);border-radius:16px;padding:12px 14px}
+.tip summary{font-weight:700;color:var(--accent);cursor:pointer}
+.tip p{margin:8px 0 0}
+.tip p.am{color:var(--fg)}
+.pairs{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pair button{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;min-height:240px;padding:24px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;width:100%}
+.card .en{font-size:clamp(26px,7.5vw,38px);font-weight:700;letter-spacing:-.01em;line-height:1.2;text-wrap:balance}
+.card .en.long{font-size:clamp(21px,5.8vw,29px)}
+.card .pron{font-family:var(--font-am);color:var(--muted);font-size:17px}
+.card .pron small{font-family:var(--font-en);font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+.card .thnote{font-size:12px;color:var(--muted)}
+.card .meaning{font-family:var(--font-am);font-size:clamp(21px,6.2vw,29px);font-weight:600;color:var(--accent);padding-top:12px;margin-top:6px;border-top:1px dashed var(--line);width:100%}
+.card .tap{font-size:14px;color:var(--gold);font-weight:500}
+
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:10px 14px;border-radius:14px;font-weight:500;background:var(--surface);border:1px solid var(--line);text-align:center;line-height:1.25}
+.btn small{display:block;font-family:var(--font-am);font-weight:400;font-size:13px;color:var(--muted)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary small{color:var(--accent-ink);opacity:.85}
+.btn.gold{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
+.btn.gold small{color:var(--gold)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn svg{flex:none}
+
+.qprompt{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:24px 18px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.qprompt .ask{font-size:14px;color:var(--muted)}
+.qprompt .big{font-size:clamp(23px,6.8vw,34px);font-weight:700;line-height:1.25;text-wrap:balance}
+.speakbig{width:96px;height:96px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center}
+.slowlink{font-size:14px;color:var(--accent);font-weight:500;display:flex;align-items:center;gap:6px}
+.opts{display:grid;gap:10px}
+.opt{width:100%;min-height:56px;padding:12px 16px;border-radius:14px;background:var(--surface);border:2px solid var(--line);font-size:17px;font-weight:500;text-align:left}
+.opt.am{font-size:18px}
+.opt.right{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.feedback{border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.feedback.good{background:var(--good-soft);color:var(--good)}
+.feedback.bad{background:var(--bad-soft);color:var(--bad)}
+.feedback b{font-size:17px}
+.qprompt .sub{font-size:17px;color:var(--muted)}
+.built{min-height:64px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;padding:10px;border-radius:14px;border:2px dashed var(--line);background:var(--surface)}
+.built.right{border-style:solid;border-color:var(--good);background:var(--good-soft)}
+.built.wrong{border-style:solid;border-color:var(--bad);background:var(--bad-soft)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tile{min-height:44px;padding:8px 14px;border-radius:12px;background:var(--surface);border:2px solid var(--line);font-size:17px;font-weight:500}
+.tile.used{visibility:hidden}
+.built .tile{border-color:var(--accent);color:var(--accent)}
+
+.micwrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.mic{width:88px;height:88px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;box-shadow:0 0 0 0 var(--accent-soft);transition:box-shadow .3s}
+.mic.live{background:var(--bad);color:#fff;box-shadow:0 0 0 12px var(--bad-soft)}
+.micnote{font-size:14px;color:var(--muted);text-align:center;margin:0}
+.heard{min-height:24px;font-size:15px;color:var(--muted);text-align:center;font-style:italic}
+.words{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.w{padding:4px 10px;border-radius:10px;font-weight:500;font-size:17px}
+.w.ok{background:var(--good-soft);color:var(--good)}
+.w.no{background:var(--bad-soft);color:var(--bad);text-decoration:underline wavy}
+
+.scen{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.scen button{flex:none;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;line-height:1.2;text-align:center}
+.scen button small{display:block;font-family:var(--font-am);font-size:12px;color:var(--muted)}
+.scen button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.scen button[aria-pressed="true"] small{color:var(--accent-ink)}
+.chat{display:flex;flex-direction:column;gap:12px;min-height:200px}
+.msg{max-width:86%;padding:12px 14px;border-radius:18px;display:flex;flex-direction:column;gap:6px;min-width:0;overflow-wrap:anywhere}
+.msg.tutor{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:6px}
+.msg.me{align-self:flex-end;background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:6px}
+.msg .tr{font-family:var(--font-am);font-size:14px;color:var(--muted)}
+.msg .say{align-self:flex-start;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--accent);font-weight:500}
+.fix{align-self:flex-end;max-width:86%;background:var(--gold-soft);border:1px dashed var(--gold);border-radius:14px;padding:10px 12px;font-size:15px;display:flex;flex-direction:column;gap:4px;min-width:0;overflow-wrap:anywhere}
+.fix b{color:var(--gold);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.fix .tr{font-family:var(--font-am);font-size:14px;color:var(--muted)}
+.fix.ok{border-style:solid;border-color:var(--good);background:var(--good-soft)}
+.fix.ok b{color:var(--good)}
+.thinking{align-self:flex-start;color:var(--muted);font-size:14px;padding:6px 4px}
+.inputbar{position:sticky;bottom:0;background:var(--bg);padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:flex-end;border-top:1px solid var(--line)}
+.inputbar textarea{flex:1;min-width:0;resize:none;font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;min-height:48px;max-height:120px}
+.iconbtn{flex:none;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line)}
+.iconbtn.send{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.iconbtn.live{background:var(--bad);color:#fff;border-color:var(--bad)}
+.iconbtn:disabled{opacity:.45}
+
+.result{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px 18px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
+.score{font-size:56px;font-weight:700;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;max-width:calc(100% - 32px);text-align:center;z-index:20}
+.foot{font-size:13px;color:var(--muted);text-align:center;margin:8px 0 0}
+.logo{flex:none;width:40px;height:40px;border-radius:12px;background:var(--gold-soft);display:grid;place-items:center;font-size:24px;line-height:1}
+.avatarbtn{flex:none;width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font-size:22px;line-height:1}
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding-top:6px}
+.hero .big{font-size:84px;line-height:1.1}
+.hero h1{font-size:24px}
+.hero p{margin:0;color:var(--muted)}
+.form{display:flex;flex-direction:column;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.field .lab{font-size:14px;font-weight:500}
+.field input{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;min-height:48px;width:100%}
+.field input:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
+.field .err{font-size:13px;color:var(--bad)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg);border-radius:14px;padding:4px}
+.seg button{min-height:44px;border-radius:10px;font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.12);color:var(--accent);font-weight:700}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choices button{min-height:44px;min-width:44px;padding:6px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.choices button[aria-pressed="true"]{border:2px solid var(--accent);background:var(--accent-soft)}
+.choices.emoji button{font-size:26px;padding:4px 8px}
+.mascot{display:flex;align-items:flex-end;gap:10px}
+.mascot .face{flex:none;font-size:52px;line-height:1}
+.mascot .bubble{background:var(--surface);border:1px solid var(--line);border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;font-size:15px}
+.mascot .bubble .am{display:block;color:var(--muted);font-size:14px}
+.modal{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.45);display:grid;place-items:center;padding:16px}
+.modal .box{background:var(--surface);border-radius:22px;padding:22px 18px;max-width:400px;width:100%;display:flex;flex-direction:column;gap:10px;text-align:center}
+.modal .box .big{font-size:72px;line-height:1.1}
+.modal .box h2{font-size:21px}
+.modal .box p{margin:0;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+  <header class="top">
+    <button class="back" id="backBtn" aria-label="Back" hidden>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="logo" aria-hidden="true">🦁</div>
+    <div class="brand"><b>Fidel English</b><span class="am">እንግሊዝኛ በአማርኛ</span></div>
+    <div class="chip" title="Days in a row · ተከታታይ ቀናት">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-6 1-9.5z"/></svg>
+      <span id="streak">0</span>
+    </div>
+    <button class="avatarbtn" id="profileBtn" aria-label="Profile and settings" hidden>🦁</button>
+  </header>
+
+  <section class="view" id="v-home"></section>
+  <section class="view" id="v-cards" hidden></section>
+  <section class="view" id="v-quiz" hidden></section>
+  <section class="view" id="v-speak" hidden></section>
+  <section class="view" id="v-tutor" hidden></section>
+  <section class="view" id="v-result" hidden></section>
+  <section class="view" id="v-pay" hidden></section>
+  <section class="view" id="v-signup" hidden></section>
+  <section class="view" id="v-profile" hidden></section>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const LEVELS = [
+  { id:"beg",  en:"Beginner",      am:"ጀማሪ" },
+  { id:"int",  en:"Intermediate",  am:"መካከለኛ" },
+  { id:"adv",  en:"Advanced",      am:"ከፍተኛ" },
+  { id:"pron", en:"Pronunciation", am:"አነባበብ" }
+];
+// words: [English, Amharic, hint]. Hint = English sound in Amharic letters (beginner) or a sound guide.
+// tip: [English, Amharic]. pairs: minimal pairs for the listening test.
+const LESSONS = [
+  // ---------------- BEGINNER ----------------
+  { id:"greet", level:"beg", en:"Greetings", am:"ሰላምታ", words:[
+    ["Hello","ሰላም","ሄሎ"],["Good morning","እንደምን አደሩ","ጉድ ሞርኒንግ"],["Good night","ደህና እደሩ","ጉድ ናይት"],
+    ["How are you?","እንዴት ነዎት?","ሃው አር ዩ?"],["Thank you","አመሰግናለሁ","(th)ንክ ዩ"],["Please","እባክዎ","ፕሊዝ"],
+    ["Sorry","ይቅርታ","ሶሪ"],["Goodbye","ደህና ሁኑ","ጉድባይ"],["Yes","አዎ","የስ"],["No","አይ","ኖ"]]},
+  { id:"num", level:"beg", en:"Numbers", am:"ቁጥሮች", words:[
+    ["One","አንድ","ዋን"],["Two","ሁለት","ቱ"],["Three","ሶስት","(th)ሪ"],["Four","አራት","ፎር"],["Five","አምስት","ፋይቭ"],
+    ["Six","ስድስት","ሲክስ"],["Seven","ሰባት","ሰቨን"],["Eight","ስምንት","ኤይት"],["Nine","ዘጠኝ","ናይን"],["Ten","አስር","ቴን"]]},
+  { id:"g-be", level:"beg", grammar:true, en:"I am, you are, he is", am:"ነኝ፣ ነህ፣ ነው",
+    tip:["'am / is / are' means 'to be'. I am, you are, he is, she is, it is, we are, they are. He = a man, she = a woman, it = a thing or animal. Don't mix up he and she.",
+         "'am / is / are' በአማርኛ 'ነኝ፣ ነህ፣ ነው' ማለት ነው። I am (ነኝ)፣ you are (ነህ/ነሽ)፣ he is (ነው)፣ she is (ናት)፣ we are (ነን)፣ they are (ናቸው)። He ለወንድ፣ she ለሴት፣ it ለዕቃ ወይም ለእንስሳ ነው። 'he' እና 'she'ን አያምታቱ።"],
+    words:[["I am Ethiopian.","ኢትዮጵያዊ ነኝ።"],["You are my friend.","አንተ ጓደኛዬ ነህ።"],["He is my brother.","እሱ ወንድሜ ነው።"],
+    ["She is my sister.","እሷ እህቴ ናት።"],["It is a cat.","ድመት ነው።"],["It is hot today.","ዛሬ ሞቃት ነው።"],
+    ["We are students.","እኛ ተማሪዎች ነን።"],["They are my friends.","እነሱ ጓደኞቼ ናቸው።"],["I am a teacher.","መምህር ነኝ።"],["The coffee is hot.","ቡናው ትኩስ ነው።"]]},
+  { id:"family", level:"beg", en:"Family", am:"ቤተሰብ", words:[
+    ["Mother","እናት","ማ(th)ር"],["Father","አባት","ፋ(th)ር"],["Brother","ወንድም","ብራ(th)ር"],["Sister","እህት","ሲስተር"],
+    ["Child","ልጅ","ቻይልድ"],["Friend","ጓደኛ","ፍሬንድ"],["Husband","ባል","ሀዝበንድ"],["Wife","ሚስት","ዋይፍ"],
+    ["Family","ቤተሰብ","ፋሚሊ"],["Grandmother","አያት","ግራንድማ(th)ር"]]},
+  { id:"colors", level:"beg", en:"Colours", am:"ቀለማት", words:[
+    ["Red","ቀይ","ሬድ"],["Blue","ሰማያዊ","ብሉ"],["Green","አረንጓዴ","ግሪን"],["Yellow","ቢጫ","የሎው"],
+    ["Black","ጥቁር","ብላክ"],["White","ነጭ","ዋይት"],["Brown","ቡናማ","ብራውን"],["Orange","ብርቱካናማ","ኦሬንጅ"],["Pink","ሮዝ","ፒንክ"],["Grey","ግራጫ","ግሬይ"]]},
+  { id:"g-order", level:"beg", grammar:true, en:"Word order", am:"የቃላት ቅደም ተከተል",
+    tip:["In English the action word comes in the middle: who + action + what. I eat bread. In Amharic the action word comes at the end, so don't say 'I bread eat'.",
+         "በእንግሊዝኛ ግሡ በመሀል ይመጣል፡ ማን + ምን አደረገ + ምን። በአማርኛ ግን ግሡ መጨረሻ ላይ ይመጣል። ለምሳሌ፡ 'እኔ ዳቦ እበላለሁ' = 'I eat bread' እንጂ 'I bread eat' አይደለም።"],
+    words:[["I eat bread.","እኔ ዳቦ እበላለሁ።"],["She drinks coffee.","እሷ ቡና ትጠጣለች።"],["We speak Amharic.","እኛ አማርኛ እንናገራለን።"],
+    ["He reads a book.","እሱ መጽሐፍ ያነባል።"],["They play football.","እነሱ እግር ኳስ ይጫወታሉ።"],["I love my family.","ቤተሰቤን እወዳለሁ።"],["She bakes injera.","እሷ እንጀራ ትጋግራለች።"],["We drink tea.","እኛ ሻይ እንጠጣለን።"],["He wants water.","እሱ ውሃ ይፈልጋል።"],["I speak English.","እኔ እንግሊዝኛ እናገራለሁ።"]]},
+  { id:"food", level:"beg", en:"Food and drink", am:"ምግብና መጠጥ", words:[
+    ["Water","ውሃ","ዎተር"],["Bread","ዳቦ","ብሬድ"],["Coffee","ቡና","ኮፊ"],["Tea","ሻይ","ቲ"],["Milk","ወተት","ሚልክ"],
+    ["Meat","ስጋ","ሚት"],["Egg","እንቁላል","ኤግ"],["Fruit","ፍራፍሬ","ፍሩት"],["Rice","ሩዝ","ራይስ"],["Salt","ጨው","ሶልት"]]},
+  { id:"verbs", level:"beg", en:"Action words", am:"የድርጊት ቃላት", words:[
+    ["Eat","መብላት","ኢት"],["Drink","መጠጣት","ድሪንክ"],["Go","መሄድ","ጎ"],["Come","መምጣት","ካም"],["Sleep","መተኛት","ስሊፕ"],
+    ["Read","ማንበብ","ሪድ"],["Write","መፃፍ","ራይት"],["Speak","መናገር","ስፒክ"],["Listen","ማዳመጥ","ሊስን"],["Work","መስራት","ዎርክ"]]},
+  { id:"g-present", level:"beg", grammar:true, en:"I work, he works", am:"እሰራለሁ፣ ይሰራል",
+    tip:["For he, she and it, add -s to the action word: I work → he works. I go → she goes. I have → he has.",
+         "ስለ he, she, it ስናወራ በግሡ መጨረሻ '-s' እንጨምራለን፡ I work → he works፣ I go → she goes፣ I have → he has።"],
+    words:[["I work in an office.","ቢሮ ውስጥ እሰራለሁ።"],["He works in a hospital.","እሱ ሆስፒታል ውስጥ ይሰራል።"],
+    ["I live in Addis Ababa.","አዲስ አበባ እኖራለሁ።"],["She lives in Bahir Dar.","እሷ ባሕር ዳር ትኖራለች።"],
+    ["I have two children.","ሁለት ልጆች አሉኝ።"],["He has a car.","እሱ መኪና አለው።"],
+    ["We go to church on Sunday.","እሁድ ቤተ ክርስቲያን እንሄዳለን።"],["She goes to school.","እሷ ትምህርት ቤት ትሄዳለች።"],["He speaks English well.","እሱ እንግሊዝኛ በደንብ ይናገራል።"],["My mother cooks every day.","እናቴ በየቀኑ ታበስላለች።"]]},
+  { id:"days", level:"beg", en:"Days, months and time", am:"ቀናት፣ ወራትና ጊዜ", words:[
+    ["Monday","ሰኞ","መንዴይ"],["Tuesday","ማክሰኞ","ቲውዝዴይ"],["Wednesday","ረቡዕ","ዌንዝዴይ"],["Thursday","ሐሙስ","(th)ርዝዴይ"],
+    ["Friday","ዓርብ","ፍራይዴይ"],["Saturday","ቅዳሜ","ሳተርዴይ"],["Sunday","እሁድ","ሰንዴይ"],
+    ["Today","ዛሬ","ቱዴይ"],["Tomorrow","ነገ","ቱሞሮው"],["Yesterday","ትናንት","የስተርዴይ"]]},
+  { id:"body", level:"beg", en:"The body", am:"የሰውነት ክፍሎች", words:[
+    ["Head","ራስ","ሄድ"],["Eye","ዓይን","አይ"],["Ear","ጆሮ","ኢር"],["Nose","አፍንጫ","ኖዝ"],["Mouth","አፍ","ማው(th)"],
+    ["Hand","እጅ","ሀንድ"],["Leg","እግር","ሌግ"],["Hair","ፀጉር","ሄር"],["Tooth","ጥርስ","ቱ(th)"],["Heart","ልብ","ሃርት"]]},
+  { id:"g-articles", level:"beg", grammar:true, en:"a, an, the", am:"a, an, the",
+    tip:["Use 'a' before a consonant sound (a book) and 'an' before a vowel sound (an apple). Use 'the' for a specific thing you both know (the book on the table). Amharic shows 'the' with an ending: መጽሐፉ = the book.",
+         "'a' ከተነባቢ ድምፅ በፊት (a book)፣ 'an' ከአናባቢ ድምፅ በፊት (an apple) ይገባል። 'the' የሚታወቅ የተወሰነ ነገርን ያሳያል — በአማርኛ መጨረሻ ላይ '-ው/-ኡ' እንደምንጨምረው፡ መጽሐፉ = the book።"],
+    words:[["a book","አንድ መጽሐፍ"],["an apple","አንድ ፖም"],["an egg","አንድ እንቁላል"],["a car","አንድ መኪና"],
+    ["I have a dog.","ውሻ አለኝ።"],["The dog is big.","ውሻው ትልቅ ነው።"],["Close the door, please.","እባክዎ በሩን ይዝጉ።"],["She is a teacher.","እሷ መምህር ናት።"],["an hour","አንድ ሰዓት"],["The sun is hot.","ፀሐይዋ ሞቃት ናት።"]]},
+  { id:"home", level:"beg", en:"At home", am:"ቤት ውስጥ", words:[
+    ["House","ቤት","ሃውስ"],["Door","በር","ዶር"],["Window","መስኮት","ዊንዶው"],["Table","ጠረጴዛ","ቴብል"],
+    ["Chair","ወንበር","ቼር"],["Bed","አልጋ","ቤድ"],["Kitchen","ማዕድ ቤት","ኪችን"],["Room","ክፍል","ሩም"],["Bathroom","መታጠቢያ ቤት","ባ(th)ሩም"],["Key","ቁልፍ","ኪ"]]},
+  { id:"describe", level:"beg", en:"Describing words", am:"ገላጭ ቃላት", words:[
+    ["Big","ትልቅ","ቢግ"],["Small","ትንሽ","ስሞል"],["Hot","ሙቅ","ሆት"],["Cold","ቀዝቃዛ","ኮልድ"],["Good","ጥሩ","ጉድ"],
+    ["Bad","መጥፎ","ባድ"],["New","አዲስ","ኒው"],["Old","አሮጌ","ኦልድ"],["Happy","ደስተኛ","ሃፒ"],["Sad","ያዘነ","ሳድ"]]},
+  { id:"town", level:"beg", en:"Places in town", am:"በከተማ ውስጥ ያሉ ቦታዎች", words:[
+    ["School","ትምህርት ቤት","ስኩል"],["Hospital","ሆስፒታል","ሆስፒታል"],["Market","ገበያ","ማርኬት"],["Church","ቤተ ክርስቲያን","ቸርች"],
+    ["Mosque","መስጊድ","ሞስክ"],["Bank","ባንክ","ባንክ"],["Shop","ሱቅ","ሾፕ"],["Road","መንገድ","ሮድ"],
+    ["Bus station","አውቶቡስ መናኸሪያ","ባስ ስቴሽን"],["Restaurant","ምግብ ቤት","ሬስቶራንት"]]},
+  { id:"daily", level:"beg", en:"Everyday phrases", am:"የየቀኑ አባባሎች", words:[
+    ["I don't understand","አልገባኝም","አይ ዶንት አንደርስታንድ"],["Please speak slowly","እባክዎ ቀስ ብለው ይናገሩ","ፕሊዝ ስፒክ ስሎውሊ"],
+    ["How much is this?","ይሄ ስንት ነው?","ሃው መች ኢዝ (th)ስ?"],["Where is the bathroom?","መጸዳጃ ቤት የት ነው?","ዌር ኢዝ (th)ኧ ባ(th)ሩም?"],
+    ["I need help","እርዳታ እፈልጋለሁ","አይ ኒድ ሄልፕ"],["What time is it?","ስንት ሰዓት ነው?","ዋት ታይም ኢዝ ኢት?"],
+    ["I am hungry","ርቦኛል","አይ አም ሀንግሪ"],["I am tired","ደክሞኛል","አይ አም ታየርድ"],["I am thirsty","ጠምቶኛል","አይ አም (th)ርስቲ"],["See you later","በኋላ እንገናኝ","ሲ ዩ ሌይተር"]]},
+  { id:"work", level:"beg", en:"Work and jobs", am:"ስራና ሙያ", words:[
+    ["Job","ስራ","ጆብ"],["Office","ቢሮ","ኦፊስ"],["Meeting","ስብሰባ","ሚቲንግ"],["Money","ገንዘብ","መኒ"],
+    ["Customer","ደንበኛ","ካስተመር"],["Teacher","መምህር","ቲቸር"],["Doctor","ሐኪም","ዶክተር"],["Student","ተማሪ","ስቱደንት"],["Boss","አለቃ","ቦስ"],["Salary","ደመወዝ","ሳላሪ"]]},
+
+  // ---------------- INTERMEDIATE ----------------
+  { id:"routine", level:"int", en:"My daily routine", am:"ዕለታዊ ተግባሬ",
+    tip:["English time starts at midnight, Ethiopian time starts at 6 a.m. So 7 a.m. in English is 1 o'clock in Ethiopian time.",
+         "የእንግሊዝኛ ሰዓት የሚጀምረው ከእኩለ ሌሊት ነው፤ የኢትዮጵያ ሰዓት ደግሞ ከጠዋቱ 12 ሰዓት። ስለዚህ 'seven o'clock in the morning' = ከጠዋቱ 1 ሰዓት ነው።"],
+    words:[["I wake up at seven o'clock.","ከጠዋቱ አንድ ሰዓት እነሳለሁ።"],["I take a shower.","ገላዬን እታጠባለሁ።"],
+    ["I eat breakfast.","ቁርስ እበላለሁ።"],["I go to work by bus.","በአውቶቡስ ወደ ስራ እሄዳለሁ።"],
+    ["I finish work at five.","ከቀኑ አስራ አንድ ሰዓት ስራ እጨርሳለሁ።"],["I cook dinner.","እራት አበስላለሁ።"],
+    ["I study English every day.","በየቀኑ እንግሊዝኛ አጠናለሁ።"],["I go to bed at ten.","ከምሽቱ አራት ሰዓት እተኛለሁ።"],["I brush my teeth.","ጥርሴን እቦርሻለሁ።"],["I drink coffee with my family.","ከቤተሰቤ ጋር ቡና እጠጣለሁ።"]]},
+  { id:"g-cont", level:"int", grammar:true, en:"Right now: I am eating", am:"አሁን እየሆነ ያለ",
+    tip:["For actions happening now, use am / is / are + verb-ing: I am eating. She is working. Use it with 'now' or 'at the moment'.",
+         "አሁን እየተደረገ ላለ ነገር 'am / is / are' + ግሥ-ing እንጠቀማለን፡ I am eating = እየበላሁ ነው። She is working = እየሰራች ነው።"],
+    words:[["I am eating now.","አሁን እየበላሁ ነው።"],["She is cooking dinner.","እራት እያበሰለች ነው።"],
+    ["We are waiting for the bus.","አውቶቡስ እየጠበቅን ነው።"],["It is raining.","ዝናብ እየዘነበ ነው።"],
+    ["What are you doing?","ምን እያደረጉ ነው?"],["He is talking on the phone.","በስልክ እያወራ ነው።"],
+    ["They are playing outside.","ውጭ እየተጫወቱ ነው።"],["I am learning English.","እንግሊዝኛ እየተማርኩ ነው።"],["The baby is sleeping.","ሕፃኑ እየተኛ ነው።"],["Are you listening?","እያዳመጡ ነው?"]]},
+  { id:"shop", level:"int", en:"Shopping", am:"ግብይት", words:[
+    ["How much does this cost?","ይሄ ስንት ያወጣል?"],["Can I try it on?","ልሞክረው እችላለሁ?"],
+    ["Do you have a smaller size?","ትንሽ መጠን አላችሁ?"],["It's too expensive.","በጣም ውድ ነው።"],
+    ["Can you give me a discount?","ቅናሽ ሊያደርጉልኝ ይችላሉ?"],["I'll take it.","እወስደዋለሁ።"],
+    ["Do you accept mobile money?","የሞባይል ክፍያ ትቀበላላችሁ?"],["Can I have a receipt, please?","እባክዎ ደረሰኝ ሊሰጡኝ ይችላሉ?"],["I'm just looking, thank you.","እያየሁ ብቻ ነው፣ አመሰግናለሁ።"],["Do you have this in black?","ይሄ በጥቁር አለ?"]]},
+  { id:"g-questions", level:"int", grammar:true, en:"Asking questions", am:"ጥያቄ መጠየቅ",
+    tip:["In Amharic, a question often sounds like a sentence with a different tone. In English, questions usually start with do or does: Do you like tea? Does she work here? With 'be' you swap the order: You are tired → Are you tired?",
+         "በአማርኛ ጥያቄ ብዙ ጊዜ በድምፅ ብቻ ይለያል፤ በእንግሊዝኛ ግን ብዙ ጊዜ በ 'do' ወይም 'does' ይጀመራል፡ Do you like tea? Does she work here? በ 'be' ደግሞ ቦታ ይቀያየራል፡ You are tired → Are you tired?"],
+    words:[["Do you like tea?","ሻይ ይወዳሉ?"],["Does she work here?","እሷ እዚህ ትሰራለች?"],["Do you speak English?","እንግሊዝኛ ይናገራሉ?"],
+    ["Where do you live?","የት ነው የሚኖሩት?"],["What do you do?","ስራዎ ምንድን ነው?"],["Are you tired?","ደክሞዎታል?"],
+    ["Is he your brother?","እሱ ወንድምዎ ነው?"],["How long does it take?","ምን ያህል ጊዜ ይወስዳል?"],["Why are you late?","ለምን አረፈዱ?"],["Can you swim?","መዋኘት ይችላሉ?"]]},
+  { id:"dir", level:"int", en:"Asking for directions", am:"አቅጣጫ መጠየቅ", words:[
+    ["Excuse me, where is the bank?","ይቅርታ፣ ባንኩ የት ነው?"],["Go straight.","ቀጥ ብለው ይሂዱ።"],
+    ["Turn left.","ወደ ግራ ይታጠፉ።"],["Turn right.","ወደ ቀኝ ይታጠፉ።"],
+    ["It's next to the hospital.","ከሆስፒታሉ አጠገብ ነው።"],["It's across the street.","ከመንገዱ ማዶ ነው።"],
+    ["Is it far from here?","ከዚህ ሩቅ ነው?"],["It's a five-minute walk.","በእግር አምስት ደቂቃ ነው።"],["Take the first right.","የመጀመሪያውን ወደ ቀኝ ይታጠፉ።"],["I'm lost.","መንገድ ጠፋብኝ።"]]},
+  { id:"g-past", level:"int", grammar:true, en:"The past tense", am:"ያለፈ ጊዜ",
+    tip:["To talk about the past, add -ed: work → worked, play → played. Many common verbs change: go → went, eat → ate, see → saw, have → had, buy → bought. For questions and 'not', use did: Did you go? I didn't go.",
+         "ስላለፈ ነገር ለመናገር በግሡ መጨረሻ '-ed' ይጨመራል፡ work → worked። ብዙ የተለመዱ ግሦች ግን ይለወጣሉ፡ go → went፣ eat → ate፣ see → saw፣ buy → bought። ለጥያቄና ለአሉታ 'did' እንጠቀማለን፡ Did you go? / I didn't go."],
+    words:[["I worked yesterday.","ትናንት ሰራሁ።"],["I ate injera for lunch.","ለምሳ እንጀራ በላሁ።"],["She saw her friend.","ጓደኛዋን አየች።"],
+    ["We had a good time.","ጥሩ ጊዜ አሳለፍን።"],["Did you call your mother?","ለእናትዎ ደወሉ?"],["I didn't go to school.","ትምህርት ቤት አልሄድኩም።"],
+    ["He bought a new phone.","አዲስ ስልክ ገዛ።"],["They came home late.","ዘግይተው ወደ ቤት መጡ።"],["She went to Gondar last week.","ባለፈው ሳምንት ወደ ጎንደር ሄደች።"],["I wrote a letter.","ደብዳቤ ጻፍኩ።"]]},
+  { id:"past", level:"int", en:"Talking about the past", am:"ስላለፈ ጊዜ ማውራት", words:[
+    ["Yesterday I went to the market.","ትናንት ወደ ገበያ ሄድኩ።"],["I visited my grandmother.","አያቴን ጠየቅኩ።"],
+    ["We watched a football match.","የእግር ኳስ ጨዋታ አየን።"],["She called me last night.","ትናንት ማታ ደወለችልኝ።"],
+    ["I didn't sleep well.","በደንብ አልተኛሁም።"],["Last year I moved to Addis Ababa.","ባለፈው ዓመት ወደ አዲስ አበባ ተዛወርኩ።"],
+    ["What did you do on the weekend?","ቅዳሜና እሁድ ምን አደረጉ?"],["I was very busy.","በጣም ስራ በዝቶብኝ ነበር።"],["When I was a child, I lived in Jimma.","ልጅ ሳለሁ ጅማ እኖር ነበር።"],["It was a long day.","ረጅም ቀን ነበር።"]]},
+  { id:"health", level:"int", en:"At the doctor", am:"ሐኪም ቤት", words:[
+    ["I have a headache.","ራሴን ያመኛል።"],["I have a fever.","ትኩሳት አለብኝ።"],
+    ["My stomach hurts.","ሆዴን ያመኛል።"],["I need to see a doctor.","ሐኪም ማየት አለብኝ።"],
+    ["Take this medicine twice a day.","ይህን መድሃኒት በቀን ሁለት ጊዜ ይውሰዱ።"],["I feel better now.","አሁን ተሽሎኛል።"],["I have a cough.","ሳል አለብኝ።"],["I can't sleep at night.","ማታ መተኛት አልችልም።"],["Where is the pharmacy?","ፋርማሲው የት ነው?"],["Do I need an injection?","መርፌ ያስፈልገኛል?"]]},
+  { id:"g-future", level:"int", grammar:true, en:"The future: will and going to", am:"የወደፊት ጊዜ",
+    tip:["Use 'going to' for plans you already made: I'm going to visit my family. Use 'will' for quick decisions and promises: I'll help you. I will call you tomorrow.",
+         "ቀደም ብሎ ለታቀደ ነገር 'going to'፡ I'm going to visit my family (ቤተሰቤን ልጠይቅ ነው)። ለድንገተኛ ውሳኔና ቃል ለመግባት 'will'፡ I'll help you (እረዳዎታለሁ)።"],
+    words:[["I'm going to visit my family.","ቤተሰቤን ልጠይቅ ነው።"],["I will call you tomorrow.","ነገ እደውልልዎታለሁ።"],
+    ["It will rain tonight.","ዛሬ ማታ ይዘንባል።"],["We are going to buy a house.","ቤት ልንገዛ ነው።"],["I'll help you.","እረዳዎታለሁ።"],
+    ["What are you going to do this weekend?","በዚህ ቅዳሜና እሁድ ምን ሊያደርጉ ነው?"],["She will be here soon.","በቅርቡ እዚህ ትደርሳለች።"],["I won't be late.","አላረፍድም።"],["I will finish it tomorrow.","ነገ እጨርሰዋለሁ።"],["Are you going to come?","ሊመጡ ነው?"]]},
+  { id:"phone", level:"int", en:"Phone calls", am:"የስልክ ጥሪ", words:[
+    ["Hello, this is Abebe.","ሄሎ፣ አበበ ነኝ።"],["Can I speak to Sara, please?","እባክዎ ሳራን ማነጋገር እችላለሁ?"],
+    ["She is not here right now.","አሁን እዚህ የለችም።"],["Can I leave a message?","መልዕክት ማስቀመጥ እችላለሁ?"],
+    ["Sorry, I can't hear you.","ይቅርታ፣ አልሰማዎትም።"],["Can you call me back later?","በኋላ መልሰው ሊደውሉልኝ ይችላሉ?"],
+    ["I'll call you back.","መልሼ እደውልልዎታለሁ።"],["Sorry, wrong number.","ይቅርታ፣ የተሳሳተ ቁጥር ነው።"],["Who is calling, please?","ማን ልበል?"],["My battery is low.","የስልኬ ባትሪ ሊያልቅ ነው።"]]},
+  { id:"restaurant", level:"int", en:"At a restaurant", am:"ምግብ ቤት", words:[
+    ["Can I see the menu, please?","እባክዎ ሜኑውን ማየት እችላለሁ?"],["I'd like the fish, please.","ዓሣውን እፈልጋለሁ፣ እባክዎ።"],
+    ["What do you recommend?","ምን ይመክሩኛል?"],["Can I have some water?","ትንሽ ውሃ ማግኘት እችላለሁ?"],
+    ["This is delicious.","ይሄ በጣም ጣፋጭ ነው።"],["Not too spicy, please.","እባክዎ በጣም ቅመም አይሁን።"],
+    ["Can we have the bill, please?","እባክዎ ሂሳቡን ያምጡልን።"],["Keep the change.","መልሱን ይያዙት።"],["A table for two, please.","እባክዎ ለሁለት ሰው ጠረጴዛ።"],["I'm fasting, so no meat, please.","ጾመኛ ነኝ፣ እባክዎ ስጋ አይሁን።"]]},
+  { id:"travel", level:"int", en:"Travel and hotels", am:"ጉዞና ሆቴል", words:[
+    ["I have a reservation.","ቦታ አስይዣለሁ።"],["I'd like a room for two nights.","ለሁለት ምሽቶች ክፍል እፈልጋለሁ።"],
+    ["What time is check-out?","መውጫ ሰዓቱ ስንት ነው?"],["Where is the airport?","አውሮፕላን ማረፊያው የት ነው?"],
+    ["One ticket to Hawassa, please.","እባክዎ አንድ ትኬት ወደ ሀዋሳ።"],["When does the bus leave?","አውቶቡሱ መቼ ይነሳል?"],
+    ["Is breakfast included?","ቁርስ ይጨምራል?"],["Here is my passport.","ፓስፖርቴ ይኸውልዎ።"],["My flight is delayed.","በረራዬ ዘግይቷል።"],["Can you call a taxi for me?","ታክሲ ሊጠሩልኝ ይችላሉ?"]]},
+  { id:"plans", level:"int", en:"Making plans", am:"እቅድ ማውጣት", words:[
+    ["Are you free on Saturday?","ቅዳሜ ነፃ ነዎት?"],["Let's have coffee together.","አብረን ቡና እንጠጣ።"],
+    ["What time is good for you?","ስንት ሰዓት ይመችዎታል?"],["How about tomorrow afternoon?","ነገ ከሰዓት በኋላስ?"],
+    ["Sounds good!","ጥሩ ሀሳብ ነው!"],["Sorry, I'm busy that day.","ይቅርታ፣ በዚያ ቀን ስራ አለብኝ።"],
+    ["See you then.","እንግዲያው እንገናኝ።"],["Let me check my schedule.","ፕሮግራሜን ልይ።"],["Can we meet next week instead?","በምትኩ በሚቀጥለው ሳምንት መገናኘት እንችላለን?"],["I'll send you a message.","መልዕክት እልክልዎታለሁ።"]]},
+  { id:"opinions", level:"int", en:"Giving your opinion", am:"ሀሳብ መስጠት", words:[
+    ["I think it's a good idea.","ጥሩ ሀሳብ ይመስለኛል።"],["In my opinion, education is very important.","በእኔ አስተያየት ትምህርት በጣም አስፈላጊ ነው።"],
+    ["I don't think so.","እንደዚያ አይመስለኝም።"],["I like it because it's cheap.","ርካሽ ስለሆነ እወደዋለሁ።"],
+    ["I prefer tea to coffee.","ከቡና ይልቅ ሻይ እመርጣለሁ።"],["That's true.","እውነት ነው።"],
+    ["I'm not sure.","እርግጠኛ አይደለሁም።"],["What do you think?","እርስዎ ምን ያስባሉ?"],["I completely agree.","ሙሉ በሙሉ እስማማለሁ።"],["I see what you mean.","ምን ማለትዎ እንደሆነ ገብቶኛል።"]]},
+
+  // ---------------- ADVANCED ----------------
+  { id:"g-perfect", level:"adv", grammar:true, en:"Present perfect", am:"የአሁን ፍጹም ጊዜ",
+    tip:["Use have / has + past participle for life experiences and for things that started in the past and continue now: I have lived here for five years. Have you ever been to Lalibela? Don't use it with a finished time like 'yesterday'.",
+         "'have / has' + past participle ለሕይወት ልምድ እና ከድሮ ጀምሮ እስከ አሁን ለሚቀጥል ነገር እንጠቀማለን፡ I have lived here for five years (እዚህ ለአምስት ዓመት ኖሬያለሁ)። እንደ 'yesterday' ካሉ ያለፉ የተወሰኑ ጊዜያት ጋር አይጠቀሙት።"],
+    words:[["I have lived here for five years.","እዚህ ለአምስት ዓመት ኖሬያለሁ።"],["Have you ever been to Lalibela?","ላሊበላ ሄደው ያውቃሉ?"],
+    ["I have never seen snow.","በረዶ አይቼ አላውቅም።"],["She has just finished her work.","ስራዋን አሁን ጨረሰች።"],
+    ["We have known each other since 2015.","ከ2015 ጀምሮ እንተዋወቃለን።"],["Have you eaten yet?","እስካሁን በልተዋል?"],
+    ["I haven't decided yet.","እስካሁን አልወሰንኩም።"],["He has worked here since January.","ከጥር ጀምሮ እዚህ ይሰራል።"],["Have you finished your homework?","የቤት ስራዎን ጨርሰዋል?"],["They have already left.","አስቀድመው ሄደዋል።"]]},
+  { id:"smalltalk", level:"adv", en:"Small talk", am:"ቀላል ጨዋታ", words:[
+    ["How's it going?","እንዴት ነው?"],["What do you do for a living?","ስራዎ ምንድን ነው?"],
+    ["How was your weekend?","ቅዳሜና እሁድ እንዴት ነበር?"],["Lovely weather today, isn't it?","ዛሬ አየሩ ደስ ይላል፣ አይደል?"],
+    ["Have you been here before?","ከዚህ በፊት እዚህ መጥተው ያውቃሉ?"],["It was great talking to you.","ከእርስዎ ጋር ማውራቴ ደስ ብሎኛል።"],
+    ["Let's keep in touch.","ግንኙነታችንን እንቀጥል።"],["Take care!","ራስዎን ይጠብቁ!"],["Are you from around here?","የዚህ አካባቢ ሰው ነዎት?"],["What brings you here?","ወደዚህ ምን አመጣዎት?"]]},
+  { id:"interview", level:"adv", en:"Job interview", am:"የስራ ቃለ መጠይቅ", words:[
+    ["Tell me about yourself.","ስለራስዎ ይንገሩኝ።"],["I have three years of experience in sales.","በሽያጭ ሶስት ዓመት የስራ ልምድ አለኝ።"],
+    ["My greatest strength is solving problems.","ትልቁ ጥንካሬዬ ችግሮችን መፍታት ነው።"],["I work well under pressure.","ጫና ውስጥም ቢሆን በደንብ እሰራለሁ።"],
+    ["Why do you want to work here?","ለምን እዚህ መስራት ፈለጉ?"],["I'm eager to learn and grow with your company.","ከድርጅታችሁ ጋር ለመማርና ለማደግ ጓጉቻለሁ።"],
+    ["Where do you see yourself in five years?","ከአምስት ዓመት በኋላ ራስዎን የት ያዩታል?"],["Do you have any questions for us?","ለእኛ ጥያቄ አለዎት?"],["What are your weaknesses?","ደካማ ጎኖችዎ ምንድን ናቸው?"],["Thank you for the opportunity.","ለዕድሉ አመሰግናለሁ።"]]},
+  { id:"g-cond", level:"adv", grammar:true, en:"If sentences", am:"'ቢሆን' ዓረፍተ ነገሮች",
+    tip:["Real possibility: If it rains, I will stay home. Imaginary: If I had more money, I would buy a house. Past regret: If I had studied, I would have passed.",
+         "ሊሆን የሚችል፡ If it rains, I will stay home (ከዘነበ ቤት እቆያለሁ)። ምናባዊ፡ If I had more money, I would buy a house (ብዙ ገንዘብ ቢኖረኝ ቤት እገዛ ነበር)። ስላለፈ ፀፀት፡ If I had studied, I would have passed (ባጠና ኖሮ አልፍ ነበር)።"],
+    words:[["If it rains, I will stay home.","ከዘነበ ቤት እቆያለሁ።"],["If you study hard, you will pass.","ጠንክረው ካጠኑ ያልፋሉ።"],
+    ["If I had more money, I would buy a house.","ብዙ ገንዘብ ቢኖረኝ ቤት እገዛ ነበር።"],["If I were you, I would take the job.","እኔ እርስዎን ብሆን ስራውን እቀበል ነበር።"],
+    ["What would you do if you won the lottery?","ሎተሪ ቢደርስዎ ምን ያደርጋሉ?"],["If I had known, I would have helped you.","ባውቅ ኖሮ እረዳዎት ነበር።"],
+    ["Call me if you need anything.","ማንኛውም ነገር ካስፈለገዎ ይደውሉልኝ።"],["Unless we hurry, we will miss the bus.","ካልፈጠንን አውቶቡሱ ያመልጠናል።"],["If I see him, I'll tell him.","ካየሁት እነግረዋለሁ።"],["If I had a car, I would drive to work.","መኪና ቢኖረኝ ወደ ስራ እየነዳሁ እሄድ ነበር።"]]},
+  { id:"phrasal", level:"adv", en:"Phrasal verbs", am:"ሐረጋዊ ግሶች", words:[
+    ["Don't give up.","ተስፋ አይቁረጡ።"],["Please turn off the light.","እባክዎ መብራቱን ያጥፉ።"],
+    ["I'm looking for my keys.","ቁልፎቼን እየፈለግኩ ነው።"],["Can you pick me up at the station?","ጣቢያው ድረስ መጥተው ሊወስዱኝ ይችላሉ?"],
+    ["We ran out of sugar.","ስኳር አለቀብን።"],["I'll figure it out.","መፍትሄ አገኝለታለሁ።"],
+    ["Let's catch up soon.","በቅርቡ ተገናኝተን እናውራ።"],["She takes care of her parents.","ወላጆቿን ትንከባከባለች።"],["Please fill out this form.","እባክዎ ይህን ቅጽ ይሙሉ።"],["The meeting was called off.","ስብሰባው ተሰርዟል።"]]},
+  { id:"stories", level:"adv", en:"Telling a story", am:"ታሪክ መናገር", words:[
+    ["First, I woke up late.","መጀመሪያ፣ አርፍጄ ተነሳሁ።"],["Then, I missed the bus.","ከዚያም አውቶቡሱ አመለጠኝ።"],
+    ["After that, I took a taxi.","ከዚያ በኋላ ታክሲ ያዝኩ።"],["Suddenly, it started to rain.","በድንገት ዝናብ መዝነብ ጀመረ።"],
+    ["Luckily, I had an umbrella.","እንደ እድል ሆኖ ጃንጥላ ነበረኝ።"],["However, the road was closed.","ሆኖም መንገዱ ተዘግቶ ነበር።"],
+    ["In the end, I arrived on time.","በመጨረሻ በሰዓቱ ደረስኩ።"],["Because of that, I was very tired.","በዚህ ምክንያት በጣም ደክሞኝ ነበር።"],["At first, I was nervous.","መጀመሪያ ላይ ተጨንቄ ነበር።"],["Meanwhile, my friend was waiting.","በዚያው ጊዜ ጓደኛዬ እየጠበቀኝ ነበር።"]]},
+  { id:"idioms", level:"adv", en:"Natural expressions", am:"የተለመዱ አገላለጾች", words:[
+    ["It's a piece of cake.","በጣም ቀላል ነው።"],["Break a leg!","መልካም ዕድል!"],
+    ["I'm feeling under the weather.","ትንሽ አሞኛል።"],["Let's call it a day.","ለዛሬ በቃን።"],
+    ["It costs an arm and a leg.","እጅግ በጣም ውድ ነው።"],["Better late than never.","ከመቅረት መዘግየት ይሻላል።"],
+    ["I'm all ears.","በጥሞና እያዳመጥኩ ነው።"],["No worries.","ችግር የለም።"],["Once in a blue moon.","በጣም አልፎ አልፎ።"],["Let's get the ball rolling.","ስራውን እንጀምር።"]]},
+  { id:"fast", level:"adv", hintLabel:"Fast", speakHint:true, en:"Fast natural English", am:"ፈጣን የተፈጥሮ እንግሊዝኛ",
+    tip:["Native speakers join and shorten words when they talk fast. You don't have to speak like this, but you need to understand it. 'going to' → gonna, 'want to' → wanna, 'got to' → gotta, 'let me' → lemme, 'don't know' → dunno.",
+         "እንግሊዝኛ ተናጋሪዎች በፍጥነት ሲናገሩ ቃላትን ያገናኛሉ፣ ያሳጥራሉ። እርስዎ እንደዚህ መናገር ግዴታ የለብዎትም፤ ግን ሲሰሙት መረዳት አለብዎት። Listen ቁልፉ ፈጣኑን አነጋገር ያሰማል።"],
+    words:[["I'm going to eat.","ልበላ ነው።","I'm gonna eat."],["I want to go home.","ወደ ቤት መሄድ እፈልጋለሁ።","I wanna go home."],
+    ["I have got to go.","መሄድ አለብኝ።","I gotta go."],["Let me see.","ልይ።","Lemme see."],["I don't know.","አላውቅም።","I dunno."],
+    ["What are you doing?","ምን እያደረጉ ነው?","Whatcha doing?"],["Do you want to come?","መምጣት ይፈልጋሉ?","D'you wanna come?"],
+    ["Give me a minute.","አንድ ደቂቃ ይስጡኝ።","Gimme a minute."],["What do you want to do?","ምን ማድረግ ይፈልጋሉ?","Whaddaya wanna do?"],["I'm kind of tired.","ትንሽ ደክሞኛል።","I'm kinda tired."]]},
+  { id:"pro", level:"adv", en:"Professional English", am:"ሙያዊ እንግሊዝኛ", words:[
+    ["Thank you for your email.","ለኢሜይልዎ አመሰግናለሁ።"],["I'm writing to ask about the job opening.","ስለ ክፍት የስራ ቦታው ለመጠየቅ ነው የምጽፈው።"],
+    ["Could we schedule a meeting?","ስብሰባ ልንይዝ እንችላለን?"],["I'd like to add something.","አንድ ነገር መጨመር እፈልጋለሁ።"],
+    ["Could you repeat that, please?","እባክዎ ይድገሙልኝ?"],["I agree with you.","በሀሳብዎ እስማማለሁ።"],
+    ["I see your point, but I have a different idea.","ሀሳብዎ ገብቶኛል፣ ግን የተለየ ሀሳብ አለኝ።"],["I look forward to hearing from you.","ምላሽዎን በጉጉት እጠብቃለሁ።"],["Please find the report attached.","ሪፖርቱን አያይዤ ልኬዋለሁ።"],["Sorry for the late reply.","ዘግይቼ ስለመለስኩ ይቅርታ።"]]},
+  { id:"present", level:"adv", en:"Presentations and meetings", am:"ገለጻና ስብሰባ", words:[
+    ["Good morning, everyone.","እንደምን አደራችሁ ሁላችሁም።"],["Today I'm going to talk about our sales.","ዛሬ ስለ ሽያጫችን እናገራለሁ።"],
+    ["Let's start with the first point.","በመጀመሪያው ነጥብ እንጀምር።"],["As you can see in this chart, sales went up.","በዚህ ሰንጠረዥ እንደምታዩት ሽያጩ ጨምሯል።"],
+    ["To sum up, we had a good year.","ለማጠቃለል፣ ጥሩ ዓመት ነበረን።"],["Does anyone have any questions?","ጥያቄ ያለው ሰው አለ?"],
+    ["That's a great question.","በጣም ጥሩ ጥያቄ ነው።"],["Thank you for your attention.","ስላዳመጣችሁኝ አመሰግናለሁ።"],["Let me move on to the next slide.","ወደሚቀጥለው ስላይድ ልለፍ።"],["I'd like to thank my team.","ቡድኔን ማመስገን እፈልጋለሁ።"]]},
+
+  // ---------------- PRONUNCIATION ----------------
+  { id:"p-th1", level:"pron", hintLabel:"Sound", en:"TH as in think", am:"የ'th' ድምፅ (think)",
+    tip:["Amharic has no 'th' sound, so many speakers say 's' or 't' (sink instead of think). Put the tip of your tongue lightly between your teeth and blow air out. No voice.",
+         "አማርኛ 'th' ድምፅ የለውም፤ ስለዚህ ብዙዎች 'ስ' ወይም 'ት' ይሉታል (think ፈንታ sink)። የምላስዎን ጫፍ በጥርሶችዎ መካከል በቀስታ ያድርጉና አየር ብቻ ይንፉ። ጉሮሮዎ አይንቀጠቀጥም።"],
+    pairs:[["think","sink"],["three","tree"],["thank","tank"],["thin","tin"],["mouth","mouse"],["path","pass"]],
+    words:[["think","ማሰብ","(th)ink"],["three","ሶስት","(th)ree"],["thank you","አመሰግናለሁ","(th)ank you"],["thing","ነገር","(th)ing"],
+    ["Thursday","ሐሙስ","(th)ursday"],["mouth","አፍ","mou(th)"],["tooth","ጥርስ","too(th)"],["birthday","የልደት ቀን","bir(th)day"],["bath","ገላ መታጠብ","ba(th)"],["north","ሰሜን","nor(th)"]]},
+  { id:"p-th2", level:"pron", hintLabel:"Sound", en:"TH as in this", am:"የ'th' ድምፅ (this)",
+    tip:["Same tongue position as 'think', but now use your voice: your throat should buzz. Don't say 'z' or 'd' (dis instead of this).",
+         "ምላስዎ ልክ እንደ 'think' በጥርሶችዎ መካከል ይሆናል፤ አሁን ግን ድምፅ ያሰሙ — ጉሮሮዎ ይንቀጠቀጣል። 'ዝ' ወይም 'ድ' አይበሉ (this ፈንታ dis)።"],
+    pairs:[["they","day"],["then","den"],["those","doze"],["breathe","breeze"]],
+    words:[["this","ይሄ","(th)is"],["that","ያ","(th)at"],["the","-ው / -ኡ (የተወሰነ)","(th)e"],["mother","እናት","mo(th)er"],
+    ["father","አባት","fa(th)er"],["brother","ወንድም","bro(th)er"],["they","እነሱ","(th)ey"],["weather","የአየር ሁኔታ","wea(th)er"],["these","እነዚህ","(th)ese"],["together","አብሮ","toge(th)er"]]},
+  { id:"p-vfb", level:"pron", hintLabel:"Sound", en:"V, F and B", am:"V፣ F እና B",
+    tip:["Many speakers say 'b' for 'v' (berry instead of very). For V, touch your top teeth to your bottom lip and use your voice, like ቨ. For F, same position but only air, like ፈ. For B, close both lips, like በ.",
+         "ብዙዎች 'v'ን 'b' ብለው ይጠሩታል (very ፈንታ berry)። ለ V፡ የላይኛው ጥርስዎን የታችኛው ከንፈርዎ ላይ ያድርጉና ድምፅ ያሰሙ (ቨ)። ለ F፡ ቦታው ያው ነው ግን አየር ብቻ (ፈ)። ለ B፡ ሁለቱንም ከንፈሮች ይግጠሙ (በ)።"],
+    pairs:[["very","berry"],["vote","boat"],["van","ban"],["vest","best"],["fan","van"],["few","view"]],
+    words:[["very","በጣም","ቨሪ"],["van","ቫን (መኪና)","ቫን"],["voice","ድምፅ","ቮይስ"],["seven","ሰባት","ሰቨን"],
+    ["love","ፍቅር","ላቭ"],["five","አምስት","ፋይቭ"],["coffee","ቡና","ኮፊ"],["video","ቪዲዮ","ቪዲዮ"],["vegetable","አትክልት","ቬጅተብል"],["visit","መጎብኘት","ቪዚት"]]},
+  { id:"p-pb", level:"pron", hintLabel:"Sound", en:"P and B", am:"P እና B",
+    tip:["English P starts with a small puff of air. Hold your hand in front of your mouth: you should feel air on 'p' but not on 'b'. Don't use the hard Amharic ጰ sound.",
+         "የእንግሊዝኛው P ከትንሽ የአየር ግፊት ጋር ይወጣል። እጅዎን ከአፍዎ ፊት ያድርጉ፡ 'p' ሲሉ አየር ይሰማዎታል፣ 'b' ሲሉ አይሰማዎትም። የአማርኛውን 'ጰ' ጠንካራ ድምፅ አይጠቀሙ።"],
+    pairs:[["pig","big"],["pat","bat"],["pea","bee"],["cap","cab"],["pull","bull"],["pie","buy"]],
+    words:[["pen","እስክሪብቶ","ፔን"],["people","ሰዎች","ፒፕል"],["paper","ወረቀት","ፔፐር"],["happy","ደስተኛ","ሃፒ"],
+    ["stop","አቁም","ስቶፕ"],["bus","አውቶቡስ","ባስ"],["book","መጽሐፍ","ቡክ"],["baby","ሕፃን","ቤቢ"],["apple","ፖም","አፕል"],["big","ትልቅ","ቢግ"]]},
+  { id:"p-ii", level:"pron", hintLabel:"Sound", en:"Ship or sheep?", am:"አጭርና ረጅም 'ኢ'",
+    tip:["English has two 'i' sounds. Long 'ee' (sheep) is like Amharic ኢ, held a little longer, with a smile. Short 'i' (ship) is quicker and more relaxed, between ኢ and እ.",
+         "እንግሊዝኛ ሁለት የ'ኢ' ድምፆች አሉት። ረጅሙ 'ee' (sheep) እንደ አማርኛው 'ኢ' ነው፤ ፈገግ ብለው ትንሽ ያስረዝሙት። አጭሩ 'i' (ship) ፈጣንና ዘና ያለ ነው፤ በ'ኢ' እና በ'እ' መካከል ነው።"],
+    pairs:[["ship","sheep"],["sit","seat"],["live","leave"],["fill","feel"],["hit","heat"],["chip","cheap"]],
+    words:[["ship","መርከብ","short i"],["sheep","በግ","long ee"],["sit","መቀመጥ","short i"],["seat","መቀመጫ","long ee"],
+    ["live","መኖር","short i"],["leave","መሄድ፣ መተው","long ee"],["it","እሱ (ለነገር)","short i"],["eat","መብላት","long ee"],["fit","መመጠን","short i"],["feet","እግሮች","long ee"]]},
+  { id:"p-uu", level:"pron", hintLabel:"Sound", en:"Full or fool?", am:"አጭርና ረጅም 'ኡ'",
+    tip:["Short 'u' in full, book and good is quick and relaxed. Long 'oo' in food, school and moon is longer, with round lips, like Amharic ኡ held longer.",
+         "በ full, book, good ያለው አጭሩ 'u' ፈጣንና ዘና ያለ ነው። በ food, school, moon ያለው ረጅሙ 'oo' ከንፈሮችን አሹለው ያስረዝሙታል — እንደ አማርኛው 'ኡ' ግን ረዘም ብሎ።"],
+    pairs:[["full","fool"],["pull","pool"],["look","Luke"]],
+    words:[["book","መጽሐፍ","short u"],["good","ጥሩ","short u"],["foot","እግር","short u"],["full","የሞላ","short u"],
+    ["food","ምግብ","long oo"],["school","ትምህርት ቤት","long oo"],["moon","ጨረቃ","long oo"],["blue","ሰማያዊ","long oo"],["could","ቻለ (ይችል ነበር)","short u"],["two","ሁለት","long oo"]]},
+  { id:"p-clusters", level:"pron", hintLabel:"Not", en:"No extra vowels", am:"ተጨማሪ አናባቢ አይጨምሩ",
+    tip:["Amharic words rarely start with two consonants, so speakers often add a vowel: 'iskul' for school or 'sitreet' for street. Say the consonants together, with no እ or ኢ sound before or between them.",
+         "በአማርኛ ቃል በሁለት ተነባቢዎች እምብዛም አይጀምርም፤ ስለዚህ ብዙዎች አናባቢ ይጨምራሉ፡ school → 'እስኩል'፣ street → 'ሲትሪት'። ተነባቢዎቹን አንድ ላይ ይበሉ፤ በፊታቸው ወይም በመካከላቸው 'እ' ወይም 'ኢ' አይጨምሩ።"],
+    words:[["school","ትምህርት ቤት","እስኩል"],["street","መንገድ","ሲትሪት"],["student","ተማሪ","እስቱደንት"],["stop","አቁም","እስቶፕ"],
+    ["sport","ስፖርት","እስፖርት"],["spoon","ማንኪያ","እስፑን"],["small","ትንሽ","እስሞል"],["strong","ጠንካራ","ሲትሮንግ"],
+    ["please","እባክዎ","ፖሊስ"],["class","ክፍል (ትምህርት)","ከላስ"]]},
+  { id:"p-ed", level:"pron", hintLabel:"Say", en:"-ed endings", am:"የ'-ed' መጨረሻ",
+    tip:["The -ed ending has three sounds. After p, k, s, sh and ch: say 't' (walked = walkt). After most other sounds: say 'd' (played = playd). Only after t or d: say 'id' (wanted = want-id). Don't add 'id' everywhere.",
+         "'-ed' ሶስት ድምፆች አሉት። ከ p, k, s, sh, ch በኋላ 'ት' ይባላል (walked = ዎክት)። ከብዙ ሌሎች በኋላ 'ድ' (played = ፕሌይድ)። ከ t ወይም d በኋላ ብቻ 'ኢድ' (wanted = ዋንቲድ)። በሁሉም ቦታ 'ኢድ' አይጨምሩ።"],
+    words:[["walked","ተራመደ","walk-t"],["cooked","አበሰለ","cook-t"],["washed","አጠበ","wash-t"],
+    ["played","ተጫወተ","play-d"],["called","ደወለ","call-d"],["cleaned","አፀዳ","clean-d"],
+    ["wanted","ፈለገ","want-id"],["needed","አስፈለገ","need-id"],["started","ጀመረ","start-id"],["looked","ተመለከተ","look-t"]]},
+  { id:"p-stress", level:"pron", hintLabel:"Stress", en:"Word stress", am:"የቃል ጭነት",
+    tip:["In English, one part of a word is louder and longer. The wrong stress can make a word hard to understand. The CAPITAL part is stressed.",
+         "በእንግሊዝኛ የቃሉ አንድ ክፍል ጠንከር ብሎና ረዘም ብሎ ይነገራል። ጭነቱ ከተሳሳተ ቃሉ ላይገባ ይችላል። በትልቅ ፊደል የተጻፈው ክፍል ጠንከር ብሎ ይነገራል።"],
+    words:[["banana","ሙዝ","ba-NA-na"],["computer","ኮምፒውተር","com-PU-ter"],["hotel","ሆቴል","ho-TEL"],["hospital","ሆስፒታል","HOS-pi-tal"],
+    ["important","አስፈላጊ","im-POR-tant"],["photograph","ፎቶግራፍ","PHO-to-graph"],["photography","ፎቶ ማንሳት","pho-TO-gra-phy"],
+    ["teacher","መምህር","TEA-cher"],["tomorrow","ነገ","to-MOR-row"],["Ethiopia","ኢትዮጵያ","E-thi-O-pi-a"]]},
+  { id:"p-tone", level:"pron", hintLabel:"Tone", en:"Questions: up or down?", am:"የጥያቄ ድምፅ",
+    tip:["Yes / no questions usually go UP at the end: Are you ready? ↗. Questions with where, what, when or how usually go DOWN: Where do you live? ↘.",
+         "በ'አዎ / አይ' የሚመለሱ ጥያቄዎች መጨረሻ ላይ ድምፁ ከፍ ይላል፡ Are you ready? ↗። በ Where, What, When, How የሚጀምሩ ጥያቄዎች ደግሞ ድምፁ ዝቅ ይላል፡ Where do you live? ↘።"],
+    words:[["Are you ready?","ዝግጁ ነዎት?","up ↗"],["Do you like coffee?","ቡና ይወዳሉ?","up ↗"],["Is this your bag?","ይሄ ቦርሳዎ ነው?","up ↗"],
+    ["Can you help me?","ሊረዱኝ ይችላሉ?","up ↗"],["Where do you live?","የት ነው የሚኖሩት?","down ↘"],["What is your name?","ስምዎ ማን ነው?","down ↘"],
+    ["When does it start?","መቼ ይጀምራል?","down ↘"],["How much is it?","ስንት ነው?","down ↘"],["Is it far?","ሩቅ ነው?","up ↗"],["Why are you sad?","ለምን አዘኑ?","down ↘"]]}
+];
+const SCENARIOS = [
+  { id:"free",  en:"Free talk",        am:"ነፃ ውይይት",      start:"Hi! I'm your English tutor. How are you today?" },
+  { id:"intro", en:"Meeting someone",  am:"ሰው መተዋወቅ",     start:"Hello! Nice to meet you. What's your name, and where are you from?" },
+  { id:"food",  en:"At a restaurant",  am:"ምግብ ቤት",        start:"Welcome to our restaurant! What would you like to order today?" },
+  { id:"shop",  en:"At the market",    am:"ገበያ",            start:"Good afternoon! What are you looking for today?" },
+  { id:"job",   en:"Job interview",    am:"የስራ ቃለ መጠይቅ", start:"Good morning, please have a seat. Can you tell me a little about yourself?" }
+];
+
+// ---- extra examples (merged into LESSONS below) ----
+const MORE = {
+  greet:[["Hi","ሰላም","ሃይ"],["Good afternoon","እንደምን ዋሉ","ጉድ አፍተርኑን"],["Good evening","እንደምን አመሹ","ጉድ ኢቭኒንግ"],
+    ["I'm fine, thank you.","ደህና ነኝ፣ አመሰግናለሁ።","አይም ፋይን፣ (th)ንክ ዩ"],["And you?","እርስዎስ?","ኤንድ ዩ?"],["What is your name?","ስምዎ ማን ነው?","ዋት ኢዝ ዮር ኔም?"],
+    ["My name is Abebe.","ስሜ አበበ ነው።","ማይ ኔም ኢዝ አበበ"],["Nice to meet you.","ስለተዋወቅን ደስ ብሎኛል።","ናይስ ቱ ሚት ዩ"],["Where are you from?","ከየት ነዎት?","ዌር አር ዩ ፍሮም?"],
+    ["I am from Ethiopia.","ከኢትዮጵያ ነኝ።","አይ አም ፍሮም ኢትዮጵያ"],["Welcome","እንኳን ደህና መጡ","ዌልከም"],["Excuse me","ይቅርታ (ለመጠየቅ)","ኤክስኪውዝ ሚ"],
+    ["You're welcome","ምንም አይደል","ዩር ዌልከም"],["See you tomorrow","ነገ እንገናኝ","ሲ ዩ ቱሞሮው"],["Have a nice day","መልካም ቀን","ሃቭ ኧ ናይስ ዴይ"],
+    ["Good luck","መልካም እድል","ጉድ ላክ"],["Congratulations","እንኳን ደስ አለዎት","ኮንግራቹሌሽንስ"],["Happy birthday","መልካም ልደት","ሃፒ በር(th)ዴይ"],
+    ["Happy New Year","መልካም አዲስ ዓመት","ሃፒ ኒው ዪር"],["Thank you very much","በጣም አመሰግናለሁ","(th)ንክ ዩ ቬሪ መች"],["No problem","ችግር የለም","ኖ ፕሮብለም"],
+    ["How old are you?","ዕድሜዎ ስንት ነው?","ሃው ኦልድ አር ዩ?"],["I am twenty years old.","ሃያ ዓመቴ ነው።","አይ አም ትዌንቲ ዪርስ ኦልድ"],["Long time no see","ከተያየን ቆየን","ሎንግ ታይም ኖ ሲ"],
+    ["Take care","ራስዎን ይጠብቁ","ቴክ ኬር"],["Good to see you","በማየቴ ደስ ብሎኛል","ጉድ ቱ ሲ ዩ"],["This is my friend.","ይህ ጓደኛዬ ነው።","(th)ስ ኢዝ ማይ ፍሬንድ"],
+    ["Come in, please.","እባክዎ ይግቡ።","ካም ኢን፣ ፕሊዝ"],["Sit down, please.","እባክዎ ይቀመጡ።","ሲት ዳውን፣ ፕሊዝ"],["Okay","እሺ","ኦኬ"]],
+  num:[["Zero","ዜሮ","ዚሮ"],["Eleven","አስራ አንድ","ኢሌቨን"],["Twelve","አስራ ሁለት","ትዌልቭ"],["Thirteen","አስራ ሶስት","(th)ርቲን"],["Fourteen","አስራ አራት","ፎርቲን"],
+    ["Fifteen","አስራ አምስት","ፊፍቲን"],["Sixteen","አስራ ስድስት","ሲክስቲን"],["Seventeen","አስራ ሰባት","ሰቨንቲን"],["Eighteen","አስራ ስምንት","ኤይቲን"],["Nineteen","አስራ ዘጠኝ","ናይንቲን"],
+    ["Twenty","ሃያ","ትዌንቲ"],["Thirty","ሰላሳ","(th)ርቲ"],["Forty","አርባ","ፎርቲ"],["Fifty","ሃምሳ","ፊፍቲ"],["Sixty","ስልሳ","ሲክስቲ"],
+    ["Seventy","ሰባ","ሰቨንቲ"],["Eighty","ሰማንያ","ኤይቲ"],["Ninety","ዘጠና","ናይንቲ"],["One hundred","መቶ","ዋን ሃንድረድ"],["One thousand","አንድ ሺህ","ዋን (th)ውዘንድ"],
+    ["One million","አንድ ሚሊዮን","ዋን ሚሊየን"],["Twenty-five","ሃያ አምስት","ትዌንቲ ፋይቭ"],["First","አንደኛ","ፈርስት"],["Second","ሁለተኛ","ሰከንድ"],["Third","ሶስተኛ","(th)ርድ"],
+    ["Half","ግማሽ","ሃፍ"],["How many?","ስንት?","ሃው ሜኒ?"],["I have three brothers.","ሶስት ወንድሞች አሉኝ።","አይ ሃቭ (th)ሪ ብራ(th)ርስ"],
+    ["It costs fifty birr.","ሃምሳ ብር ያስከፍላል።","ኢት ኮስትስ ፊፍቲ ብር"],["I am thirty years old.","ሰላሳ ዓመቴ ነው።","አይ አም (th)ርቲ ዪርስ ኦልድ"]],
+  "g-be":[["I am happy.","ደስተኛ ነኝ።"],["You are late.","አርፍደሃል።"],["He is a doctor.","እሱ ሐኪም ነው።"],["She is a nurse.","እሷ ነርስ ናት።"],
+    ["It is my phone.","ስልኬ ነው።"],["We are from Gondar.","እኛ ከጎንደር ነን።"],["They are at home.","እነሱ ቤት ናቸው።"],["I am not tired.","አልደከመኝም።"],
+    ["He is not here.","እሱ እዚህ የለም።"],["She is not at school.","እሷ ትምህርት ቤት የለችም።"],["We are not ready.","ዝግጁ አይደለንም።"],["Are you a student?","ተማሪ ነህ?"],
+    ["Is he your father?","እሱ አባትህ ነው?"],["Is it cold today?","ዛሬ ቀዝቃዛ ነው?"],["Yes, I am.","አዎ፣ ነኝ።"],["No, he isn't.","አይ፣ አይደለም።"],
+    ["My name is Hana.","ስሜ ሐና ነው።"],["The water is cold.","ውሃው ቀዝቃዛ ነው።"],["The children are happy.","ልጆቹ ደስተኛ ናቸው።"],["My mother is at the market.","እናቴ ገበያ ናት።"],
+    ["Addis Ababa is a big city.","አዲስ አበባ ትልቅ ከተማ ናት።"],["I am at work.","ስራ ላይ ነኝ።"],["You are very kind.","በጣም ደግ ነህ።"],["He is twenty years old.","እሱ ሃያ ዓመቱ ነው።"],
+    ["She is beautiful.","እሷ ቆንጆ ናት።"],["We are a family.","እኛ ቤተሰብ ነን።"],["They are teachers.","እነሱ መምህራን ናቸው።"],["It is ten o'clock.","አራት ሰዓት ነው።"],
+    ["The book is on the table.","መጽሐፉ ጠረጴዛው ላይ ነው።"],["Where are you?","የት ነህ?"]],
+  family:[["Son","ወንድ ልጅ","ሳን"],["Daughter","ሴት ልጅ","ዶተር"],["Baby","ህፃን","ቤቢ"],["Parents","ወላጆች","ፔረንትስ"],["Grandfather","አያት (ወንድ)","ግራንድፋ(th)ር"],
+    ["Uncle","አጎት","አንክል"],["Aunt","አክስት","አንት"],["Cousin","የአጎት/የአክስት ልጅ","ካዚን"],["Nephew","የወንድም/የእህት ልጅ (ወንድ)","ኔፊው"],["Niece","የወንድም/የእህት ልጅ (ሴት)","ኒስ"],
+    ["Brother-in-law","አማች (ወንድ)","ብራ(th)ር ኢን ሎ"],["Mother-in-law","አማት (ሴት)","ማ(th)ር ኢን ሎ"],["Twins","መንትያ","ትዊንስ"],["Neighbour","ጎረቤት","ኔይበር"],["Relative","ዘመድ","ሬለቲቭ"],
+    ["Boy","ወንድ ልጅ (ልጅ)","ቦይ"],["Girl","ሴት ልጅ (ልጅ)","ገርል"],["Man","ሰው (ወንድ)","ማን"],["Woman","ሴት","ውመን"],["People","ሰዎች","ፒፕል"],
+    ["Married","ያገባ","ማሪድ"],["Single","ያላገባ","ሲንግል"],["This is my mother.","ይህች እናቴ ናት።","(th)ስ ኢዝ ማይ ማ(th)ር"],["I have two sisters.","ሁለት እህቶች አሉኝ።","አይ ሃቭ ቱ ሲስተርስ"],
+    ["My father is a farmer.","አባቴ ገበሬ ነው።","ማይ ፋ(th)ር ኢዝ ኧ ፋርመር"],["Do you have children?","ልጆች አሉዎት?","ዱ ዩ ሃቭ ቺልድረን?"],
+    ["My brother lives in Hawassa.","ወንድሜ ሐዋሳ ይኖራል።","ማይ ብራ(th)ር ሊቭስ ኢን ሐዋሳ"],["We are a big family.","እኛ ትልቅ ቤተሰብ ነን።","ዊ አር ኧ ቢግ ፋሚሊ"],
+    ["I love my family.","ቤተሰቤን እወዳለሁ።","አይ ላቭ ማይ ፋሚሊ"],["Her husband is a teacher.","ባሏ መምህር ነው።","ሀር ሀዝበንድ ኢዝ ኧ ቲቸር"]],
+  colors:[["Purple","ሐምራዊ","ፐርፕል"],["Gold","ወርቃማ","ጎልድ"],["Silver","ብርማ","ሲልቨር"],["Dark blue","ጥቁር ሰማያዊ","ዳርክ ብሉ"],["Light blue","ፈዛዛ ሰማያዊ","ላይት ብሉ"],
+    ["Dark green","ጥቁር አረንጓዴ","ዳርክ ግሪን"],["Light green","ፈዛዛ አረንጓዴ","ላይት ግሪን"],["Colour","ቀለም","ካለር"],["What colour is it?","ምን ቀለም ነው?","ዋት ካለር ኢዝ ኢት?"],
+    ["It is red.","ቀይ ነው።","ኢት ኢዝ ሬድ"],["My car is white.","መኪናዬ ነጭ ነው።","ማይ ካር ኢዝ ዋይት"],["The sea is blue.","ባሕሩ ሰማያዊ ነው።","(th)ኧ ሲ ኢዝ ብሉ"],
+    ["Grass is green.","ሣር አረንጓዴ ነው።","ግራስ ኢዝ ግሪን"],["Bananas are yellow.","ሙዝ ቢጫ ነው።","በናናስ አር የሎው"],["I like the colour green.","አረንጓዴ ቀለም እወዳለሁ።","አይ ላይክ (th)ኧ ካለር ግሪን"],
+    ["Her dress is pink.","ቀሚሷ ሮዝ ነው።","ሀር ድሬስ ኢዝ ፒንክ"],["The Ethiopian flag is green, yellow and red.","የኢትዮጵያ ሰንደቅ ዓላማ አረንጓዴ፣ ቢጫና ቀይ ነው።","(th)ኢ ኢትዮፒያን ፍላግ ኢዝ ግሪን፣ የሎው ኤንድ ሬድ"],
+    ["Black coffee","ጥቁር ቡና","ብላክ ኮፊ"],["A white shirt","ነጭ ሸሚዝ","ኧ ዋይት ሸርት"],["Red shoes","ቀይ ጫማ","ሬድ ሹዝ"],["A blue bag","ሰማያዊ ቦርሳ","ኧ ብሉ ባግ"],
+    ["Brown eyes","ቡናማ ዓይኖች","ብራውን አይዝ"],["Black hair","ጥቁር ፀጉር","ብላክ ሄር"],["Grey clouds","ግራጫ ደመናዎች","ግሬይ ክላውድስ"],["A yellow taxi","ቢጫ ታክሲ","ኧ የሎው ታክሲ"],
+    ["Green tea","አረንጓዴ ሻይ","ግሪን ቲ"],["Orange juice","የብርቱካን ጭማቂ","ኦሬንጅ ጁስ"],["What is your favourite colour?","በጣም የሚወዱት ቀለም ምንድን ነው?","ዋት ኢዝ ዮር ፌቨሪት ካለር?"],
+    ["My favourite colour is blue.","በጣም የምወደው ቀለም ሰማያዊ ነው።","ማይ ፌቨሪት ካለር ኢዝ ብሉ"],["Blue and white","ሰማያዊና ነጭ","ብሉ ኤንድ ዋይት"]],
+  "g-order":[["I drink water.","ውሃ እጠጣለሁ።"],["He eats injera.","እሱ እንጀራ ይበላል።"],["She reads the newspaper.","እሷ ጋዜጣ ታነባለች።"],["We watch TV.","እኛ ቴሌቪዥን እናያለን።"],
+    ["They sell clothes.","እነሱ ልብስ ይሸጣሉ።"],["I like music.","ሙዚቃ እወዳለሁ።"],["My father drives a taxi.","አባቴ ታክሲ ይነዳል።"],["The boy kicks the ball.","ልጁ ኳሱን ይመታል።"],
+    ["I write a letter.","ደብዳቤ እጽፋለሁ።"],["She cleans the house.","እሷ ቤቱን ታጸዳለች።"],["We eat dinner at home.","እራት ቤት እንበላለን።"],["I go to school every day.","በየቀኑ ትምህርት ቤት እሄዳለሁ።"],
+    ["He drinks coffee in the morning.","እሱ ጠዋት ቡና ይጠጣል።"],["I see a big house.","ትልቅ ቤት አያለሁ።"],["She has a red dress.","እሷ ቀይ ቀሚስ አላት።"],["We need some bread.","ትንሽ ዳቦ እንፈልጋለን።"],
+    ["They live in a small village.","እነሱ በትንሽ መንደር ይኖራሉ።"],["I study English at night.","ማታ እንግሊዝኛ አጠናለሁ።"],["My sister makes coffee.","እህቴ ቡና ታፈላለች።"],
+    ["The teacher helps the students.","መምህሩ ተማሪዎቹን ይረዳል።"],["I buy fruit at the market.","ከገበያ ፍራፍሬ እገዛለሁ።"],["He opens the door.","እሱ በሩን ይከፍታል።"],
+    ["We visit our grandmother.","አያታችንን እንጠይቃለን።"],["She sings a song.","እሷ ዘፈን ትዘፍናለች።"],["I wash my clothes.","ልብሴን አጥባለሁ።"],["They play cards.","እነሱ ካርታ ይጫወታሉ።"],
+    ["The baby drinks milk.","ህፃኑ ወተት ይጠጣል።"],["I know the answer.","መልሱን አውቃለሁ።"],["He calls his mother.","እሱ ለእናቱ ይደውላል።"],["We love Ethiopian food.","የኢትዮጵያ ምግብ እንወዳለን።"]],
+  food:[["Injera","እንጀራ","ኢንጀራ"],["Sugar","ስኳር","ሹገር"],["Oil","ዘይት","ኦይል"],["Butter","ቅቤ","ባተር"],["Honey","ማር","ሃኒ"],
+    ["Potato","ድንች","ፖቴቶ"],["Tomato","ቲማቲም","ቶሜቶ"],["Onion","ሽንኩርት","ኦንየን"],["Garlic","ነጭ ሽንኩርት","ጋርሊክ"],["Pepper","በርበሬ","ፔፐር"],
+    ["Banana","ሙዝ","በናና"],["An orange","ብርቱካን","አን ኦሬንጅ"],["Apple","ፖም","አፕል"],["Mango","ማንጎ","ማንጎ"],["Chicken","ዶሮ","ቺክን"],
+    ["Fish","አሳ","ፊሽ"],["Beans","ባቄላ","ቢንስ"],["Lentils","ምስር","ሌንቲልስ"],["Cabbage","ጎመን","ካቢጅ"],["Cheese","አይብ","ቺዝ"],
+    ["Juice","ጭማቂ","ጁስ"],["Breakfast","ቁርስ","ብሬክፋስት"],["Lunch","ምሳ","ላንች"],["Dinner","እራት","ዲነር"],["Hungry","የራበው","ሀንግሪ"],
+    ["Delicious","በጣም የሚጣፍጥ","ዲሊሸስ"],["Spicy","የሚያቃጥል","ስፓይሲ"],["Sweet","ጣፋጭ","ስዊት"],["A cup of coffee","አንድ ሲኒ ቡና","ኧ ካፕ ኦቭ ኮፊ"],["A glass of water","አንድ ብርጭቆ ውሃ","ኧ ግላስ ኦቭ ዎተር"]],
+  verbs:[["Run","መሮጥ","ራን"],["Walk","መራመድ","ዎክ"],["Sit","መቀመጥ","ሲት"],["Stand","መቆም","ስታንድ"],["Open","መክፈት","ኦፕን"],
+    ["Close","መዝጋት","ክሎዝ"],["Give","መስጠት","ጊቭ"],["Take","መውሰድ","ቴክ"],["Buy","መግዛት","ባይ"],["Sell","መሸጥ","ሴል"],
+    ["Cook","ማብሰል","ኩክ"],["Wash","ማጠብ","ዎሽ"],["Clean","ማጽዳት","ክሊን"],["Play","መጫወት","ፕሌይ"],["Help","መርዳት","ሄልፕ"],
+    ["Learn","መማር","ለርን"],["Teach","ማስተማር","ቲች"],["Watch","መመልከት","ዎች"],["See","ማየት","ሲ"],["Hear","መስማት","ሂር"],
+    ["Know","ማወቅ","ኖው"],["Think","ማሰብ","(th)ንክ"],["Want","መፈለግ","ዎንት"],["Like","መውደድ","ላይክ"],["Love","ማፍቀር","ላቭ"],
+    ["Call","መደወል","ኮል"],["Wait","መጠበቅ","ዌይት"],["Start","መጀመር","ስታርት"],["Finish","መጨረስ","ፊኒሽ"],["Sing","መዝፈን","ሲንግ"]],
+  "g-present":[["She works in a bank.","እሷ ባንክ ውስጥ ትሰራለች።"],["He lives with his parents.","እሱ ከወላጆቹ ጋር ይኖራል።"],["My father reads the news.","አባቴ ዜና ያነባል።"],
+    ["The shop opens at eight.","ሱቁ ሁለት ሰዓት ይከፈታል።"],["It rains a lot in July.","በሐምሌ ብዙ ይዘንባል።"],["She teaches English.","እሷ እንግሊዝኛ ታስተምራለች።"],
+    ["He plays football on Saturday.","እሱ ቅዳሜ እግር ኳስ ይጫወታል።"],["My brother studies medicine.","ወንድሜ ሕክምና ያጠናል።"],["She watches TV at night.","እሷ ማታ ቴሌቪዥን ታያለች።"],
+    ["He washes his car.","እሱ መኪናውን ያጥባል።"],["The bus leaves at nine.","አውቶቡሱ ሶስት ሰዓት ይነሳል።"],["She knows my name.","እሷ ስሜን ታውቃለች።"],
+    ["He wants a new phone.","እሱ አዲስ ስልክ ይፈልጋል።"],["My sister likes music.","እህቴ ሙዚቃ ትወዳለች።"],["He does his homework.","እሱ የቤት ስራውን ይሰራል።"],
+    ["She has a big family.","እሷ ትልቅ ቤተሰብ አላት።"],["I don't eat meat.","ስጋ አልበላም።"],["He doesn't drink coffee.","እሱ ቡና አይጠጣም።"],
+    ["She doesn't work on Sunday.","እሷ እሁድ አትሰራም።"],["We don't live here.","እዚህ አንኖርም።"],["Do you speak English?","እንግሊዝኛ ትናገራለህ?"],
+    ["Does he work here?","እሱ እዚህ ይሰራል?"],["Does she like tea?","እሷ ሻይ ትወዳለች?"],["Yes, she does.","አዎ፣ ትወዳለች።"],["No, he doesn't.","አይ፣ እሱ አያደርግም።"],
+    ["The baby cries at night.","ህፃኑ ማታ ያለቅሳል።"],["My mother gets up early.","እናቴ ማልዳ ትነሳለች።"],["He eats injera every day.","እሱ በየቀኑ እንጀራ ይበላል።"],
+    ["She buys vegetables at the market.","እሷ ከገበያ አትክልት ትገዛለች።"],["It costs ten birr.","አስር ብር ያስከፍላል።"]],
+  days:[["January","ጃንዋሪ","ጃንዋሪ"],["February","ፌብሩዋሪ","ፌብሩዋሪ"],["March","ማርች","ማርች"],["April","ኤፕሪል","ኤፕሪል"],["May","ሜይ","ሜይ"],
+    ["June","ጁን","ጁን"],["July","ጁላይ","ጁላይ"],["August","ኦገስት","ኦገስት"],["September","ሴፕቴምበር","ሴፕቴምበር"],["October","ኦክቶበር","ኦክቶበር"],
+    ["November","ኖቬምበር","ኖቬምበር"],["December","ዲሴምበር","ዲሴምበር"],["Week","ሳምንት","ዊክ"],["Month","ወር","ማን(th)"],["Year","ዓመት","ዪር"],
+    ["Morning","ጠዋት","ሞርኒንግ"],["Afternoon","ከሰዓት በኋላ","አፍተርኑን"],["Evening","ምሽት","ኢቭኒንግ"],["Night","ሌሊት","ናይት"],["Now","አሁን","ናው"],
+    ["Later","በኋላ","ሌይተር"],["Weekend","የሳምንት መጨረሻ","ዊኬንድ"],["Every day","በየቀኑ","ኤቭሪ ዴይ"],["Next week","የሚቀጥለው ሳምንት","ኔክስት ዊክ"],["Last year","ያለፈው ዓመት","ላስት ዪር"],
+    ["Hour","ሰዓት","አወር"],["Holiday","በዓል","ሆሊዴይ"],["What day is it today?","ዛሬ ምን ቀን ነው?","ዋት ዴይ ኢዝ ኢት ቱዴይ?"],["Today is Monday.","ዛሬ ሰኞ ነው።","ቱዴይ ኢዝ መንዴይ"],
+    ["See you on Friday.","ዓርብ እንገናኝ።","ሲ ዩ ኦን ፍራይዴይ"]],
+  body:[["Face","ፊት","ፌስ"],["Neck","አንገት","ኔክ"],["Shoulder","ትከሻ","ሾልደር"],["Arm","ክንድ","አርም"],["Finger","ጣት","ፊንገር"],
+    ["Foot","የእግር መዳፍ","ፉት"],["Knee","ጉልበት","ኒ"],["Back","ጀርባ","ባክ"],["Stomach","ሆድ","ስታመክ"],["Chest","ደረት","ቼስት"],
+    ["Skin","ቆዳ","ስኪን"],["Blood","ደም","ብላድ"],["Bone","አጥንት","ቦን"],["Lips","ከንፈር","ሊፕስ"],["Tongue","ምላስ","ታንግ"],
+    ["Eyebrow","ቅንድብ","አይብራው"],["Beard","ጢም","ቢርድ"],["Toe","የእግር ጣት","ቶ"],["Teeth","ጥርሶች","ቲ(th)"],["Brain","አንጎል","ብሬን"],
+    ["Body","ሰውነት","ቦዲ"],["Left hand","ግራ እጅ","ሌፍት ሀንድ"],["Right hand","ቀኝ እጅ","ራይት ሀንድ"],["My head hurts.","ራሴን ያመኛል።","ማይ ሄድ ሀርትስ"],
+    ["I have a headache.","ራስ ምታት አለብኝ።","አይ ሃቭ ኧ ሄዴክ"],["My stomach hurts.","ሆዴን ያመኛል።","ማይ ስታመክ ሀርትስ"],["Wash your hands.","እጅህን ታጠብ።","ዎሽ ዮር ሀንድስ"],
+    ["Open your mouth.","አፍህን ክፈት።","ኦፕን ዮር ማው(th)"],["Close your eyes.","ዓይንህን ጨፍን።","ክሎዝ ዮር አይዝ"],["She has long hair.","እሷ ረጅም ፀጉር አላት።","ሺ ሃዝ ሎንግ ሄር"]],
+  "g-articles":[["a pen","አንድ እስክሪብቶ"],["an onion","አንድ ሽንኩርት"],["a house","አንድ ቤት"],["an umbrella","አንድ ጃንጥላ"],["a university","አንድ ዩኒቨርሲቲ"],
+    ["an idea","አንድ ሀሳብ"],["a doctor","አንድ ሐኪም"],["an engineer","አንድ መሐንዲስ"],["a uniform","አንድ የደንብ ልብስ"],["an office","አንድ ቢሮ"],
+    ["I want an egg.","እንቁላል እፈልጋለሁ።"],["He is an engineer.","እሱ መሐንዲስ ነው።"],["She is an honest woman.","እሷ ታማኝ ሴት ናት።"],["It is a good idea.","ጥሩ ሀሳብ ነው።"],
+    ["I need a taxi.","ታክሲ እፈልጋለሁ።"],["The taxi is here.","ታክሲው እዚህ ነው።"],["Open the window, please.","እባክዎ መስኮቱን ይክፈቱ።"],["The children are at school.","ልጆቹ ትምህርት ቤት ናቸው።"],
+    ["I bought a shirt. The shirt is blue.","ሸሚዝ ገዛሁ። ሸሚዙ ሰማያዊ ነው።"],["The moon is bright tonight.","ዛሬ ማታ ጨረቃዋ ብሩህ ናት።"],["Where is the bank?","ባንኩ የት ነው?"],
+    ["She has an old car.","እሷ አሮጌ መኪና አላት።"],["He eats an apple every day.","እሱ በየቀኑ ፖም ይበላል።"],["We live in a big city.","እኛ በትልቅ ከተማ እንኖራለን።"],
+    ["The coffee in Ethiopia is very good.","የኢትዮጵያ ቡና በጣም ጥሩ ነው።"],["Can I have a glass of water?","አንድ ብርጭቆ ውሃ ማግኘት እችላለሁ?"],["My father is a farmer.","አባቴ ገበሬ ነው።"],
+    ["It takes an hour.","አንድ ሰዓት ይወስዳል።"],["Pass the salt, please.","እባክህ ጨውን አቀብለኝ።"],["The sky is blue.","ሰማዩ ሰማያዊ ነው።"]],
+  home:[["Wall","ግድግዳ","ዎል"],["Roof","ጣሪያ","ሩፍ"],["Floor","ወለል","ፍሎር"],["Bedroom","መኝታ ቤት","ቤድሩም"],["Living room","ሳሎን","ሊቪንግ ሩም"],
+    ["Sofa","ሶፋ","ሶፋ"],["Lamp","መብራት","ላምፕ"],["Mirror","መስታወት","ሚረር"],["Cup","ሲኒ","ካፕ"],["Plate","ሳህን","ፕሌት"],
+    ["Spoon","ማንኪያ","ስፑን"],["Fork","ሹካ","ፎርክ"],["Knife","ቢላዋ","ናይፍ"],["Pot","ድስት","ፖት"],["Fridge","ማቀዝቀዣ","ፍሪጅ"],
+    ["Stove","ምድጃ","ስቶቭ"],["Television","ቴሌቪዥን","ቴሌቪዥን"],["Phone","ስልክ","ፎን"],["Blanket","ብርድ ልብስ","ብላንኬት"],["Pillow","ትራስ","ፒሎው"],
+    ["Clock","ሰዓት (የግድግዳ)","ክሎክ"],["Garden","የአትክልት ቦታ","ጋርደን"],["Stairs","ደረጃ","ስቴርስ"],["Toilet","መጸዳጃ ቤት","ቶይሌት"],["Shower","ሻወር","ሻወር"],
+    ["Towel","ፎጣ","ታወል"],["Soap","ሳሙና","ሶፕ"],["Turn on the light.","መብራቱን አብራ።","ተርን ኦን (th)ኧ ላይት"],["Turn off the TV.","ቴሌቪዥኑን አጥፋ።","ተርን ኦፍ (th)ኧ ቲቪ"],
+    ["My room is clean.","ክፍሌ ንጹህ ነው።","ማይ ሩም ኢዝ ክሊን"]],
+  describe:[["Tall","ረጅም (ቁመት)","ቶል"],["Short","አጭር","ሾርት"],["Long","ረጅም","ሎንግ"],["Fast","ፈጣን","ፋስት"],["Slow","ቀርፋፋ","ስሎው"],
+    ["Easy","ቀላል","ኢዚ"],["Difficult","አስቸጋሪ","ዲፊከልት"],["Heavy","ከባድ","ሄቪ"],["Fresh","ትኩስ","ፍሬሽ"],["Dirty","ቆሻሻ","ደርቲ"],
+    ["Beautiful","ቆንጆ","ቢዩቲፉል"],["Ugly","አስቀያሚ","አግሊ"],["Rich","ሀብታም","ሪች"],["Poor","ድሃ","ፑር"],["Young","ወጣት","ያንግ"],
+    ["Strong","ጠንካራ","ስትሮንግ"],["Weak","ደካማ","ዊክ"],["Expensive","ውድ","ኤክስፔንሲቭ"],["Cheap","ርካሽ","ቺፕ"],["Full","ሙሉ","ፉል"],
+    ["Empty","ባዶ","ኤምፕቲ"],["Busy","ስራ የበዛበት","ቢዚ"],["Quiet","ጸጥ ያለ","ኳየት"],["Loud","ጮክ ያለ","ላውድ"],["Kind","ደግ","ካይንድ"],
+    ["Angry","የተናደደ","አንግሪ"],["Sick","የታመመ","ሲክ"],["Wet","እርጥብ","ዌት"],["Dry","ደረቅ","ድራይ"],["Very big","በጣም ትልቅ","ቬሪ ቢግ"]],
+  town:[["Hotel","ሆቴል","ሆቴል"],["Post office","ፖስታ ቤት","ፖስት ኦፊስ"],["Police station","ፖሊስ ጣቢያ","ፖሊስ ስቴሽን"],["Pharmacy","ፋርማሲ","ፋርማሲ"],["Supermarket","ሱፐርማርኬት","ሱፐርማርኬት"],
+    ["Cafe","ካፌ","ካፌ"],["Park","መናፈሻ","ፓርክ"],["University","ዩኒቨርሲቲ","ዩኒቨርሲቲ"],["Library","ቤተ መጻሕፍት","ላይብረሪ"],["Airport","አውሮፕላን ማረፊያ","ኤርፖርት"],
+    ["Stadium","ስታዲየም","ስቴዲየም"],["Bridge","ድልድይ","ብሪጅ"],["Street","ጎዳና","ስትሪት"],["City","ከተማ","ሲቲ"],["Village","መንደር","ቪሌጅ"],
+    ["Bakery","ዳቦ ቤት","ቤከሪ"],["Petrol station","ነዳጅ ማደያ","ፔትሮል ስቴሽን"],["Barber","ፀጉር ቤት","ባርበር"],["Cinema","ሲኒማ","ሲኒማ"],["Taxi","ታክሲ","ታክሲ"],
+    ["Bus","አውቶቡስ","ባስ"],["Traffic light","የትራፊክ መብራት","ትራፊክ ላይት"],["Museum","ሙዚየም","ሚውዚየም"],["Factory","ፋብሪካ","ፋክተሪ"],
+    ["Where is the hospital?","ሆስፒታሉ የት ነው?","ዌር ኢዝ (th)ኧ ሆስፒታል?"],["It is near the bank.","ከባንኩ አጠገብ ነው።","ኢት ኢዝ ኒር (th)ኧ ባንክ"],
+    ["It is far from here.","ከዚህ ሩቅ ነው።","ኢት ኢዝ ፋር ፍሮም ሂር"],["I am going to the market.","ወደ ገበያ እየሄድኩ ነው።","አይ አም ጎዊንግ ቱ (th)ኧ ማርኬት"],
+    ["Embassy","ኤምባሲ","ኤምባሲ"],["Gym","ጂም","ጂም"]],
+  daily:[["Can you help me?","ሊረዱኝ ይችላሉ?","ካን ዩ ሄልፕ ሚ?"],["Can you repeat that?","ሊደግሙት ይችላሉ?","ካን ዩ ሪፒት (th)ት?"],["What does this mean?","ይሄ ምን ማለት ነው?","ዋት ዳዝ (th)ስ ሚን?"],
+    ["How do you say this in English?","ይሄን በእንግሊዝኛ እንዴት ይሉታል?","ሃው ዱ ዩ ሴይ (th)ስ ኢን ኢንግሊሽ?"],["I don't know","አላውቅም","አይ ዶንት ኖው"],["I know","አውቃለሁ","አይ ኖው"],
+    ["Let's go","እንሂድ","ሌትስ ጎ"],["Wait a minute","አንድ ደቂቃ ቆይ","ዌይት ኧ ሚኒት"],["Come here","ና ወዲህ","ካም ሂር"],["Be careful","ተጠንቀቅ","ቢ ኬርፉል"],
+    ["Hurry up","ፍጠን","ሃሪ አፕ"],["I'm sorry, I'm late","ይቅርታ፣ አርፍጃለሁ","አይም ሶሪ፣ አይም ሌይት"],["It doesn't matter","ችግር የለውም","ኢት ዳዝንት ማተር"],
+    ["Of course","እርግጥ ነው","ኦቭ ኮርስ"],["Maybe","ምናልባት","ሜይቢ"],["I agree","እስማማለሁ","አይ ኧግሪ"],["That's right","ትክክል ነው","(th)ትስ ራይት"],
+    ["I like it","ወድጄዋለሁ","አይ ላይክ ኢት"],["I am busy","ስራ በዝቶብኛል","አይ አም ቢዚ"],["I am ready","ዝግጁ ነኝ","አይ አም ሬዲ"],
+    ["Where do you live?","የት ነው የሚኖሩት?","ዌር ዱ ዩ ሊቭ?"],["I live near here","እዚህ አቅራቢያ እኖራለሁ","አይ ሊቭ ኒር ሂር"],["What is this?","ይሄ ምንድን ነው?","ዋት ኢዝ (th)ስ?"],
+    ["I'm cold","በርዶኛል","አይም ኮልድ"],["I'm sick","ታምሜአለሁ","አይም ሲክ"],["Call me","ደውልልኝ","ኮል ሚ"],["Good idea","ጥሩ ሀሳብ","ጉድ አይዲያ"],
+    ["Have a good trip","መልካም ጉዞ","ሃቭ ኧ ጉድ ትሪፕ"],["Enjoy your meal","መልካም ምግብ","ኢንጆይ ዮር ሚል"],["Bless you","ይማርህ","ብለስ ዩ"]],
+  work:[["Company","ድርጅት","ካምፓኒ"],["Manager","ሥራ አስኪያጅ","ማኔጀር"],["Worker","ሰራተኛ","ወርከር"],["Engineer","መሐንዲስ","ኢንጂኒር"],["Nurse","ነርስ","ነርስ"],
+    ["Farmer","ገበሬ","ፋርመር"],["Driver","ሹፌር","ድራይቨር"],["Police officer","ፖሊስ","ፖሊስ ኦፊሰር"],["Soldier","ወታደር","ሶልጀር"],["Shopkeeper","ባለሱቅ","ሾፕኪፐር"],
+    ["Chef","ሼፍ (ምግብ አብሳይ)","ሼፍ"],["Lawyer","ጠበቃ","ሎየር"],["Accountant","ሂሳብ ሰራተኛ","አካውንታንት"],["Builder","ግንበኛ","ቢልደር"],["Tailor","ልብስ ሰፊ","ቴለር"],
+    ["Computer","ኮምፒውተር","ኮምፒውተር"],["Email","ኢሜል","ኢሜል"],["Report","ሪፖርት","ሪፖርት"],["Contract","ውል","ኮንትራክት"],["Day off","የእረፍት ቀን","ዴይ ኦፍ"],
+    ["Work hours","የስራ ሰዓት","ዎርክ አወርስ"],["What do you do?","ስራዎ ምንድን ነው?","ዋት ዱ ዩ ዱ?"],["I am a driver.","ሹፌር ነኝ።","አይ አም ኧ ድራይቨር"],
+    ["I work in a hotel.","ሆቴል ውስጥ እሰራለሁ።","አይ ዎርክ ኢን ኧ ሆቴል"],["I am looking for a job.","ስራ እየፈለግሁ ነው።","አይ አም ሉኪንግ ፎር ኧ ጆብ"],
+    ["I start work at eight.","ሁለት ሰዓት ስራ እጀምራለሁ።","አይ ስታርት ዎርክ አት ኤይት"],["My boss is kind.","አለቃዬ ደግ ነው።","ማይ ቦስ ኢዝ ካይንድ"],
+    ["I work hard.","ጠንክሬ እሰራለሁ።","አይ ዎርክ ሃርድ"],["Business","ንግድ","ቢዝነስ"],["Interview","ቃለ መጠይቅ","ኢንተርቪው"]]
+};
+LESSONS.forEach(l => { const extra = MORE[l.id]; if (!extra) return;
+  const seen = new Set(l.words.map(w => w[0]));
+  extra.forEach(w => { if (!seen.has(w[0])){ seen.add(w[0]); l.words.push(w); } }); });
+
+// ---- extra intermediate examples ----
+const MORE_INT = {
+  routine:[["I get up early.","ማልጄ እነሳለሁ።"],["I make my bed.","አልጋዬን አነጥፋለሁ።"],["I get dressed.","ልብሴን እለብሳለሁ።"],["I wash my face.","ፊቴን እታጠባለሁ።"],
+    ["I make coffee for my family.","ለቤተሰቤ ቡና አፈላለሁ።"],["I leave home at half past seven.","ከጠዋቱ አንድ ሰዓት ተኩል ከቤት እወጣለሁ።"],["I take a taxi to work.","ወደ ስራ በታክሲ እሄዳለሁ።"],
+    ["I walk to school.","ወደ ትምህርት ቤት በእግሬ እሄዳለሁ።"],["I start work at eight thirty.","ሁለት ሰዓት ተኩል ስራ እጀምራለሁ።"],["I have lunch at one o'clock.","ሰባት ሰዓት ምሳ እበላለሁ።"],
+    ["I usually eat lunch with my colleagues.","ብዙ ጊዜ ምሳዬን ከስራ ባልደረቦቼ ጋር እበላለሁ።"],["I take a short break in the afternoon.","ከሰዓት በኋላ አጭር እረፍት እወስዳለሁ።"],
+    ["I come home at six.","ከምሽቱ አስራ ሁለት ሰዓት ቤት እገባለሁ።"],["I help my children with their homework.","ልጆቼን የቤት ስራቸውን አግዛቸዋለሁ።"],["I watch the news on TV.","በቴሌቪዥን ዜና አያለሁ።"],
+    ["I read before I sleep.","ከመተኛቴ በፊት አነባለሁ።"],["I always drink tea in the evening.","ሁልጊዜ ምሽት ሻይ እጠጣለሁ።"],["I sometimes go to the gym.","አንዳንድ ጊዜ ወደ ጂም እሄዳለሁ።"],
+    ["I never drink coffee at night.","ማታ በፍጹም ቡና አልጠጣም።"],["On Sundays I go to church.","እሁድ እሁድ ቤተ ክርስቲያን እሄዳለሁ።"],["On Fridays I go to the mosque.","ዓርብ ዓርብ ወደ መስጊድ እሄዳለሁ።"],
+    ["I clean the house on Saturday.","ቅዳሜ ቤቱን አጸዳለሁ።"],["I do the shopping on the weekend.","ቅዳሜና እሁድ ገበያ እወጣለሁ።"],["I call my parents every evening.","በየምሽቱ ለወላጆቼ እደውላለሁ።"],
+    ["I check my phone in the morning.","ጠዋት ስልኬን እመለከታለሁ።"],["My day starts very early.","ቀኔ በጣም ማልዶ ይጀምራል።"],["I am usually tired in the evening.","ብዙ ጊዜ ምሽት ላይ ይደክመኛል።"],
+    ["What time do you get up?","ስንት ሰዓት ይነሳሉ?"],["How do you go to work?","ወደ ስራ እንዴት ይሄዳሉ?"],["What do you do in the evening?","ምሽት ላይ ምን ያደርጋሉ?"]],
+  "g-cont":[["I am reading a book.","መጽሐፍ እያነበብኩ ነው።"],["She is washing the dishes.","ሳህኖቹን እያጠበች ነው።"],["He is driving to work.","ወደ ስራ እየነዳ ነው።"],
+    ["They are watching a film.","ፊልም እያዩ ነው።"],["We are having dinner.","እራት እየበላን ነው።"],["The children are sleeping.","ልጆቹ ተኝተዋል።"],["My mother is making coffee.","እናቴ ቡና እያፈላች ነው።"],
+    ["It is getting dark.","እየመሸ ነው።"],["The sun is shining.","ፀሐይ እያበራች ነው።"],["I am not working today.","ዛሬ እየሰራሁ አይደለም።"],["She isn't listening.","እሷ እያዳመጠች አይደለም።"],
+    ["They aren't coming.","እነሱ እየመጡ አይደለም።"],["Is he sleeping?","ተኝቷል?"],["Are they studying?","እያጠኑ ነው?"],["What is she doing?","ምን እያደረገች ነው?"],
+    ["Where are you going?","ወዴት እየሄዱ ነው?"],["Why are you laughing?","ለምን እየሳቅክ ነው?"],["Who is speaking?","ማን እየተናገረ ነው?"],["I am waiting for you.","እየጠበቅሁህ ነው።"],
+    ["We are staying at a hotel.","ሆቴል ውስጥ እያረፍን ነው።"],["He is wearing a blue shirt.","ሰማያዊ ሸሚዝ ለብሷል።"],["She is carrying a heavy bag.","ከባድ ቦርሳ ተሸክማለች።"],
+    ["The phone is ringing.","ስልኩ እየጠራ ነው።"],["The water is boiling.","ውሃው እየፈላ ነው።"],["Prices are going up.","ዋጋዎች እየጨመሩ ነው።"],["I am looking for my keys.","ቁልፌን እየፈለግሁ ነው።"],
+    ["At the moment, I am living with my aunt.","አሁን ከአክስቴ ጋር እየኖርኩ ነው።"],["She is studying at university this year.","በዚህ ዓመት ዩኒቨርሲቲ እየተማረች ነው።"],
+    ["Look! The bus is coming.","ተመልከት! አውቶቡሱ እየመጣ ነው።"],["Listen! Someone is knocking.","ስማ! አንድ ሰው በሩን እያንኳኳ ነው።"]],
+  shop:[["Where can I buy shoes?","ጫማ የት መግዛት እችላለሁ?"],["How much are these tomatoes?","እነዚህ ቲማቲሞች ስንት ናቸው?"],["One kilo of onions, please.","እባክዎ አንድ ኪሎ ሽንኩርት።"],
+    ["Half a kilo, please.","እባክዎ ግማሽ ኪሎ።"],["That's too much.","ዋጋው በዛ።"],["Can you lower the price?","ዋጋውን ሊቀንሱልኝ ይችላሉ?"],["What is your last price?","የመጨረሻ ዋጋዎ ስንት ነው?"],
+    ["I'll give you two hundred birr.","ሁለት መቶ ብር እሰጥዎታለሁ።"],["Do you have a bigger size?","ትልቅ መጠን አላችሁ?"],["It's too small for me.","ለእኔ በጣም ትንሽ ነው።"],
+    ["It fits well.","በደንብ ልኬ ነው።"],["I don't like this colour.","ይህን ቀለም አልወደውም።"],["Do you have it in another colour?","በሌላ ቀለም አለ?"],
+    ["Where is the changing room?","መቀየሪያ ክፍሉ የት ነው?"],["Is it on sale?","ቅናሽ ላይ ነው?"],["Can I pay by card?","በካርድ መክፈል እችላለሁ?"],["Can I pay with Telebirr?","በቴሌብር መክፈል እችላለሁ?"],
+    ["I only have cash.","ጥሬ ገንዘብ ብቻ ነው ያለኝ።"],["Do you have change?","ዝርዝር አለዎት?"],["Can I return it?","መመለስ እችላለሁ?"],["It doesn't work.","አይሰራም።"],
+    ["I want to exchange this.","ይሄንን መቀየር እፈልጋለሁ።"],["Can you wrap it, please?","እባክዎ ሊጠቀልሉልኝ ይችላሉ?"],["Can I have a bag?","ፌስታል ማግኘት እችላለሁ?"],
+    ["Is this fresh?","ይሄ ትኩስ ነው?"],["When do you close?","መቼ ትዘጋላችሁ?"],["Is the shop open on Sunday?","ሱቁ እሁድ ክፍት ነው?"],["I'm looking for a gift.","ስጦታ እየፈለግሁ ነው።"],
+    ["How many do you want?","ስንት ይፈልጋሉ?"],["Anything else?","ሌላ ነገር?"]],
+  "g-questions":[["Do they live here?","እነሱ እዚህ ይኖራሉ?"],["Does your brother work?","ወንድምዎ ይሰራል?"],["Do you have a car?","መኪና አለዎት?"],["Does it rain a lot here?","እዚህ ብዙ ይዘንባል?"],
+    ["Is she a teacher?","እሷ መምህር ናት?"],["Are they your children?","እነሱ ልጆችዎ ናቸው?"],["Is it expensive?","ውድ ነው?"],["What is your phone number?","ስልክ ቁጥርዎ ስንት ነው?"],
+    ["Where is your office?","ቢሮዎ የት ነው?"],["When does the shop open?","ሱቁ መቼ ይከፈታል?"],["What time does the bus leave?","አውቶቡሱ ስንት ሰዓት ይነሳል?"],["Who is that man?","ያ ሰው ማነው?"],
+    ["Whose bag is this?","ይሄ የማን ቦርሳ ነው?"],["Which one do you want?","የትኛውን ይፈልጋሉ?"],["How are your parents?","ወላጆችዎ እንዴት ናቸው?"],["How much is the ticket?","ትኬቱ ስንት ነው?"],
+    ["How many children do you have?","ስንት ልጆች አሉዎት?"],["How often do you study English?","እንግሊዝኛ ምን ያህል ጊዜ ያጠናሉ?"],["How far is the airport?","አውሮፕላን ማረፊያው ምን ያህል ይርቃል?"],
+    ["Why do you want to learn English?","ለምን እንግሊዝኛ መማር ይፈልጋሉ?"],["What does your father do?","አባትዎ ምን ይሰራሉ?"],["What kind of music do you like?","ምን አይነት ሙዚቃ ይወዳሉ?"],
+    ["Can I ask you a question?","አንድ ጥያቄ ልጠይቅዎ?"],["Could you help me, please?","እባክዎ ሊረዱኝ ይችላሉ?"],["Can I sit here?","እዚህ መቀመጥ እችላለሁ?"],["Is there a bank near here?","እዚህ አቅራቢያ ባንክ አለ?"],
+    ["Are there any eggs?","እንቁላል አለ?"],["Don't you like it?","አይወዱትም?"],["You're from Ethiopia, aren't you?","ከኢትዮጵያ ነዎት አይደል?"],["What's the weather like today?","ዛሬ የአየሩ ሁኔታ እንዴት ነው?"]],
+  dir:[["How do I get to the station?","ጣቢያው እንዴት እደርሳለሁ?"],["Can you show me on the map?","በካርታው ላይ ሊያሳዩኝ ይችላሉ?"],["Go past the church.","ቤተ ክርስቲያኑን አልፈው ይሂዱ።"],
+    ["Cross the road.","መንገዱን ይሻገሩ።"],["Turn left at the traffic lights.","በትራፊክ መብራቱ ጋር ወደ ግራ ይታጠፉ።"],["Take the second left.","ሁለተኛውን ወደ ግራ ይታጠፉ።"],
+    ["Go straight for two hundred metres.","ለሁለት መቶ ሜትር ቀጥ ብለው ይሂዱ።"],["It's on the left.","በግራ በኩል ነው።"],["It's on the right.","በቀኝ በኩል ነው።"],["It's on the corner.","ጥጉ ላይ ነው።"],
+    ["It's behind the school.","ከትምህርት ቤቱ ጀርባ ነው።"],["It's in front of the bank.","ከባንኩ ፊት ለፊት ነው።"],["It's between the shop and the cafe.","በሱቁና በካፌው መካከል ነው።"],
+    ["It's opposite the post office.","ከፖስታ ቤቱ ትይዩ ነው።"],["It's near the stadium.","ከስታዲየሙ አጠገብ ነው።"],["It's at the end of the street.","መንገዱ መጨረሻ ላይ ነው።"],
+    ["It's on the second floor.","ሁለተኛ ፎቅ ላይ ነው።"],["Go up the stairs.","ደረጃውን ይውጡ።"],["Follow this road.","ይህን መንገድ ይከተሉ።"],["You can't miss it.","በቀላሉ ያገኙታል።"],
+    ["It's about ten minutes by taxi.","በታክሲ አስር ደቂቃ ያህል ነው።"],["Which bus goes to Piassa?","ወደ ፒያሳ የሚሄደው የትኛው አውቶቡስ ነው?"],["Where is the nearest pharmacy?","በቅርብ ያለው ፋርማሲ የት ነው?"],
+    ["Is there a toilet near here?","እዚህ አቅራቢያ መጸዳጃ ቤት አለ?"],["I'm looking for this address.","ይህን አድራሻ እየፈለግሁ ነው።"],["Can you write it down for me?","ሊጽፉልኝ ይችላሉ?"],
+    ["Am I going the right way?","በትክክለኛው መንገድ እየሄድኩ ነው?"],["Sorry, I'm not from here.","ይቅርታ፣ እኔ የዚህ አካባቢ ሰው አይደለሁም።"],["Ask the police officer.","ፖሊሱን ይጠይቁ።"],
+    ["Thank you for your help.","ስለ እርዳታዎ አመሰግናለሁ።"]],
+  "g-past":[["I played football yesterday.","ትናንት እግር ኳስ ተጫወትኩ።"],["She cooked doro wat.","ዶሮ ወጥ ሰራች።"],["We walked to the market.","ወደ ገበያ በእግር ሄድን።"],
+    ["He opened the window.","መስኮቱን ከፈተ።"],["They watched a movie.","ፊልም አዩ።"],["I studied for the exam.","ለፈተናው አጠናሁ።"],["She cleaned the kitchen.","ማዕድ ቤቱን አጸዳች።"],
+    ["I lived in Mekelle for two years.","መቀሌ ለሁለት ዓመት ኖርኩ።"],["We drank coffee together.","አብረን ቡና ጠጣን።"],["He took the bus.","አውቶቡስ ያዘ።"],["I gave her a present.","ስጦታ ሰጠኋት።"],
+    ["She told me the news.","ዜናውን ነገረችኝ።"],["I made a mistake.","ስህተት ሰራሁ።"],["We met at the university.","ዩኒቨርሲቲ ውስጥ ተገናኘን።"],["I found my keys.","ቁልፎቼን አገኘሁ።"],
+    ["He lost his wallet.","የኪስ ቦርሳው ጠፋበት።"],["They left early.","ቀድመው ሄዱ።"],["I slept for nine hours.","ለዘጠኝ ሰዓት ተኛሁ።"],["She sold her old car.","አሮጌ መኪናዋን ሸጠች።"],
+    ["I forgot his name.","ስሙን ረሳሁት።"],["I was at home.","ቤት ነበርኩ።"],["They were very happy.","በጣም ደስተኛ ነበሩ።"],["It was cold yesterday.","ትናንት ቀዝቃዛ ነበር።"],["We were late.","አርፍደን ነበር።"],
+    ["Did she pass the exam?","ፈተናውን አለፈች?"],["Did they win the match?","ጨዋታውን አሸነፉ?"],["Where did you go?","የት ሄዱ?"],["What did you eat?","ምን በሉ?"],
+    ["I didn't see him.","አላየሁትም።"],["She didn't call me.","አልደወለችልኝም።"]],
+  past:[["Two years ago, I started a new job.","ከሁለት ዓመት በፊት አዲስ ስራ ጀመርኩ።"],["I finished school in 2015.","በ2015 ትምህርቴን ጨረስኩ።"],["I grew up in a small town.","ያደግሁት በትንሽ ከተማ ነው።"],
+    ["My father worked as a farmer.","አባቴ በገበሬነት ይሰራ ነበር።"],["We didn't have electricity.","መብራት አልነበረንም።"],["I walked two hours to school every day.","በየቀኑ ወደ ትምህርት ቤት ሁለት ሰዓት በእግሬ እሄድ ነበር።"],
+    ["Life was difficult then.","ያኔ ሕይወት ከባድ ነበር።"],["I remember my first day at school.","የመጀመሪያ የትምህርት ቀኔን አስታውሳለሁ።"],["Last month I travelled to Lalibela.","ባለፈው ወር ወደ ላሊበላ ተጓዝኩ።"],
+    ["We stayed there for three days.","እዚያ ለሶስት ቀን ቆየን።"],["The churches were amazing.","አብያተ ክርስቲያናቱ አስደናቂ ነበሩ።"],["I took a lot of photos.","ብዙ ፎቶዎች አነሳሁ።"],
+    ["I met some interesting people.","አንዳንድ አስደሳች ሰዎችን አገኘሁ።"],["How was your trip?","ጉዞዎ እንዴት ነበር?"],["It was great, thank you.","በጣም ጥሩ ነበር፣ አመሰግናለሁ።"],
+    ["What happened?","ምን ሆነ?"],["I fell and hurt my leg.","ወድቄ እግሬን ተጎዳሁ።"],["The bus broke down on the way.","አውቶቡሱ መንገድ ላይ ተበላሸ።"],["We arrived very late.","በጣም ዘግይተን ደረስን።"],
+    ["I was so tired.","በጣም ደክሞኝ ነበር።"],["Yesterday was my birthday.","ትናንት ልደቴ ነበር።"],["My friends surprised me.","ጓደኞቼ አስደነቁኝ።"],["We celebrated Meskel together.","መስቀልን አብረን አከበርን።"],
+    ["I didn't know that.","ያንን አላውቅም ነበር።"],["I saw him two days ago.","ከሁለት ቀን በፊት አየሁት።"],["When did you come to Addis?","አዲስ አበባ መቼ መጡ?"],["I came here in 2020.","እዚህ የመጣሁት በ2020 ነው።"],
+    ["Did you have a good weekend?","ቅዳሜና እሁድ ጥሩ ነበር?"],["I was born in Dessie.","የተወለድኩት ደሴ ነው።"],["My grandmother told us stories.","አያቴ ተረቶችን ትነግረን ነበር።"]],
+  health:[["I don't feel well.","ጤና አይሰማኝም።"],["I have a sore throat.","ጉሮሮዬን ያመኛል።"],["I have a cold.","ጉንፋን ይዞኛል።"],["My back hurts.","ጀርባዬን ያመኛል።"],["My tooth hurts.","ጥርሴን ያመኛል።"],
+    ["I feel dizzy.","ያዞረኛል።"],["I feel sick.","ያቅለሸልሸኛል።"],["I have diarrhoea.","ተቅማጥ ይዞኛል።"],["I hurt my hand.","እጄን ተጎዳሁ።"],["I am allergic to penicillin.","ፔኒሲሊን አይስማማኝም።"],
+    ["I have high blood pressure.","የደም ግፊት አለብኝ።"],["I have diabetes.","የስኳር በሽታ አለብኝ።"],["How long have you had this?","ይሄ ከመቼ ጀምሮ ነው?"],["Since yesterday.","ከትናንት ጀምሮ።"],
+    ["Where does it hurt?","የት ያመዎታል?"],["Please lie down.","እባክዎ ይተኙ።"],["I need to check your temperature.","ሙቀትዎን መለካት አለብኝ።"],["You need to rest.","ማረፍ አለብዎት።"],
+    ["Drink a lot of water.","ብዙ ውሃ ይጠጡ።"],["Take one tablet after meals.","ከምግብ በኋላ አንድ ኪኒን ይውሰዱ።"],["Don't take it on an empty stomach.","በባዶ ሆድ አይውሰዱት።"],
+    ["Come back in a week.","ከሳምንት በኋላ ይመለሱ።"],["I need a blood test.","የደም ምርመራ ያስፈልገኛል።"],["Is it serious?","ከባድ ነው?"],["Don't worry, it's not serious.","አይጨነቁ፣ ከባድ አይደለም።"],
+    ["I need an appointment.","ቀጠሮ እፈልጋለሁ።"],["Call an ambulance!","አምቡላንስ ጥሩ!"],["I am pregnant.","ነፍሰ ጡር ነኝ።"],["My child has a fever.","ልጄ ትኩሳት አለበት።"],["Get well soon.","በቶሎ ይሻልዎት።"]],
+  "g-future":[["I'm going to study medicine.","ሕክምና ልማር ነው።"],["She's going to have a baby.","ልጅ ልትወልድ ነው።"],["They are going to get married next year.","በሚቀጥለው ዓመት ሊጋቡ ነው።"],
+    ["We're going to move to a new house.","ወደ አዲስ ቤት ልንዛወር ነው።"],["He is going to start a business.","ንግድ ሊጀምር ነው።"],["I'm going to call my mother tonight.","ዛሬ ማታ ለእናቴ ልደውል ነው።"],
+    ["Look at the clouds. It's going to rain.","ደመናውን ተመልከት። ሊዘንብ ነው።"],["I'm not going to buy it.","አልገዛውም።"],["Are you going to travel this year?","በዚህ ዓመት ልትጓዝ ነው?"],
+    ["What are you going to wear?","ምን ልትለብስ ነው?"],["I will open the window.","መስኮቱን እከፍታለሁ።"],["I'll carry your bag.","ቦርሳህን እሸከምልሃለሁ።"],
+    ["I promise I will pay you back.","ገንዘብህን እንደምመልስ ቃል እገባለሁ።"],["Don't worry, I won't tell anyone.","አይጨነቁ፣ ለማንም አልናገርም።"],["I think it will be sunny tomorrow.","ነገ ፀሐያማ የሚሆን ይመስለኛል።"],
+    ["Maybe I will come later.","ምናልባት በኋላ እመጣለሁ።"],["You will pass the exam.","ፈተናውን ታልፋለህ።"],["Will you marry me?","ታገቢኛለሽ?"],["Will you help me?","ትረዳኛለህ?"],
+    ["The shop will close at eight.","ሱቁ ከምሽቱ ሁለት ሰዓት ይዘጋል።"],["Prices will go up next year.","በሚቀጥለው ዓመት ዋጋዎች ይጨምራሉ።"],["I'll have the chicken, please.","እባክዎ ዶሮውን እወስዳለሁ።"],
+    ["I'll see you next week.","በሚቀጥለው ሳምንት እንገናኛለን።"],["We will be there at six.","አስራ ሁለት ሰዓት እዚያ እንሆናለን።"],["It won't take long.","ብዙ ጊዜ አይወስድም።"],
+    ["In five years, I will speak English well.","በአምስት ዓመት ውስጥ እንግሊዝኛ በደንብ እናገራለሁ።"],["The meeting is going to start soon.","ስብሰባው በቅርቡ ሊጀምር ነው።"],
+    ["I'm going to learn ten new words every day.","በየቀኑ አስር አዳዲስ ቃላት ልማር ነው።"],["Tomorrow will be a busy day.","ነገ ስራ የሚበዛበት ቀን ይሆናል።"],["When will you come back?","መቼ ትመለሳለህ?"]],
+  phone:[["Hello, who is this?","ሄሎ፣ ማን ነዎት?"],["Hold on, please.","እባክዎ ይጠብቁ።"],["Just a moment.","አንድ አፍታ።"],["I'll put you through.","አገናኝዎታለሁ።"],["The line is busy.","መስመሩ ተይዟል።"],
+    ["Can you speak louder, please?","እባክዎ ጮክ ብለው ሊናገሩ ይችላሉ?"],["The connection is bad.","ኔትወርኩ ደካማ ነው።"],["You're breaking up.","ድምፅዎ እየተቆራረጠ ነው።"],["I'll text you.","የጽሑፍ መልዕክት እልክልሃለሁ።"],
+    ["Send me a message on Telegram.","በቴሌግራም መልዕክት ላክልኝ።"],["What is your number?","ቁጥርህ ስንት ነው?"],["Let me give you my number.","ቁጥሬን ልስጥህ።"],
+    ["Can you say that again, please?","እባክዎ ደግመው ሊናገሩ ይችላሉ?"],["I missed your call.","ጥሪህ አምልጦኛል።"],["Sorry, I was in a meeting.","ይቅርታ፣ ስብሰባ ላይ ነበርኩ።"],
+    ["Is this a good time to talk?","አሁን ለማውራት ይመችዎታል?"],["I'm calling about the job.","ስለ ስራው ነው የምደውለው።"],["I'm calling to confirm my appointment.","ቀጠሮዬን ለማረጋገጥ ነው የምደውለው።"],
+    ["Thank you for calling.","ስለደወሉ እናመሰግናለን።"],["I have to go now.","አሁን መሄድ አለብኝ።"],["Talk to you later.","በኋላ እናወራለን።"],["I'll call you tonight.","ዛሬ ማታ እደውልልሃለሁ።"],
+    ["My phone was off.","ስልኬ ጠፍቶ ነበር።"],["I have no credit.","የአየር ሰዓት የለኝም።"],["Can I use your charger?","ቻርጀርህን ልጠቀም?"],["Please call me when you arrive.","ስትደርስ እባክህ ደውልልኝ።"],
+    ["He isn't answering his phone.","ስልኩን አያነሳም።"],["Leave a message after the beep.","ከድምፁ በኋላ መልዕክት ያስቀምጡ።"],["Who do you want to speak to?","ማንን ማነጋገር ይፈልጋሉ?"],
+    ["Please call again later.","እባክዎ በኋላ እንደገና ይደውሉ።"]],
+  restaurant:[["Are you ready to order?","ለማዘዝ ዝግጁ ነዎት?"],["Not yet, give us a minute.","ገና ነው፣ ትንሽ ጊዜ ይስጡን።"],["I'd like to order now.","አሁን ማዘዝ እፈልጋለሁ።"],
+    ["I'll have tibs, please.","እባክዎ ጥብስ ይሁንልኝ።"],["Can I have shiro with injera?","ሽሮ በእንጀራ ማግኘት እችላለሁ?"],["Do you have vegetarian food?","የጾም ምግብ አላችሁ?"],
+    ["Is this fasting food?","ይሄ የጾም ምግብ ነው?"],["What's in this dish?","በዚህ ምግብ ውስጥ ምን አለ?"],["Is it spicy?","ያቃጥላል?"],["A bottle of water, please.","እባክዎ አንድ የታሸገ ውሃ።"],
+    ["Two macchiatos, please.","እባክዎ ሁለት ማኪያቶ።"],["Can I have more injera?","ተጨማሪ እንጀራ ማግኘት እችላለሁ?"],["Excuse me, this is cold.","ይቅርታ፣ ይሄ ቀዝቅዟል።"],
+    ["I didn't order this.","ይሄን አላዘዝኩም።"],["We are still waiting for our food.","አሁንም ምግባችንን እየጠበቅን ነው።"],["How long will it take?","ምን ያህል ይቆያል?"],
+    ["Everything was very good.","ሁሉም ነገር በጣም ጥሩ ነበር።"],["I'm full.","ጠግቤአለሁ።"],["Can I take this away?","ይሄንን ይዤ መሄድ እችላለሁ?"],["Do you deliver?","ቤት ድረስ ታደርሳላችሁ?"],
+    ["Is service included?","የአገልግሎት ክፍያ ተካትቷል?"],["Let's split the bill.","ሂሳቡን እንካፈል።"],["It's my treat today.","ዛሬ እኔ ነኝ የምጋብዘው።"],["Where do I pay?","የት ነው የምከፍለው?"],
+    ["Do you have a table outside?","ውጭ ጠረጴዛ አላችሁ?"],["I booked a table for six.","ለስድስት ሰው ጠረጴዛ አስይዣለሁ።"],["Can I have a fork, please?","እባክዎ ሹካ ሊሰጡኝ ይችላሉ?"],
+    ["No sugar, please.","እባክዎ ስኳር አይጨምሩ።"],["The food here is excellent.","እዚህ ያለው ምግብ በጣም ጥሩ ነው።"],["We will come again.","እንደገና እንመጣለን።"]],
+  travel:[["I'd like to book a room.","ክፍል ማስያዝ እፈልጋለሁ።"],["Do you have any rooms available?","ባዶ ክፍል አላችሁ?"],["How much is it per night?","ለአንድ ምሽት ስንት ነው?"],
+    ["Can I see the room?","ክፍሉን ማየት እችላለሁ?"],["Is there Wi-Fi in the room?","ክፍሉ ውስጥ ዋይፋይ አለ?"],["What's the Wi-Fi password?","የዋይፋዩ የይለፍ ቃል ምንድን ነው?"],
+    ["The air conditioner doesn't work.","ኤር ኮንዲሽነሩ አይሰራም።"],["There is no hot water.","ሙቅ ውሃ የለም።"],["Can I have an extra blanket?","ተጨማሪ ብርድ ልብስ ማግኘት እችላለሁ?"],
+    ["Please wake me up at six.","እባክዎ ከጠዋቱ አስራ ሁለት ሰዓት ቀስቅሱኝ።"],["I'd like to check out.","መውጣት እፈልጋለሁ።"],["Can I leave my bag here?","ቦርሳዬን እዚህ ማስቀመጥ እችላለሁ?"],
+    ["A return ticket to Bahir Dar, please.","እባክዎ ወደ ባሕር ዳር ደርሶ መልስ ትኬት።"],["What time does the flight leave?","በረራው ስንት ሰዓት ይነሳል?"],["Where is gate five?","በር አምስት የት ነው?"],
+    ["I'd like a window seat.","የመስኮት አጠገብ ወንበር እፈልጋለሁ።"],["How many bags can I take?","ስንት ሻንጣ መያዝ እችላለሁ?"],["My bag is missing.","ሻንጣዬ ጠፍቷል።"],
+    ["I'm here on holiday.","እዚህ ለእረፍት ነው የመጣሁት።"],["I'm here for work.","እዚህ ለስራ ነው የመጣሁት።"],["I'm staying for one week.","ለአንድ ሳምንት እቆያለሁ።"],
+    ["Do I need a visa?","ቪዛ ያስፈልገኛል?"],["Where can I change money?","ገንዘብ የት መመንዘር እችላለሁ?"],["Is this seat free?","ይህ ወንበር ባዶ ነው?"],
+    ["How long is the journey?","ጉዞው ምን ያህል ይወስዳል?"],["Please stop here.","እባክዎ እዚህ ያቁሙ።"],["Take me to this hotel, please.","እባክዎ ወደዚህ ሆቴል ይውሰዱኝ።"],
+    ["How much to the airport?","እስከ አውሮፕላን ማረፊያ ስንት ነው?"],["We missed the bus.","አውቶቡሱ አመለጠን።"],["Have a safe journey!","ሰላማዊ ጉዞ ይሁንልዎ!"]],
+  plans:[["What are you doing tonight?","ዛሬ ማታ ምን እያደረጉ ነው?"],["Do you want to go to the cinema?","ሲኒማ መሄድ ይፈልጋሉ?"],["Would you like to come to my house?","ወደ ቤቴ መምጣት ይፈልጋሉ?"],
+    ["Let's go for a walk.","ለእግር ጉዞ እንውጣ።"],["Let's meet at the cafe.","ካፌው ጋ እንገናኝ።"],["Where shall we meet?","የት እንገናኝ?"],["Shall we go together?","አብረን እንሂድ?"],
+    ["I'm free after five.","ከአስራ አንድ ሰዓት በኋላ ነፃ ነኝ።"],["I can't make it on Friday.","ዓርብ አልችልም።"],["Maybe next time.","ምናልባት ሌላ ጊዜ።"],["That works for me.","ለእኔ ይመቸኛል።"],
+    ["I'd love to!","በደስታ!"],["Thanks for inviting me.","ስለጋበዙኝ አመሰግናለሁ።"],["I'm sorry, I have other plans.","ይቅርታ፣ ሌላ እቅድ አለኝ።"],["Let's do it another day.","በሌላ ቀን እናድርገው።"],
+    ["Don't be late!","አትዘግይ!"],["I'll pick you up at seven.","ከምሽቱ አንድ ሰዓት መጥቼ እወስድሃለሁ።"],["I'm on my way.","እየመጣሁ ነው።"],["I'll be there in ten minutes.","በአስር ደቂቃ ውስጥ እደርሳለሁ።"],
+    ["I'm running late.","ትንሽ እያረፈድኩ ነው።"],["Where are you now?","አሁን የት ነህ?"],["I'm waiting outside.","ውጭ እየጠበቅሁ ነው።"],["We need to change the plan.","እቅዱን መቀየር አለብን።"],
+    ["The meeting is cancelled.","ስብሰባው ተሰርዟል።"],["Let's invite Meron too.","ሜሮንንም እንጋብዝ።"],["Who else is coming?","ሌላ ማን ይመጣል?"],["It's a birthday party.","የልደት ድግስ ነው።"],
+    ["What should I bring?","ምን ይዤ ልምጣ?"],["Just bring yourself.","ራስህን ብቻ ይዘህ ና።"],["I'm looking forward to it.","በጉጉት እጠብቀዋለሁ።"]],
+  opinions:[["I believe that hard work is important.","ጠንክሮ መስራት አስፈላጊ ነው ብዬ አምናለሁ።"],["I feel that the city is too crowded.","ከተማዋ በጣም የተጨናነቀች ይመስለኛል።"],
+    ["For me, family comes first.","ለእኔ ቤተሰብ ይቀድማል።"],["I really like this song.","ይህን ዘፈን በጣም እወደዋለሁ።"],["I don't like it very much.","ያን ያህል አልወደውም።"],
+    ["I love Ethiopian music.","የኢትዮጵያ ሙዚቃ እወዳለሁ።"],["I hate waiting.","መጠበቅ እጠላለሁ።"],["It's better to start early.","ቀድሞ መጀመር ይሻላል።"],["It's not a good idea.","ጥሩ ሀሳብ አይደለም።"],
+    ["I agree with you.","ከእርስዎ ጋር እስማማለሁ።"],["I disagree.","አልስማማም።"],["I partly agree.","በከፊል እስማማለሁ።"],["You're right.","ልክ ነዎት።"],
+    ["I'm afraid I don't agree.","ይቅርታ፣ አልስማማም።"],["That's a good point.","ጥሩ ነጥብ ነው።"],["That's not fair.","ፍትሃዊ አይደለም።"],["It depends.","እንደሁኔታው ነው።"],
+    ["On the one hand, it's cheap.","በአንድ በኩል ርካሽ ነው።"],["On the other hand, it's not very good.","በሌላ በኩል ደግሞ በጣም ጥሩ አይደለም።"],
+    ["The best thing about Addis is the food.","የአዲስ አበባ ምርጡ ነገር ምግቡ ነው።"],["The problem is the traffic.","ችግሩ የትራፊክ መጨናነቅ ነው።"],["I think English is very useful.","እንግሊዝኛ በጣም ጠቃሚ ይመስለኛል።"],
+    ["In my view, we need more schools.","በእኔ እይታ ተጨማሪ ትምህርት ቤቶች ያስፈልጉናል።"],["Personally, I prefer the countryside.","በግሌ ገጠርን እመርጣለሁ።"],
+    ["What's your opinion?","የእርስዎ አስተያየት ምንድን ነው?"],["How do you feel about it?","ስለዚህ ምን ይሰማዎታል?"],["Do you agree?","ይስማማሉ?"],["Why do you think so?","ለምን እንደዚያ ያስባሉ?"],
+    ["I changed my mind.","ሀሳቤን ቀየርኩ።"],["Let's agree to disagree.","ባለመስማማታችን እንስማማ።"]]
+};
+LESSONS.forEach(l => { const extra = MORE_INT[l.id]; if (!extra) return;
+  const seen = new Set(l.words.map(w => w[0]));
+  extra.forEach(w => { if (!seen.has(w[0])){ seen.add(w[0]); l.words.push(w); } }); });
+
+// ---- extra advanced examples ----
+const MORE_ADV = {
+  "g-perfect":[["I have been to Gondar twice.","ጎንደር ሁለት ጊዜ ሄጃለሁ።"],["She has visited Europe.","አውሮፓን ጎብኝታለች።"],["We have lived in this house for ten years.","በዚህ ቤት ለአስር ዓመት ኖረናል።"],
+    ["He has never flown on a plane.","በአውሮፕላን በርሮ አያውቅም።"],["Have you ever eaten kitfo?","ክትፎ በልተው ያውቃሉ?"],["I have already eaten.","ቀድሜ በልቻለሁ።"],
+    ["Has the bus arrived yet?","አውቶቡሱ እስካሁን ደርሷል?"],["The bus hasn't arrived yet.","አውቶቡሱ እስካሁን አልደረሰም።"],["I have lost my phone.","ስልኬ ጠፍቶብኛል።"],
+    ["Someone has taken my seat.","አንድ ሰው ወንበሬን ወስዷል።"],["I have known her for a long time.","እሷን ለረጅም ጊዜ አውቃታለሁ።"],["They have been married for twenty years.","ከተጋቡ ሃያ ዓመት ሆኗቸዋል።"],
+    ["How long have you studied English?","እንግሊዝኛ ለምን ያህል ጊዜ አጥንተዋል?"],["I have studied English for two years.","ለሁለት ዓመት እንግሊዝኛ አጥንቻለሁ።"],
+    ["She has worked at the bank since 2018.","ከ2018 ጀምሮ ባንክ ውስጥ ትሰራለች።"],["Prices have gone up a lot.","ዋጋዎች በጣም ጨምረዋል።"],["The city has changed a lot.","ከተማዋ በጣም ተለውጣለች።"],
+    ["I have made a decision.","ውሳኔ አድርጌያለሁ።"],["Have you seen my keys?","ቁልፎቼን አይተዋል?"],["I haven't seen him today.","ዛሬ አላየሁትም።"],["We haven't met before.","ከዚህ በፊት ተገናኝተን አናውቅም።"],
+    ["She has just called.","አሁን ደውላለች።"],["I have just arrived.","አሁን ገና ደረስኩ።"],["He has read this book three times.","ይህን መጽሐፍ ሶስት ጊዜ አንብቦታል።"],
+    ["It has rained all week.","ሳምንቱን ሙሉ ዘንቧል።"],["Have you ever been late for work?","ስራ አርፍደው ያውቃሉ?"],["I have never travelled abroad.","ወደ ውጭ አገር ተጉዤ አላውቅም።"],
+    ["This is the best coffee I have ever tasted.","እስካሁን ከቀመስኩት ቡና ይሄ ምርጡ ነው።"],["Has she finished the report?","ሪፖርቱን ጨርሳለች?"],["We have already paid.","አስቀድመን ከፍለናል።"]],
+  smalltalk:[["Nice to see you again.","እንደገና በማየቴ ደስ ብሎኛል።"],["How have you been?","እንዴት ከርመዋል?"],["I've been busy with work.","በስራ ተወጥሬ ነበር።"],
+    ["What's new with you?","ምን አዲስ ነገር አለ?"],["Not much, same as usual.","ብዙም የለም፣ እንደተለመደው ነው።"],["How's your family?","ቤተሰብ እንዴት ነው?"],["It's really hot today.","ዛሬ በጣም ይሞቃል።"],
+    ["It looks like it's going to rain.","የሚዘንብ ይመስላል።"],["The traffic was terrible this morning.","ዛሬ ጠዋት የትራፊክ መጨናነቁ አስከፊ ነበር።"],
+    ["Did you watch the match last night?","ትናንት ማታ ጨዋታውን አዩት?"],["Who do you support?","የትኛውን ቡድን ይደግፋሉ?"],["Do you have any plans for the holiday?","ለበዓሉ እቅድ አለዎት?"],
+    ["How long have you lived here?","እዚህ ለምን ያህል ጊዜ ኖረዋል?"],["How do you know the host?","አስተናጋጁን እንዴት ያውቁታል?"],["This place is really nice.","ይህ ቦታ በጣም ጥሩ ነው።"],
+    ["Have you tried the food here?","እዚህ ያለውን ምግብ ቀምሰውታል?"],["What do you do in your free time?","በትርፍ ጊዜዎ ምን ያደርጋሉ?"],["That sounds interesting.","አስደሳች ይመስላል።"],
+    ["Really? Tell me more.","እውነት? ተጨማሪ ይንገሩኝ።"],["Me too!","እኔም!"],["Same here.","እኔም እንደዚያው።"],["That's a coincidence!","ምን አጋጣሚ ነው!"],
+    ["I'm sorry to hear that.","ይህን በመስማቴ አዝናለሁ።"],["That's great news!","በጣም ጥሩ ዜና ነው!"],["Anyway, I should get going.","ለማንኛውም መሄድ አለብኝ።"],
+    ["It was nice meeting you.","ስለተዋወቅን ደስ ብሎኛል።"],["Say hello to your family for me.","ለቤተሰብዎ ሰላምታ አቅርቡልኝ።"],["Let's grab a coffee sometime.","አንድ ቀን ቡና እንጠጣ።"],
+    ["Here's my number.","ቁጥሬ ይኸውልዎ።"],["See you around.","እንተያያለን።"]],
+  interview:[["I graduated from Addis Ababa University.","ከአዲስ አበባ ዩኒቨርሲቲ ተመርቄያለሁ።"],["I studied accounting.","ሂሳብ አያያዝ አጥንቻለሁ።"],
+    ["I have a degree in computer science.","በኮምፒውተር ሳይንስ ዲግሪ አለኝ።"],["I worked as a teacher for four years.","ለአራት ዓመት በመምህርነት ሰርቻለሁ።"],
+    ["In my last job, I managed a team of ten people.","በቀድሞ ስራዬ አስር ሰዎች ያሉበትን ቡድን መርቻለሁ።"],["I am good at working with people.","ከሰዎች ጋር በመስራት ጎበዝ ነኝ።"],
+    ["I am hardworking and reliable.","ታታሪና እምነት የሚጣልብኝ ነኝ።"],["I learn new things quickly.","አዳዲስ ነገሮችን በፍጥነት እማራለሁ።"],
+    ["I can speak Amharic, Afaan Oromo and English.","አማርኛ፣ አፋን ኦሮሞና እንግሊዝኛ እናገራለሁ።"],["Sometimes I work too hard.","አንዳንድ ጊዜ ከልክ በላይ እሰራለሁ።"],
+    ["I am working on my public speaking.","በሕዝብ ፊት የመናገር ችሎታዬን እያሻሻልኩ ነው።"],["Why did you leave your last job?","የቀድሞ ስራዎን ለምን ለቀቁ?"],
+    ["I was looking for new challenges.","አዲስ ፈተና እየፈለግሁ ነበር።"],["I want to use my skills to help your company.","ችሎታዬን ድርጅታችሁን ለመርዳት መጠቀም እፈልጋለሁ።"],
+    ["I know your company has a good reputation.","ድርጅታችሁ ጥሩ ስም እንዳለው አውቃለሁ።"],["What salary do you expect?","ምን ያህል ደመወዝ ይጠብቃሉ?"],
+    ["I'm open to discussing the salary.","ስለ ደመወዙ ለመወያየት ዝግጁ ነኝ።"],["When can you start?","መቼ መጀመር ይችላሉ?"],["I can start next month.","በሚቀጥለው ወር መጀመር እችላለሁ።"],
+    ["Can you give an example?","ምሳሌ ሊሰጡ ይችላሉ?"],["Once, a customer was very angry.","አንድ ጊዜ አንድ ደንበኛ በጣም ተናዶ ነበር።"],
+    ["I listened carefully and solved the problem.","በጥሞና አዳምጬ ችግሩን ፈታሁት።"],["I enjoy working in a team.","በቡድን መስራት ያስደስተኛል።"],
+    ["I can also work independently.","ለብቻዬም መስራት እችላለሁ።"],["What does a typical day look like?","የተለመደ የስራ ቀን ምን ይመስላል?"],["Is there training for new staff?","ለአዲስ ሰራተኞች ስልጠና አለ?"],
+    ["When will I hear from you?","ውጤቱን መቼ አውቃለሁ?"],["Here is my CV.","የሕይወት ታሪኬ (ሲቪ) ይኸውልዎ።"],["I'm very interested in this position.","በዚህ የስራ መደብ በጣም ፍላጎት አለኝ።"],
+    ["I hope to hear from you soon.","በቅርቡ ምላሽዎን እጠብቃለሁ።"]],
+  "g-cond":[["If you heat ice, it melts.","በረዶ ብታሞቅ ይቀልጣል።"],["If you mix red and yellow, you get orange.","ቀይና ቢጫ ብትቀላቅል ብርቱካናማ ታገኛለህ።"],
+    ["If I'm late, start without me.","ካረፈድኩ ያለ እኔ ጀምሩ።"],["If you're hungry, there is injera in the kitchen.","ከራበህ ማዕድ ቤት እንጀራ አለ።"],
+    ["If she calls, tell her I'm busy.","ከደወለች ስራ እንደበዛብኝ ንገራት።"],["If we leave now, we'll arrive on time.","አሁን ከሄድን በሰዓቱ እንደርሳለን።"],
+    ["If it's sunny tomorrow, we'll go to the park.","ነገ ፀሐያማ ከሆነ ወደ መናፈሻ እንሄዳለን።"],["If you don't hurry, you'll be late.","ካልፈጠንክ ታረፍዳለህ።"],
+    ["I'll help you if I have time.","ጊዜ ካገኘሁ እረዳሃለሁ።"],["If the price is good, I'll buy it.","ዋጋው ጥሩ ከሆነ እገዛዋለሁ።"],
+    ["If I lived in the city, I would walk to work.","ከተማ ውስጥ ብኖር ወደ ስራ በእግሬ እሄድ ነበር።"],["If I spoke English well, I would work abroad.","እንግሊዝኛ በደንብ ብናገር ውጭ አገር እሰራ ነበር።"],
+    ["If she had time, she would visit us.","ጊዜ ቢኖራት ትጠይቀን ነበር።"],["If I could fly, I would visit every country.","መብረር ብችል ሁሉንም አገሮች እጎበኝ ነበር።"],
+    ["What would you do if you lost your job?","ስራዎን ቢያጡ ምን ያደርጋሉ?"],["I would travel more if I had money.","ገንዘብ ቢኖረኝ የበለጠ እጓዝ ነበር።"],
+    ["If I were rich, I would build a school.","ሀብታም ብሆን ትምህርት ቤት እሰራ ነበር።"],["If I were in your place, I would apologise.","በእርስዎ ቦታ ብሆን ይቅርታ እጠይቅ ነበር።"],
+    ["Would you help me if I asked?","ብጠይቅዎ ይረዱኛል?"],["If we had left earlier, we wouldn't have missed the bus.","ቀደም ብለን ብንሄድ ኖሮ አውቶቡሱ አያመልጠንም ነበር።"],
+    ["If I had saved money, I could have bought a car.","ገንዘብ ባጠራቅም ኖሮ መኪና መግዛት እችል ነበር።"],["If she had asked me, I would have said yes.","ብትጠይቀኝ ኖሮ እሺ እል ነበር።"],
+    ["If it hadn't rained, we would have played.","ባይዘንብ ኖሮ እንጫወት ነበር።"],["I would have called you if I had had your number.","ቁጥርህ ቢኖረኝ ኖሮ እደውልልህ ነበር።"],
+    ["If you need help, just ask.","እርዳታ ካስፈለገዎ ብቻ ይጠይቁ።"],["If possible, please reply today.","ከተቻለ እባክዎ ዛሬ ይመልሱ።"],["Unless you practise, you won't improve.","ካልተለማመዱ አይሻሻሉም።"],
+    ["As long as you try, you will learn.","እስከሞከሩ ድረስ ይማራሉ።"],["In case it rains, take an umbrella.","ቢዘንብ ብለህ ጃንጥላ ያዝ።"],["If only I had more time!","ተጨማሪ ጊዜ ቢኖረኝ ምንኛ ጥሩ ነበር!"]],
+  phrasal:[["Wake up! It's late.","ተነስ! አርፍዷል።"],["I get up at six every day.","በየቀኑ አስራ ሁለት ሰዓት እነሳለሁ።"],["Please calm down.","እባክዎ ይረጋጉ።"],
+    ["Hurry up, we're late.","ፍጠን፣ አርፍደናል።"],["Put on your jacket.","ጃኬትህን ልበስ።"],["Take off your shoes.","ጫማህን አውልቅ።"],["Turn on the radio.","ሬዲዮኑን ክፈት።"],
+    ["Turn down the music, please.","እባክህ ሙዚቃውን ቀንስ።"],["Turn up the volume.","ድምፁን ጨምር።"],["Come in and sit down.","ግባና ተቀመጥ።"],["I grew up in Bahir Dar.","ያደግሁት ባሕር ዳር ነው።"],
+    ["She looks after her little brother.","ታናሽ ወንድሟን ትንከባከባለች።"],["I'm looking forward to the weekend.","ቅዳሜና እሁድን በጉጉት እጠብቃለሁ።"],
+    ["Can you look up this word?","ይህን ቃል በመዝገበ ቃላት ልትፈልገው ትችላለህ?"],["Find out what time it starts.","ስንት ሰዓት እንደሚጀምር አጣራ።"],
+    ["I need to set up a bank account.","የባንክ ሂሳብ መክፈት አለብኝ።"],["He gave back the money.","ገንዘቡን መለሰ።"],["Can you write down your address?","አድራሻህን ልትጽፍልኝ ትችላለህ?"],
+    ["Let's go out tonight.","ዛሬ ማታ እንውጣ።"],["The plane took off on time.","አውሮፕላኑ በሰዓቱ ተነሳ።"],["We got on the bus.","አውቶቡሱ ላይ ተሳፈርን።"],
+    ["Get off at the next stop.","በሚቀጥለው ፌርማታ ውረድ።"],["I came across an old photo.","አንድ የቆየ ፎቶ አገኘሁ።"],["She gets along with everyone.","ከሁሉም ሰው ጋር ትግባባለች።"],
+    ["Don't put off your homework.","የቤት ስራህን አታዘግይ።"],["I'm trying to cut down on sugar.","ስኳር ለመቀነስ እየሞከርኩ ነው።"],["The car broke down.","መኪናው ተበላሸ።"],
+    ["Hold on a second.","አንድ ሰከንድ ቆይ።"],["I'll think it over.","አስብበታለሁ።"],["Go on, I'm listening.","ቀጥል፣ እያዳመጥኩ ነው።"]],
+  stories:[["Once upon a time, there was a poor farmer.","በአንድ ወቅት አንድ ድሃ ገበሬ ነበር።"],["It all started last year.","ሁሉም የጀመረው ባለፈው ዓመት ነው።"],
+    ["It was a cold, rainy night.","ቀዝቃዛና ዝናባማ ምሽት ነበር።"],["I was walking home from work.","ከስራ ወደ ቤት እየሄድኩ ነበር።"],
+    ["While I was waiting, I saw an old friend.","እየጠበቅሁ ሳለ አንድ የድሮ ጓደኛዬን አየሁ።"],["Next, we went to a cafe.","ቀጥሎ ወደ ካፌ ሄድን።"],
+    ["A few minutes later, the phone rang.","ከጥቂት ደቂቃዎች በኋላ ስልኩ ጮኸ።"],["All of a sudden, the lights went out.","በድንገት መብራቱ ጠፋ።"],
+    ["To my surprise, she remembered me.","የሚገርመው እሷ ታስታውሰኝ ነበር።"],["Unfortunately, I had no money.","እንደ አለመታደል ሆኖ ገንዘብ አልነበረኝም።"],
+    ["Fortunately, a kind man helped me.","እንደ እድል ሆኖ አንድ ደግ ሰው ረዳኝ።"],["I didn't know what to do.","ምን እንደማደርግ አላወቅሁም።"],["I was so scared.","በጣም ፈርቼ ነበር።"],
+    ["Everyone started laughing.","ሁሉም መሳቅ ጀመሩ።"],["Later that day, I called my mother.","በዚያው ቀን በኋላ ለእናቴ ደወልኩ።"],["The next morning, everything was fine.","በማግስቱ ጠዋት ሁሉም ነገር ደህና ነበር።"],
+    ["Finally, we found the house.","በመጨረሻም ቤቱን አገኘነው።"],["After a long time, I understood.","ከረጅም ጊዜ በኋላ ገባኝ።"],["Since then, we have been best friends.","ከዚያን ጊዜ ጀምሮ የቅርብ ጓደኛሞች ነን።"],
+    ["That's how I met my wife.","ባለቤቴን የተዋወቅሁት እንደዚህ ነው።"],["I will never forget that day.","ያንን ቀን መቼም አልረሳውም።"],["It was the best day of my life.","የሕይወቴ ምርጥ ቀን ነበር።"],
+    ["You won't believe what happened.","የሆነውን አታምንም።"],["Guess what happened next.","ቀጥሎ ምን እንደሆነ ገምት።"],["Long story short, we missed the flight.","ባጭሩ በረራው አመለጠን።"],
+    ["So, what happened in the end?","ታዲያ በመጨረሻ ምን ሆነ?"],["Before I knew it, it was midnight.","ሳላውቀው እኩለ ሌሊት ሆነ።"],["As soon as I arrived, it started raining.","እንደደረስኩ ዝናብ መዝነብ ጀመረ።"],
+    ["By the time we got there, the shop was closed.","እዚያ ስንደርስ ሱቁ ተዘግቶ ነበር።"],["The moral of the story is: never give up.","የታሪኩ ትምህርት፡ ተስፋ አትቁረጥ የሚል ነው።"]],
+  idioms:[["It's raining cats and dogs.","ዶፍ እየዘነበ ነው።"],["I'm on cloud nine.","በጣም ደስ ብሎኛል።"],["I need to hit the books.","ጠንክሬ ማጥናት አለብኝ።"],
+    ["Let's play it by ear.","እንደሁኔታው እናያለን።"],["It's not my cup of tea.","የኔ ምርጫ አይደለም።"],["He's pulling your leg.","እየቀለደብህ ነው።"],["Don't beat around the bush.","ዙሪያ ጥምጥም አትሂድ።"],
+    ["We're in the same boat.","ሁላችንም በአንድ ችግር ውስጥ ነን።"],["Keep an eye on my bag.","ቦርሳዬን ተከታተልልኝ።"],["I'll keep my fingers crossed for you.","መልካሙን እመኝልሃለሁ።"],
+    ["It's on the tip of my tongue.","ምላሴ ጫፍ ላይ ነው ግን ትዝ አይለኝም።"],["I see eye to eye with him.","በሀሳብ እንግባባለን።"],["Time flies.","ጊዜው ይሮጣል።"],
+    ["Practice makes perfect.","ልምምድ ፍጹም ያደርጋል።"],["Actions speak louder than words.","ተግባር ከቃል ይበልጣል።"],["Easier said than done.","ማለት ቀላል ነው፣ መስራት ግን ከባድ ነው።"],
+    ["Don't judge a book by its cover.","ሰውን በመልኩ አትፍረድ።"],["The early bird catches the worm.","ማልዶ የተነሳ ያገኛል።"],["It's up to you.","የእርስዎ ውሳኔ ነው።"],["Fair enough.","ትክክል ነው።"],
+    ["Never mind.","ተወው።"],["I'm fed up with this.","ይሄ ሰልችቶኛል።"],["I'm running out of time.","ጊዜ እያለቀብኝ ነው።"],["That rings a bell.","ትንሽ ትዝ ይለኛል።"],
+    ["Take it easy.","ዘና በል።"],["Give me a hand.","እርዳኝ።"],["You can say that again!","በጣም ትክክል!"],["Speak of the devil!","ስናነሳው መጣ!"],
+    ["I'm over the moon.","በጣም በጣም ተደስቻለሁ።"],["Sleep on it.","አድረህ አስብበት።"]],
+  fast:[["I'm going to call you.","እደውልልሃለሁ።","I'm gonna call you."],["Are you going to come?","ልትመጣ ነው?","You gonna come?"],
+    ["I want to sleep.","መተኛት እፈልጋለሁ።","I wanna sleep."],["Do you want to eat?","መብላት ትፈልጋለህ?","D'you wanna eat?"],["I have got to work.","መስራት አለብኝ።","I gotta work."],
+    ["You have got to try this.","ይሄን መሞከር አለብህ።","You gotta try this."],["Let me help you.","ልርዳህ።","Lemme help you."],["Give me that.","ያንን ስጠኝ።","Gimme that."],
+    ["What did you say?","ምን አልክ?","Whadja say?"],["Did you eat?","በላህ?","Didja eat?"],["Don't you know?","አታውቅም?","Doncha know?"],
+    ["What are you going to do?","ምን ልታደርግ ነው?","Whatcha gonna do?"],["I've got to go now.","አሁን መሄድ አለብኝ።","I gotta go now."],
+    ["It's sort of difficult.","ትንሽ ከባድ ነው።","It's sorta difficult."],["A lot of people came.","ብዙ ሰዎች መጡ።","A lotta people came."],
+    ["A cup of tea, please.","እባክህ አንድ ሲኒ ሻይ።","A cuppa tea, please."],["I should have known.","ማወቅ ነበረብኝ።","I shoulda known."],
+    ["You could have told me.","ልትነግረኝ ትችል ነበር።","You coulda told me."],["I would have come.","እመጣ ነበር።","I woulda come."],
+    ["I got you.","ገብቶኛል።","Gotcha."],["How are you doing?","እንዴት ነህ?","How ya doin'?"],["See you later.","በኋላ እንገናኝ።","See ya later."],
+    ["What's up?","ምን አዲስ ነገር አለ?","Wassup?"],["I'm going to be late.","ላረፍድ ነው።","I'm gonna be late."],["Tell them I'm coming.","እየመጣሁ እንደሆነ ንገራቸው።","Tell 'em I'm comin'."],
+    ["Did you see him?","አየኸው?","Didja see 'im?"],["Come on, let's go!","ና፣ እንሂድ!","C'mon, let's go!"],["Because I'm tired.","ስለደከመኝ።","'Cause I'm tired."],
+    ["I don't want to go.","መሄድ አልፈልግም።","I don't wanna go."],["What do you think?","ምን ይመስልሃል?","Whaddaya think?"]],
+  pro:[["Dear Sir or Madam,","ለሚመለከተው ሁሉ፣"],["I am writing to apply for the position of accountant.","ለሂሳብ ሰራተኛ የስራ መደብ ለማመልከት ነው የምጽፈው።"],
+    ["Please let me know if you have any questions.","ጥያቄ ካለዎት እባክዎ ያሳውቁኝ።"],["I would be grateful if you could send me the details.","ዝርዝሩን ቢልኩልኝ አመሰግናለሁ።"],
+    ["Kind regards,","ከሰላምታ ጋር፣"],["As we discussed, the deadline is Friday.","እንደተወያየነው የመጨረሻው ቀን ዓርብ ነው።"],["Could you send me the file by Monday?","ፋይሉን እስከ ሰኞ ሊልኩልኝ ይችላሉ?"],
+    ["I will get back to you tomorrow.","ነገ መልስ እሰጥዎታለሁ።"],["Thank you for your patience.","ስለ ትዕግስትዎ አመሰግናለሁ።"],["I apologise for the inconvenience.","ለተፈጠረው ችግር ይቅርታ እጠይቃለሁ።"],
+    ["Let me check and get back to you.","አጣርቼ መልስ እሰጥዎታለሁ።"],["What is the deadline?","የመጨረሻው ቀን መቼ ነው?"],["I'm afraid I can't attend the meeting.","ይቅርታ፣ በስብሰባው መገኘት አልችልም።"],
+    ["Could we move the meeting to Thursday?","ስብሰባውን ወደ ሐሙስ ማዛወር እንችላለን?"],["I'll send you an update by the end of the day.","እስከ ቀኑ መጨረሻ ወቅታዊ መረጃ እልክልዎታለሁ።"],
+    ["Please confirm that you received this email.","እባክዎ ይህን ኢሜይል እንደደረሰዎት ያረጋግጡ።"],["I have attached my CV.","የሕይወት ታሪኬን (ሲቪ) አያይዣለሁ።"],
+    ["I'm responsible for customer service.","የደንበኞች አገልግሎት ኃላፊ ነኝ።"],["Our company provides IT services.","ድርጅታችን የአይቲ አገልግሎት ይሰጣል።"],
+    ["Can I help you with anything else?","በሌላ ነገር ልረዳዎት እችላለሁ?"],["I'd like to make a suggestion.","አንድ ሀሳብ ማቅረብ እፈልጋለሁ።"],
+    ["That's a good idea, but it may be expensive.","ጥሩ ሀሳብ ነው፣ ግን ውድ ሊሆን ይችላል።"],["We need to find a solution.","መፍትሄ መፈለግ አለብን።"],["Let's work together on this.","በዚህ ላይ አብረን እንስራ።"],
+    ["Who is in charge of this project?","የዚህ ፕሮጀክት ኃላፊ ማነው?"],["I'll take care of it.","እኔ እከታተለዋለሁ።"],["Please keep me informed.","እባክዎ መረጃ ያድርሱኝ።"],
+    ["I'm sorry, I made a mistake.","ይቅርታ፣ ስህተት ሰርቻለሁ።"],["It won't happen again.","ዳግመኛ አይደገምም።"],["Congratulations on your promotion!","ለዕድገትዎ እንኳን ደስ አለዎት!"]],
+  present:[["Thank you all for coming.","ስለመጣችሁ ሁላችሁንም አመሰግናለሁ።"],["Let me introduce myself.","ራሴን ላስተዋውቅ።"],["My name is Selam, and I work in marketing.","ስሜ ሰላም ነው፣ በማርኬቲንግ ክፍል እሰራለሁ።"],
+    ["The purpose of this meeting is to plan next year.","የዚህ ስብሰባ ዓላማ የሚቀጥለውን ዓመት ማቀድ ነው።"],["My presentation has three parts.","ገለጻዬ ሶስት ክፍሎች አሉት።"],
+    ["First, I'll talk about our results.","በመጀመሪያ ስለ ውጤታችን እናገራለሁ።"],["Second, I'll explain the problems.","ሁለተኛ፣ ችግሮቹን አብራራለሁ።"],["Finally, I'll suggest some solutions.","በመጨረሻም አንዳንድ መፍትሄዎችን እጠቁማለሁ።"],
+    ["Please look at this graph.","እባካችሁ ይህን ግራፍ ተመልከቱ።"],["Sales increased by twenty percent.","ሽያጩ በሃያ በመቶ ጨምሯል።"],["Costs decreased last year.","ባለፈው ዓመት ወጪዎች ቀንሰዋል።"],
+    ["This is very important.","ይህ በጣም አስፈላጊ ነው።"],["Let me give you an example.","አንድ ምሳሌ ልስጣችሁ።"],["In other words, we need more customers.","በሌላ አነጋገር ተጨማሪ ደንበኞች ያስፈልጉናል።"],
+    ["That brings me to my next point.","ይህ ወደሚቀጥለው ነጥቤ ያመጣኛል።"],["Are there any comments?","አስተያየት አለ?"],["Can everyone hear me?","ሁላችሁም ትሰሙኛላችሁ?"],
+    ["Can you see the screen?","ስክሪኑን ማየት ትችላላችሁ?"],["Let's take a short break.","አጭር እረፍት እንውሰድ።"],["Let's get started.","እንጀምር።"],["Who would like to begin?","ማን መጀመር ይፈልጋል?"],
+    ["Sorry to interrupt, but I have a question.","ስላቋረጥኩ ይቅርታ፣ ግን ጥያቄ አለኝ።"],["Could you explain that again?","ያንን እንደገና ሊያብራሩ ይችላሉ?"],
+    ["I'm not sure I understand.","በትክክል እንደገባኝ እርግጠኛ አይደለሁም።"],["Let's vote on it.","በዚህ ላይ ድምፅ እንስጥ።"],["We are running out of time.","ጊዜ እያለቀብን ነው።"],
+    ["Let's continue this next week.","ይህንን በሚቀጥለው ሳምንት እንቀጥል።"],["Who will write the notes?","ቃለ ጉባኤውን ማን ይጽፋል?"],["In conclusion, we must work as a team.","በማጠቃለያ እንደ ቡድን መስራት አለብን።"],
+    ["I'm happy to answer your questions.","ጥያቄዎቻችሁን ለመመለስ ደስተኛ ነኝ።"]]
+};
+LESSONS.forEach(l => { const extra = MORE_ADV[l.id]; if (!extra) return;
+  const seen = new Set(l.words.map(w => w[0]));
+  extra.forEach(w => { if (!seen.has(w[0])){ seen.add(w[0]); l.words.push(w); } }); });
+
+// ---- extra pronunciation words and sound pairs ----
+const MORE_PRON = {
+  "p-th1":[["thirty","ሰላሳ","(th)irty"],["thousand","ሺህ","(th)ousand"],["thick","ወፍራም","(th)ick"],["thin","ቀጭን","(th)in"],["throw","መወርወር","(th)row"],
+    ["throat","ጉሮሮ","(th)roat"],["thumb","አውራ ጣት","(th)umb"],["thief","ሌባ","(th)ief"],["thunder","ነጎድጓድ","(th)under"],["theatre","ቲያትር ቤት","(th)eatre"],
+    ["third","ሶስተኛ","(th)ird"],["thirsty","የጠማው","(th)irsty"],["health","ጤና","heal(th)"],["month","ወር","mon(th)"],["both","ሁለቱም","bo(th)"],
+    ["teeth","ጥርሶች","tee(th)"],["earth","መሬት","ear(th)"],["south","ደቡብ","sou(th)"],["maths","ሒሳብ","ma(th)s"],["cloth","ጨርቅ","clo(th)"],
+    ["truth","እውነት","tru(th)"],["fourth","አራተኛ","four(th)"],["fifth","አምስተኛ","fif(th)"],["nothing","ምንም","no(th)ing"],["something","አንድ ነገር","some(th)ing"],
+    ["everything","ሁሉም ነገር","every(th)ing"],["healthy","ጤናማ","heal(th)y"],["author","ደራሲ","au(th)or"],["I think so.","እንደዚያ ይመስለኛል።","I (th)ink so."],
+    ["Thank you for everything.","ለሁሉም ነገር አመሰግናለሁ።","(Th)ank you for every(th)ing."]],
+  "p-th2":[["there","እዚያ","(th)ere"],["their","የነሱ","(th)eir"],["them","እነሱን","(th)em"],["then","ከዚያ","(th)en"],["than","ይልቅ","(th)an"],
+    ["those","እነዚያ","(th)ose"],["though","ቢሆንም","(th)ough"],["without","ያለ","wi(th)out"],["with","ጋር","wi(th)"],["other","ሌላ","o(th)er"],
+    ["another","ሌላ አንድ","ano(th)er"],["clothes","ልብሶች","clo(th)es"],["breathe","መተንፈስ","brea(th)e"],["smooth","ለስላሳ","smoo(th)"],["rather","ይልቁንም","ra(th)er"],
+    ["either","ወይ ይሄ ወይ ያ","ei(th)er"],["neither","ሁለቱም አይደሉም","nei(th)er"],["further","ተጨማሪ","fur(th)er"],["gather","መሰብሰብ","ga(th)er"],["bother","ማስቸገር","bo(th)er"],
+    ["leather","የተዘጋጀ ቆዳ","lea(th)er"],["feather","ላባ","fea(th)er"],["northern","ሰሜናዊ","nor(th)ern"],["southern","ደቡባዊ","sou(th)ern"],["grandfather","አያት (ወንድ)","grandfa(th)er"],
+    ["this morning","ዛሬ ጠዋት","(th)is morning"],["that day","ያ ቀን","(th)at day"],["This is my brother.","ይህ ወንድሜ ነው።","(Th)is is my bro(th)er."],
+    ["That's the one.","ያኛው ነው።","(Th)at's (th)e one."],["They are there.","እነሱ እዚያ ናቸው።","(Th)ey are (th)ere."]],
+  "p-vfb":[["vote","ድምፅ መስጠት","ቮት"],["village","መንደር","ቪሌጅ"],["view","እይታ","ቪው"],["vacation","እረፍት","ቬኬሽን"],["valley","ሸለቆ","ቫሊ"],
+    ["visa","ቪዛ","ቪዛ"],["victory","ድል","ቪክትሪ"],["violin","ቫዮሊን","ቫዮሊን"],["vehicle","ተሽከርካሪ","ቪየክል"],["travel","መጓዝ","ትራቨል"],
+    ["river","ወንዝ","ሪቨር"],["never","በፍጹም","ኔቨር"],["every","እያንዳንዱ","ኤቭሪ"],["over","በላይ","ኦቨር"],["give","መስጠት","ጊቭ"],
+    ["have","አለኝ / መያዝ","ሃቭ"],["move","መንቀሳቀስ","ሙቭ"],["drive","መንዳት","ድራይቭ"],["November","ኖቬምበር","ኖቬምበር"],["TV","ቴሌቪዥን","ቲቪ"],
+    ["family","ቤተሰብ","ፋሚሊ"],["fish","ዓሣ","ፊሽ"],["fruit","ፍራፍሬ","ፍሩት"],["phone","ስልክ","ፎን"],["office","ቢሮ","ኦፊስ"],
+    ["laugh","መሳቅ","ላፍ"],["bread","ዳቦ","ብሬድ"],["beautiful","ቆንጆ","ቢዩቲፉል"],["I love my village.","መንደሬን እወዳለሁ።","አይ ላቭ ማይ ቪሌጅ"],["Very good!","በጣም ጥሩ!","ቬሪ ጉድ!"]],
+  "p-pb":[["park","መናፈሻ","ፓርክ"],["pay","መክፈል","ፔይ"],["price","ዋጋ","ፕራይስ"],["problem","ችግር","ፕሮብለም"],["police","ፖሊስ","ፖሊስ"],
+    ["potato","ድንች","ፖቴቶ"],["plate","ሳህን","ፕሌት"],["place","ቦታ","ፕሌስ"],["open","መክፈት","ኦፕን"],["shop","ሱቅ","ሾፕ"],
+    ["help","መርዳት","ሄልፕ"],["cup","ሲኒ","ካፕ"],["map","ካርታ","ማፕ"],["sleep","መተኛት","ስሊፕ"],["pepper","በርበሬ","ፔፐር"],
+    ["bank","ባንክ","ባንክ"],["bag","ቦርሳ","ባግ"],["bed","አልጋ","ቤድ"],["ball","ኳስ","ቦል"],["black","ጥቁር","ብላክ"],
+    ["blue","ሰማያዊ","ብሉ"],["buy","መግዛት","ባይ"],["table","ጠረጴዛ","ቴብል"],["number","ቁጥር","ናምበር"],["job","ስራ","ጆብ"],
+    ["club","ክለብ","ክላብ"],["rubber","ላስቲክ","ራበር"],["Please pay here.","እባክዎ እዚህ ይክፈሉ።","ፕሊዝ ፔይ ሂር"],
+    ["Put your book in your bag.","መጽሐፍህን ቦርሳህ ውስጥ አስቀምጥ።","ፑት ዮር ቡክ ኢን ዮር ባግ"],["Paper or plastic?","ወረቀት ወይስ ፕላስቲክ?","ፔፐር ኦር ፕላስቲክ?"]],
+  "p-ii":[["bit","ትንሽ","short i"],["hill","ኮረብታ","short i"],["fish","ዓሣ","short i"],["milk","ወተት","short i"],["big","ትልቅ","short i"],
+    ["sick","የታመመ","short i"],["gift","ስጦታ","short i"],["list","ዝርዝር","short i"],["his","የሱ","short i"],["kids","ልጆች","short i"],
+    ["pick","መልቀም","short i"],["chip","ቁራጭ","short i"],["win","ማሸነፍ","short i"],["sister","እህት","short i"],["city","ከተማ","short i"],
+    ["beat","መምታት","long ee"],["heel","ተረከዝ","long ee"],["meal","ምግብ","long ee"],["green","አረንጓዴ","long ee"],["tea","ሻይ","long ee"],
+    ["need","መፈለግ","long ee"],["keep","ማቆየት","long ee"],["cheap","ርካሽ","long ee"],["read","ማንበብ","long ee"],["team","ቡድን","long ee"],
+    ["week","ሳምንት","long ee"],["clean","ንጹህ","long ee"],["peace","ሰላም","long ee"],["key","ቁልፍ","long ee"],["sea","ባሕር","long ee"]],
+  "p-uu":[["put","ማስቀመጥ","short u"],["look","መመልከት","short u"],["cook","ማብሰል","short u"],["wood","እንጨት","short u"],["wool","ሱፍ","short u"],
+    ["should","ይገባል","short u"],["push","መግፋት","short u"],["sugar","ስኳር","short u"],["woman","ሴት","short u"],["took","ወሰደ","short u"],
+    ["stood","ቆመ","short u"],["bull","ኮርማ","short u"],["pull","መሳብ","short u"],["cookie","ብስኩት","short u"],
+    ["room","ክፍል","long oo"],["soon","በቅርቡ","long oo"],["cool","ቀዝቀዝ ያለ","long oo"],["pool","የመዋኛ ገንዳ","long oo"],["fruit","ፍራፍሬ","long oo"],
+    ["juice","ጭማቂ","long oo"],["shoe","ጫማ","long oo"],["June","ጁን","long oo"],["true","እውነት","long oo"],["choose","መምረጥ","long oo"],
+    ["move","መንቀሳቀስ","long oo"],["news","ዜና","long oo"],["noon","እኩለ ቀን","long oo"],["rule","ደንብ","long oo"],["group","ቡድን","long oo"],["you","አንተ / አንቺ","long oo"]],
+  "p-clusters":[["star","ኮከብ","ኢስታር"],["stay","መቆየት","ኢስቴይ"],["story","ታሪክ","ኢስቶሪ"],["station","ጣቢያ","ኢስቴሽን"],["stand","መቆም","ኢስታንድ"],
+    ["study","ማጥናት","ኢስታዲ"],["speak","መናገር","ኢስፒክ"],["sleep","መተኛት","ሲሊፕ"],["slow","ቀርፋፋ","ሲሎው"],["smile","ፈገግታ","ሲማይል"],
+    ["snow","በረዶ","ሲኖው"],["sky","ሰማይ","ኢስካይ"],["spring","ፀደይ","ኢስፕሪንግ"],["skirt","ጉርድ ቀሚስ","ኢስከርት"],["blue","ሰማያዊ","ቡሉ"],
+    ["black","ጥቁር","ቡላክ"],["bread","ዳቦ","ቡሬድ"],["green","አረንጓዴ","ጊሪን"],["drink","መጠጣት","ዲሪንክ"],["price","ዋጋ","ፒራይስ"],
+    ["train","ባቡር","ቲሬን"],["plane","አውሮፕላን","ፒሌን"],["flag","ሰንደቅ ዓላማ","ፊላግ"],["glass","ብርጭቆ","ጊላስ"],["friend","ጓደኛ","ፊሬንድ"],
+    ["cream","ክሬም","ኪሪም"],["plate","ሳህን","ፒሌት"],["flower","አበባ","ፊላወር"],["sweet","ጣፋጭ","ሲዊት"],["desk","የጽሕፈት ጠረጴዛ","ዴሲክ"]],
+  "p-ed":[["helped","ረዳ","help-t"],["stopped","አቆመ","stop-t"],["liked","ወደደ","like-t"],["worked","ሰራ","work-t"],["finished","ጨረሰ","finish-t"],
+    ["watched","ተመለከተ (ቴሌቪዥን)","watch-t"],["kissed","ሳመ","kiss-t"],["laughed","ሳቀ","laugh-t"],["missed","ናፈቀ / አመለጠ","miss-t"],["asked","ጠየቀ","ask-t"],
+    ["opened","ከፈተ","open-d"],["lived","ኖረ","live-d"],["loved","አፈቀረ","love-d"],["stayed","ቆየ","stay-d"],["listened","አዳመጠ","listen-d"],
+    ["cried","አለቀሰ","cry-d"],["moved","ተዛወረ","move-d"],["answered","መለሰ","answer-d"],["used","ተጠቀመ","use-d"],["enjoyed","ተደሰተ","enjoy-d"],
+    ["visited","ጎበኘ","visit-id"],["waited","ጠበቀ","wait-id"],["decided","ወሰነ","decide-id"],["ended","አበቃ","end-id"],["painted","ቀለም ቀባ","paint-id"],
+    ["invited","ጋበዘ","invite-id"],["added","ጨመረ","add-id"],["rented","ተከራየ","rent-id"],["hated","ጠላ","hate-id"],["counted","ቆጠረ","count-id"]],
+  "p-stress":[["afternoon","ከሰዓት በኋላ","af-ter-NOON"],["eleven","አስራ አንድ","e-LE-ven"],["fifteen","አስራ አምስት","fif-TEEN"],["fifty","ሃምሳ","FIF-ty"],
+    ["family","ቤተሰብ","FA-mi-ly"],["beautiful","ቆንጆ","BEAU-ti-ful"],["chocolate","ቸኮሌት","CHOC-late"],["vegetable","አትክልት","VEG-ta-ble"],
+    ["comfortable","ምቹ","COMF-ta-ble"],["interesting","አስደሳች","IN-tres-ting"],["different","የተለየ","DIF-frent"],["university","ዩኒቨርሲቲ","u-ni-VER-si-ty"],
+    ["information","መረጃ","in-for-MA-tion"],["education","ትምህርት","e-du-CA-tion"],["telephone","ስልክ","TE-le-phone"],["police","ፖሊስ","po-LICE"],
+    ["engineer","መሐንዲስ","en-gi-NEER"],["coffee","ቡና","CO-ffee"],["economy","ኢኮኖሚ","e-CO-no-my"],["economic","ኢኮኖሚያዊ","e-co-NO-mic"],
+    ["develop","ማልማት","de-VE-lop"],["America","አሜሪካ","a-ME-ri-ca"],["Africa","አፍሪካ","AF-ri-ca"],["mechanic","መካኒክ","me-CHA-nic"],
+    ["manager","ሥራ አስኪያጅ","MA-na-ger"],["around","ዙሪያ","a-ROUND"],["begin","መጀመር","be-GIN"],["today","ዛሬ","to-DAY"],["potato","ድንች","po-TA-to"],["tomato","ቲማቲም","to-MA-to"]],
+  "p-tone":[["Is it raining?","ዝናብ እየዘነበ ነው?","up ↗"],["Are you hungry?","ርቦዎታል?","up ↗"],["Do you speak Amharic?","አማርኛ ይናገራሉ?","up ↗"],
+    ["Have you finished?","ጨርሰዋል?","up ↗"],["Is she your sister?","እሷ እህትዎ ናት?","up ↗"],["Can I come in?","መግባት እችላለሁ?","up ↗"],
+    ["Did you sleep well?","በደንብ ተኙ?","up ↗"],["Is the shop open?","ሱቁ ክፍት ነው?","up ↗"],["Do you have a pen?","እስክሪብቶ አለዎት?","up ↗"],
+    ["Are they coming?","እየመጡ ነው?","up ↗"],["Would you like tea?","ሻይ ይፈልጋሉ?","up ↗"],["Is this seat taken?","ይህ ወንበር ተይዟል?","up ↗"],
+    ["Was it expensive?","ውድ ነበር?","up ↗"],["Do you understand?","ገብቶዎታል?","up ↗"],["Can you see it?","ይታይዎታል?","up ↗"],
+    ["Where are your parents from?","ወላጆችዎ ከየት ናቸው?","down ↘"],["What time do you finish?","ስንት ሰዓት ይጨርሳሉ?","down ↘"],["How old is your son?","ልጅዎ ስንት ዓመቱ ነው?","down ↘"],
+    ["Who is your teacher?","መምህርዎ ማነው?","down ↘"],["Which one is yours?","የእርስዎ የትኛው ነው?","down ↘"],["Why did you leave?","ለምን ሄዱ?","down ↘"],
+    ["How do you spell it?","እንዴት ይጻፋል?","down ↘"],["When is your birthday?","ልደትዎ መቼ ነው?","down ↘"],["What do you want?","ምን ይፈልጋሉ?","down ↘"],
+    ["Where is the station?","ጣቢያው የት ነው?","down ↘"],["How many brothers do you have?","ስንት ወንድሞች አሉዎት?","down ↘"],["What does it mean?","ምን ማለት ነው?","down ↘"],
+    ["Whose phone is this?","ይሄ የማን ስልክ ነው?","down ↘"],["How was your day?","ቀንዎ እንዴት ነበር?","down ↘"],["Where did you go yesterday?","ትናንት የት ሄዱ?","down ↘"]]
+};
+const MORE_PAIRS = {
+  "p-th1":[["thick","sick"],["three","free"],["faith","face"],["both","boat"]],
+  "p-th2":[["there","dare"],["though","dough"],["lather","ladder"]],
+  "p-vfb":[["vine","fine"],["save","safe"],["leave","leaf"],["curve","curb"]],
+  "p-pb":[["pin","bin"],["pear","bear"],["rope","robe"],["pack","back"]],
+  "p-ii":[["bit","beat"],["hill","heel"],["mill","meal"],["sin","seen"],["fit","feet"]]
+};
+LESSONS.forEach(l => {
+  const extra = MORE_PRON[l.id];
+  if (extra){ const seen = new Set(l.words.map(w => w[0])); extra.forEach(w => { if (!seen.has(w[0])){ seen.add(w[0]); l.words.push(w); } }); }
+  const ps = MORE_PAIRS[l.id];
+  if (ps && l.pairs){ const have = new Set(l.pairs.map(p => p.join("|"))); ps.forEach(p => { if (!have.has(p.join("|"))) l.pairs.push(p); }); }
+});
+
+const WORDMAP = {};
+LESSONS.forEach(l => l.words.forEach(w => { if (!WORDMAP[w[0]]) WORDMAP[w[0]] = { w, level:l.level }; }));
+
+const KEY = "fidel-english-v1";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+function loadStore(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ return {}; } }
+const store = Object.assign({ best:{}, speak:{}, wrong:{}, streak:0, last:null, level:"beg", placed:false, trialStart:null, plan:null }, loadStore());
+if (!store.trialStart){ store.trialStart = Date.now(); saveStore(); }
+["best","speak","wrong"].forEach(k => { if (!store[k]) store[k] = {}; });
+function saveStore(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+const levelOf = id => LEVELS.find(l => l.id === id) || LEVELS[0];
+function markWrong(en){ if (WORDMAP[en]){ store.wrong[en] = (store.wrong[en]||0) + 1; saveStore(); } }
+function markRight(en){ if (store.wrong[en]){ delete store.wrong[en]; saveStore(); } }
+
+const ICON_SPEAK = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+const ICON_SLOW = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/></svg>';
+const ICON_MIC = s => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v4"/></svg>`;
+const ICON_STOP = s => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>`;
+const ICON_SEND = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>';
+const ICON_CHAT = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>';
+const ICON_PLAY = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+const ICON_REDO = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
+const ICON_TARGET = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>';
+
+// ---------- platform features (Claude voice, microphone, AI tutor) ----------
+let tts = null, dict = null, sampleFn = null, capsReady = false, micDenied = false;
+const hasSpeech = "speechSynthesis" in window;
+let voice = null;
+function pickVoice(){ if(!hasSpeech) return; const vs = speechSynthesis.getVoices();
+  voice = vs.find(v=>/en[-_]US/i.test(v.lang)) || vs.find(v=>/^en/i.test(v.lang)) || null; }
+if (hasSpeech){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function browserSpeak(text, slow){
+  if (!hasSpeech){ toast("Sound is not available on this browser · ድምፅ አይሰራም"); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US"; if (voice) u.voice = voice; u.rate = slow ? 0.55 : 0.9;
+  speechSynthesis.speak(u);
+}
+function speak(text, slow){
+  text = String(text).replace(/\.\.\.$/, "");
+  if (tts){
+    tts.speak(text, { language:"en", rate: slow ? 0.7 : 0.95 }).catch(e => {
+      const c = e && e.code;
+      if (c === "not_granted" || c === "unavailable"){ tts = null; browserSpeak(text, slow); }
+    });
+    return;
+  }
+  browserSpeak(text, slow);
+}
+function stopSound(){ try { if (tts) tts.stop(); } catch(e){} if (hasSpeech) speechSynthesis.cancel(); }
+
+const mic = { target:null, text:"", partial:"", state:"idle", timer:null };
+function micStart(target){
+  if (!dict || micDenied) return;
+  if (dict.active()){ dict.stop(); return; }
+  mic.target = target; mic.text = ""; mic.partial = "";
+  stopSound();
+  dict.start({ language:"en" }).catch(e => {
+    const c = e && e.code;
+    if (c === "not_granted"){ micDenied = true; toast("Microphone is off for this page · ማይክሮፎን ተዘግቷል"); refresh(); }
+    else if (c === "unavailable"){ dict = null; refresh(); }
+    else if (c === "rate_limited") toast("Please wait a moment and try again · ትንሽ ቆይተው ይሞክሩ");
+    else if (c !== "stopped" && c !== "dismissed") toast("The microphone did not start. Try again · እንደገና ይሞክሩ");
+  });
+}
+function onDictState({ state, reason }){
+  mic.state = state;
+  if (reason === "not_granted") micDenied = true;
+  if (reason === "unavailable") dict = null;
+  if (state === "idle" && mic.target === "speak" && !$("#v-speak").hidden){
+    clearTimeout(mic.timer);
+    if (mic.text.trim()) evaluateSpeech(mic.text); else renderSpeak();
+    return;
+  }
+  if (mic.target === "speak") renderSpeakMic(); else renderTutorMic();
+}
+function onDictPartial({ text }){ mic.partial = text; showHeard(); }
+function onDictFinal({ text }){
+  mic.text += text; mic.partial = "";
+  if (mic.target === "tutor"){ const b = $("#tbox"); if (b){ b.value = (b.value + text).replace(/^\s+/, ""); autoGrow(b); } }
+  else { clearTimeout(mic.timer); mic.timer = setTimeout(() => { if (dict && dict.active()) dict.stop(); }, 1600); }
+  showHeard();
+}
+function showHeard(){
+  if (mic.target === "speak"){ const h = $("#heard"); if (h) h.textContent = (mic.text + " " + mic.partial).trim(); }
+  else { const b = $("#tbox"); if (b && mic.partial) b.placeholder = mic.partial; }
+}
+(async () => {
+  if (!window.claude || !claude.use) { capsReady = true; refresh(); return; }
+  const [t, d, s, u] = await Promise.all([claude.use("tts"), claude.use("dictation"), claude.use("sample"), claude.use("user")]);
+  try { isOwner = !!(u && await u.isOwner()); } catch(e){}
+  tts = t; dict = d; sampleFn = s; capsReady = true;
+  if (dict){ dict.onState(onDictState); dict.onPartial(onDictPartial); dict.onFinal(onDictFinal); }
+  refresh();
+})();
+
+let toastTimer;
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.hidden=true,3000); }
+
+// ---------- trial & subscription ----------
+// 3-day free trial with everything. After that: Basic 300 Birr/month (lessons) or Premium 1000 Birr/month (lessons + AI tutor).
+// store.plan is set only by a real payment (server + Chapa, not built yet). The page owner is never locked.
+const TRIAL_DAYS = 3, PRICE_BASIC = 300, PRICE_PREMIUM = 1000;
+let isOwner = false;
+function trialLeft(){ return Math.max(0, TRIAL_DAYS - (Date.now() - store.trialStart) / 86400000); }
+function canUse(feature){
+  if (isOwner || trialLeft() > 0) return true;
+  if (feature === "tutor") return store.plan === "premium";
+  return store.plan === "basic" || store.plan === "premium";
+}
+function gate(feature, fn){ if (canUse(feature)) { fn(); return; } showPaywall(feature); }
+function showPaywall(feature){
+  stopSound();
+  const ended = trialLeft() <= 0 && !store.plan;
+  const head = feature === "tutor" && store.plan === "basic"
+    ? `<h1>The AI tutor is in Premium</h1><p class="am">AI አስተማሪው በፕሪሚየም ውስጥ ነው</p>`
+    : ended ? `<h1>Your 3-day free trial has ended</h1><p class="am">የ3 ቀን ነፃ ሙከራዎ አልቋል። ለመቀጠል ይመዝገቡ።</p>`
+    : `<h1>Choose your plan</h1><p class="am">ዕቅድዎን ይምረጡ</p>`;
+  $("#v-pay").innerHTML = `<div class="goal">${head}</div>
+    <div class="plans">
+      <div class="plan ${feature!=="tutor"?"best":""}">
+        <h2>Basic · <span class="am">መሰረታዊ</span></h2>
+        <div class="price">${PRICE_BASIC} Birr <small>/ month · በወር ${PRICE_BASIC} ብር</small></div>
+        <ul><li>All ${LESSONS.length} lessons · <span class="am">ሁሉም ትምህርቶች</span></li>
+          <li>Endless quizzes and speaking practice · <span class="am">ፈተናና የመናገር ልምምድ</span></li>
+          <li>Pronunciation lessons · <span class="am">የአነባበብ ትምህርቶች</span></li></ul>
+        <button class="btn ${feature!=="tutor"?"primary":""}" data-plan="basic">Subscribe · <span class="am">ይመዝገቡ</span></button>
+      </div>
+      <div class="plan ${feature==="tutor"?"best":""}">
+        ${feature==="tutor"?"":`<span class="tagb">+ AI tutor</span>`}
+        <h2>Premium · <span class="am">ፕሪሚየም</span></h2>
+        <div class="price">${PRICE_PREMIUM} Birr <small>/ month · በወር ${PRICE_PREMIUM} ብር</small></div>
+        <ul><li>Everything in Basic · <span class="am">በመሰረታዊ ያለው ሁሉ</span></li>
+          <li>Talk with your AI tutor every day · <span class="am">ከ AI አስተማሪ ጋር በየቀኑ ይወያዩ</span></li></ul>
+        <button class="btn ${feature==="tutor"?"primary":"gold"}" data-plan="premium">Subscribe · <span class="am">ይመዝገቡ</span></button>
+      </div>
+    </div>
+    <p class="paynote">Pay with Telebirr, CBE Birr, M-Pesa or card · <span class="am">በቴሌብር፣ በሲቢኢ ብር፣ በኤም-ፔሳ ወይም በካርድ ይክፈሉ</span><br>Cancel any time · <span class="am">በማንኛውም ጊዜ ማቋረጥ ይችላሉ</span></p>`;
+  show("pay");
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-plan]"); if (b) toast("Payment is coming soon · ክፍያ በቅርቡ ይጀምራል"); });
+
+// ---------- account, profile, reminders ----------
+// Account data is kept on this phone only until the server is built.
+const AVATARS = ["🦁","🐆","🦒","🐘","🦅","🐒","🦓","🐢"];
+const GOALS = [5, 10, 15, 20];
+const dayStr = d => d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+function daysSince(ds){ if (!ds) return null; const [y,m,d] = ds.split("-").map(Number); const a = new Date(y, m-1, d), b = new Date(); b.setHours(0,0,0,0); return Math.round((b - a) / 86400000); }
+function liveStreak(){ const g = daysSince(store.last); return (g === 0 || g === 1) ? (store.streak || 0) : 0; }
+function normPhone(v){ const m = v.replace(/[\s\-()]/g, "").match(/^(?:\+?251|0)?([79]\d{8})$/); return m ? "+251" + m[1] : null; }
+const okEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+
+function modal(html, buttons){
+  const m = document.createElement("div"); m.className = "modal"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true");
+  m.innerHTML = `<div class="box">${html}<div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">${buttons.map((b, i) =>
+    `<button class="btn ${i===0?"primary":""}" data-mb="${i}">${b.label}</button>`).join("")}</div></div>`;
+  m.addEventListener("click", e => {
+    const b = e.target.closest("[data-mb]");
+    if (!b && e.target !== m) return;
+    m.remove();
+    if (b && buttons[+b.dataset.mb].fn) buttons[+b.dataset.mb].fn();
+  });
+  document.body.appendChild(m); m.querySelector("[data-mb]").focus();
+}
+
+const SU = { method:"phone" };
+function renderSignup(){
+  $("#v-signup").innerHTML = `
+    <div class="hero"><div class="big" aria-hidden="true">🦁</div>
+      <h1>Welcome to Fidel English</h1><p class="am">እንኳን ወደ ፊደል ኢንግሊሽ በደህና መጡ!</p>
+      <p>Learn to speak English, a few minutes a day.<br><span class="am">በቀን ጥቂት ደቂቃዎች እንግሊዝኛ ይማሩ።</span></p></div>
+    <form class="form" id="suForm" novalidate>
+      <div class="field"><label for="suName">Your name · <span class="am">ስምዎ</span></label>
+        <input id="suName" autocomplete="given-name" placeholder="Abebe"></div>
+      <div class="seg" role="group" aria-label="Sign up with">
+        <button type="button" data-m="phone" aria-pressed="${SU.method==="phone"}">Phone · <span class="am">ስልክ</span></button>
+        <button type="button" data-m="gmail" aria-pressed="${SU.method==="gmail"}">Gmail</button></div>
+      <div class="field">${SU.method === "phone"
+        ? `<label for="suContact">Phone number · <span class="am">ስልክ ቁጥር</span></label><input id="suContact" type="tel" inputmode="tel" autocomplete="tel" placeholder="09 12 34 56 78">`
+        : `<label for="suContact">Gmail address · <span class="am">የጂሜይል አድራሻ</span></label><input id="suContact" type="email" inputmode="email" autocomplete="email" placeholder="name@gmail.com">`}
+        <span class="err" id="suErr" aria-live="polite"></span></div>
+      <button class="btn primary" type="submit">Start my 3-day free trial · <span class="am">ነፃ ሙከራ ይጀምሩ</span></button>
+    </form>
+    <p class="foot">You can change this later in your profile · <span class="am">በኋላ በመገለጫዎ መቀየር ይችላሉ</span></p>`;
+  show("signup");
+  $("#v-signup .seg").onclick = e => {
+    const b = e.target.closest("[data-m]"); if (!b) return;
+    const name = $("#suName").value; SU.method = b.dataset.m; renderSignup(); $("#suName").value = name; $("#suContact").focus();
+  };
+  $("#suForm").onsubmit = e => {
+    e.preventDefault();
+    const name = $("#suName").value.trim(), raw = $("#suContact").value.trim(), err = $("#suErr");
+    if (!name){ err.textContent = "Please write your name · ስምዎን ይጻፉ"; $("#suName").focus(); return; }
+    let contact = null;
+    if (SU.method === "phone"){
+      contact = normPhone(raw);
+      if (!contact){ err.textContent = "Write a phone number like 0912345678 · ትክክለኛ ስልክ ቁጥር ይጻፉ"; $("#suContact").focus(); return; }
+    } else {
+      if (!okEmail(raw)){ err.textContent = "Write an email like name@gmail.com · ትክክለኛ ኢሜይል ይጻፉ"; $("#suContact").focus(); return; }
+      contact = raw.toLowerCase();
+    }
+    store.profile = { name, method:SU.method, contact, avatar:"🦁", goal:10, remind:"19:00", created:Date.now() };
+    store.trialStart = Date.now(); store.nudged = dayStr(new Date()); saveStore();
+    renderHome();
+    modal(`<div class="big" aria-hidden="true">🦁</div><h2>Selam ${esc(name)}!</h2><p>Your 3-day free trial has started. Let's begin!</p><p class="am">የ3 ቀን ነፃ ሙከራዎ ተጀምሯል። እንጀምር!</p>`,
+      [{ label:"Find my level · ደረጃዬን ልወቅ", fn:startPlacement }, { label:"Go to lessons · ወደ ትምህርቶች" }]);
+  };
+}
+
+function renderProfile(){
+  const P = store.profile, left = trialLeft();
+  const planTxt = isOwner ? "Owner · full access"
+    : store.plan === "premium" ? `Premium · ${PRICE_PREMIUM} Birr / month`
+    : store.plan === "basic" ? `Basic · ${PRICE_BASIC} Birr / month`
+    : left > 0 ? `Free trial · ${Math.ceil(left)} day(s) left` : "Trial ended";
+  $("#v-profile").innerHTML = `
+    <div class="hero"><div class="big" aria-hidden="true">${P.avatar}</div><h1>${esc(P.name)}</h1><p>${esc(P.contact)}</p>
+      <p>🔥 ${liveStreak()} day streak · <span class="am">${liveStreak()} ተከታታይ ቀን</span></p></div>
+    <div class="form">
+      <div class="field"><span class="lab">Your picture · <span class="am">ምስልዎ</span></span>
+        <div class="choices emoji" id="pfAv" role="group" aria-label="Picture">${AVATARS.map(a => `<button type="button" data-av="${a}" aria-pressed="${a===P.avatar}">${a}</button>`).join("")}</div></div>
+      <div class="field"><label for="pfName">Name · <span class="am">ስም</span></label><input id="pfName" value="${esc(P.name)}"></div>
+      <div class="field"><label for="pfContact">${P.method === "phone" ? 'Phone number · <span class="am">ስልክ ቁጥር</span>' : 'Gmail · <span class="am">ጂሜይል</span>'}</label>
+        <input id="pfContact" type="${P.method === "phone" ? "tel" : "email"}" value="${esc(P.contact)}"><span class="err" id="pfErr" aria-live="polite"></span></div>
+      <div class="field"><span class="lab">Daily goal · <span class="am">የቀን ግብ</span></span>
+        <div class="choices" id="pfGoal" role="group" aria-label="Daily goal">${GOALS.map(g => `<button type="button" data-goal="${g}" aria-pressed="${g===P.goal}">${g} min</button>`).join("")}</div></div>
+      <div class="field"><label for="pfRemind">Remind me at · <span class="am">በዚህ ሰዓት አስታውሰኝ</span></label><input id="pfRemind" type="time" value="${esc(P.remind || "")}"></div>
+      <button class="btn primary" id="pfSave">Save · <span class="am">አስቀምጥ</span></button>
+    </div>
+    <div class="form"><div class="field"><span class="lab">Your plan · <span class="am">ዕቅድዎ</span></span><span>${esc(planTxt)}</span></div>
+      <button class="btn gold" id="pfPlans">See plans · <span class="am">ዕቅዶችን ይመልከቱ</span></button></div>
+    <button class="btn" id="pfOut">Sign out · <span class="am">ውጣ</span></button>`;
+  show("profile");
+  const pick = (sel, b) => document.querySelectorAll(sel + " button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  $("#pfAv").onclick = e => { const b = e.target.closest("[data-av]"); if (b) pick("#pfAv", b); };
+  $("#pfGoal").onclick = e => { const b = e.target.closest("[data-goal]"); if (b) pick("#pfGoal", b); };
+  $("#pfSave").onclick = () => {
+    const name = $("#pfName").value.trim(), raw = $("#pfContact").value.trim();
+    if (!name){ $("#pfErr").textContent = "Please write your name · ስምዎን ይጻፉ"; return; }
+    const contact = P.method === "phone" ? normPhone(raw) : (okEmail(raw) ? raw.toLowerCase() : null);
+    if (!contact){ $("#pfErr").textContent = P.method === "phone" ? "Write a phone number like 0912345678" : "Write an email like name@gmail.com"; return; }
+    Object.assign(P, { name, contact,
+      avatar: document.querySelector('#pfAv [aria-pressed="true"]').dataset.av,
+      goal: +document.querySelector('#pfGoal [aria-pressed="true"]').dataset.goal,
+      remind: $("#pfRemind").value });
+    saveStore(); toast("Saved · ተቀምጧል"); renderProfile();
+  };
+  $("#pfPlans").onclick = () => showPaywall(store.plan === "basic" ? "tutor" : "lessons");
+  $("#pfOut").onclick = () => modal(`<h2>Sign out?</h2><p>Your progress stays on this phone.</p><p class="am">መውጣት ይፈልጋሉ? ውጤትዎ በዚህ ስልክ ላይ ይቀመጣል።</p>`,
+    [{ label:"Sign out · ውጣ", fn:() => { delete store.profile; saveStore(); renderSignup(); } }, { label:"Cancel · ተው" }]);
+}
+
+// "We missed you" when they come back after a day or more, and a reminder at their chosen time while the app is open.
+function checkMissed(){
+  const P = store.profile; if (!P) return;
+  const today = dayStr(new Date());
+  if (store.nudged === today) return;
+  const gap = daysSince(store.last);
+  if (gap == null || gap === 0) return;
+  store.nudged = today; saveStore();
+  if (gap === 1 && store.streak > 0){
+    modal(`<div class="big" aria-hidden="true">🦁🔥</div><h2>Keep your ${store.streak}-day streak!</h2><p>Practise today so you don't lose it.</p><p class="am">የ${store.streak} ቀን ተከታታይነትዎን እንዳያጡ ዛሬ ይለማመዱ!</p>`,
+      [{ label:`Learn ${P.goal} minutes · ${P.goal} ደቂቃ ልማር`, fn:continueLearning }, { label:"Later · በኋላ" }]);
+  } else if (gap > 1){
+    modal(`<div class="big" aria-hidden="true">🦁😢</div><h2>We missed you, ${esc(P.name)}!</h2><p>You were away for ${gap} days. Start a new streak today!</p><p class="am">ለ${gap} ቀናት ናፍቀንዎታል! ዛሬ እንደገና እንጀምር።</p>`,
+      [{ label:"Let's go! · እንጀምር!", fn:continueLearning }, { label:"Later · በኋላ" }]);
+  }
+}
+function continueLearning(){
+  const nextL = LESSONS.find(l => l.level === store.level && store.best[l.id] == null) || LESSONS.find(l => store.best[l.id] == null) || LESSONS[0];
+  openLesson(nextL.id);
+}
+function checkReminder(){
+  const P = store.profile;
+  if (!P || !P.remind || document.hidden || document.querySelector(".modal") || current === "signup") return;
+  const now = new Date(), today = dayStr(now);
+  if (store.last === today || store.reminded === today) return;
+  const [h, m] = P.remind.split(":").map(Number);
+  if (now.getHours() * 60 + now.getMinutes() < h * 60 + m) return;
+  store.reminded = today; saveStore();
+  modal(`<div class="big" aria-hidden="true">🦁⏰</div><h2>It's English time!</h2><p>Your ${P.goal}-minute lesson is waiting.</p><p class="am">የእንግሊዝኛ ሰዓት ደርሷል! የ${P.goal} ደቂቃ ትምህርትዎ እየጠበቀዎት ነው።</p>`,
+    [{ label:"Start now · አሁን ልጀምር", fn:continueLearning }, { label:"Later · በኋላ" }]);
+}
+setInterval(checkReminder, 60000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) checkReminder(); });
+$("#profileBtn").onclick = () => { stopSound(); renderProfile(); };
+
+// ---------- navigation ----------
+let current = "home";
+function show(id){
+  current = id;
+  ["home","cards","quiz","speak","tutor","result","pay","signup","profile"].forEach(v => $("#v-"+v).hidden = (v!==id));
+  $("#backBtn").hidden = (id==="home" || id==="signup");
+  $("#profileBtn").hidden = (id==="signup" || !store.profile);
+  if (store.profile) $("#profileBtn").textContent = store.profile.avatar || "🦁";
+  window.scrollTo(0,0);
+}
+function refresh(){ if (current === "home") renderHome(); else if (current === "speak") renderSpeak(); else if (current === "tutor") renderTutorMic(); }
+$("#backBtn").onclick = () => { stopSound(); if (dict && dict.active()) dict.stop(); mic.target = null; renderHome(); };
+function bumpStreak(){
+  const ds = d => d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+  const today = ds(new Date()), y = new Date(); y.setDate(y.getDate()-1);
+  if (store.last !== today){ store.streak = (store.last === ds(y)) ? (store.streak||0) + 1 : 1; store.last = today; }
+  saveStore(); $("#streak").textContent = store.streak;
+}
+
+// ---------- home ----------
+function renderHome(){
+  $("#streak").textContent = liveStreak();
+  const lv = levelOf(store.level);
+  const list = LESSONS.filter(l => l.level === lv.id);
+  const doneAll = LESSONS.filter(l => store.best[l.id] != null).length;
+  const doneLv = list.filter(l => store.best[l.id] != null).length;
+  const nextL = list.find(l => store.best[l.id] == null);
+  const wrongN = Object.keys(store.wrong).filter(k => WORDMAP[k]).length;
+  let acts = "";
+  if (!store.placed) acts += `<button class="action gold" id="aPlace"><span class="ic">${ICON_TARGET}</span><span style="flex:1;min-width:0"><b>Find your level</b><span class="s am">ደረጃዎን ይወቁ · 3-minute test</span></span></button>`;
+  if (nextL) acts += `<button class="action" data-open="${nextL.id}"><span class="ic">${ICON_PLAY}</span><span style="flex:1;min-width:0"><b>Next lesson: ${esc(nextL.en)}</b><span class="s am">ቀጣይ ትምህርት፡ ${esc(nextL.am)}</span></span></button>`;
+  if (wrongN) acts += `<button class="action" id="aReview"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Review your mistakes (${wrongN})</b><span class="s am">ስህተቶችዎን ይከልሱ</span></span></button>`;
+  if (capsReady){
+    acts += sampleFn
+      ? `<button class="action gold" id="openTutor"><span class="ic">${ICON_CHAT}</span><span style="flex:1;min-width:0"><b>Talk with your AI tutor</b><span class="s am">ከ AI አስተማሪ ጋር በእንግሊዝኛ ይወያዩ</span></span></button>`
+      : `<div class="action off"><span class="ic">${ICON_CHAT}</span><span style="flex:1;min-width:0"><b>AI tutor</b><span class="s">Open this page in the Claude app or in Chrome while signed in to use the AI tutor.</span></span></div>`;
+  }
+  const left = trialLeft();
+  let banner = "";
+  if (!isOwner && !store.plan){
+    banner = left > 0
+      ? `<div class="trial"><span><b>Free trial: ${Math.ceil(left)} day${Math.ceil(left)===1?"":"s"} left</b><br><span class="am">ነፃ ሙከራ፡ ${Math.ceil(left)} ቀን ቀረው</span></span><button id="aPlans">See plans</button></div>`
+      : `<div class="trial"><span><b>Trial ended</b> · <span class="am">ሙከራው አልቋል</span><br>From ${PRICE_BASIC} Birr / month</span><button id="aPlans">Subscribe</button></div>`;
+  } else if (store.plan === "basic" && !isOwner){
+    banner = `<div class="trial"><span>Add the AI tutor · <span class="am">AI አስተማሪ ይጨምሩ</span></span><button id="aPlans">${PRICE_PREMIUM} Birr</button></div>`;
+  }
+  const P = store.profile || {};
+  const doneToday = store.last === dayStr(new Date());
+  const say = doneToday
+    ? [`Great job today, ${P.name || "friend"}! See you tomorrow.`, "ዛሬ ጎበዝ ነበሩ! ነገ እንገናኝ።"]
+    : [`Selam ${P.name || ""}! Let's learn ${P.goal || 10} minutes today.`, `ዛሬ ${P.goal || 10} ደቂቃ እንማር!`];
+  const mascot = `<div class="mascot"><span class="face" aria-hidden="true">🦁</span><div class="bubble">${esc(say[0])}<span class="am">${esc(say[1])}</span></div></div>`;
+  let html = mascot + banner + `<div class="goal"><h1>Speak English with confidence</h1>
+    <p class="am">እንግሊዝኛን በልበ ሙሉነት ይናገሩ</p>
+    <p style="font-size:14px">Course progress: ${doneAll} of ${LESSONS.length} lessons · <span class="am">${doneAll}/${LESSONS.length} ተጠናቋል</span></p>
+    <div class="bar"><i style="width:${doneAll/LESSONS.length*100}%"></i></div></div>
+    <div class="actions">${acts}</div>
+    <div class="label">Choose a section · <span class="am">ክፍል ይምረጡ</span></div>
+    <div class="levels" role="group" aria-label="Section">${LEVELS.map(l =>
+      `<button class="lvl" data-level="${l.id}" aria-pressed="${l.id===lv.id}">${l.en}<small>${l.am}</small></button>`).join("")}</div>
+    <div class="label">${esc(lv.en)} · <span class="am">${esc(lv.am)}</span> — ${doneLv}/${list.length} done</div>
+    <div class="lessons">`;
+  list.forEach((l, k) => {
+    const q = store.best[l.id], sp = store.speak[l.id];
+    const kind = l.grammar ? `<span class="tag">Grammar</span>` : "";
+    const unit = l.level === "beg" || l.level === "pron" ? "words" : "sentences";
+    html += `<button class="lesson ${q!=null?"done":""}" data-open="${l.id}">
+      <span class="num">${k+1}</span>
+      <span class="lt"><b>${esc(l.en)}</b><span>${kind}<span class="am">${esc(l.am)}</span> · ${l.words.length} ${l.grammar?"examples":unit}</span></span>
+      <span class="pills"><span class="pill ${q!=null?"on":""}">Quiz ${q!=null?q+"%":"–"}</span><span class="pill ${sp!=null?"on":""}">Speak ${sp!=null?sp+"%":"–"}</span></span></button>`;
+  });
+  html += `</div><p class="foot">Every lesson: learn the cards, take the quiz, then practise speaking. Every quiz has new questions, so practise as many times as you like.<br><span class="am">በእያንዳንዱ ትምህርት፡ ካርዶቹን ይማሩ፣ ፈተናውን ይውሰዱ፣ መናገር ይለማመዱ። እያንዳንዱ ፈተና አዲስ ጥያቄዎች አሉት። በየቀኑ ከ AI አስተማሪው ጋር ይወያዩ።</span></p>`;
+  $("#v-home").innerHTML = html;
+  show("home");
+}
+$("#v-home").addEventListener("click", e => {
+  const lvb = e.target.closest("[data-level]");
+  if (lvb){ store.level = lvb.dataset.level; saveStore(); renderHome(); return; }
+  const b = e.target.closest("[data-open]"); if (b){ openLesson(b.dataset.open); return; }
+  if (e.target.closest("#openTutor")) openTutor();
+  if (e.target.closest("#aPlans")) showPaywall(store.plan === "basic" ? "tutor" : "lessons");
+  if (e.target.closest("#aPlace")) startPlacement();
+  if (e.target.closest("#aReview")) startReview();
+});
+
+// ---------- tip box (grammar / pronunciation) ----------
+function tipBox(L, open){
+  if (!L.tip) return "";
+  const title = L.level === "pron" ? `How to say it · <span class="am">እንዴት እንደሚባል</span>` : L.grammar ? `Grammar tip · <span class="am">የሰዋሰው ምክር</span>` : `Good to know · <span class="am">ማወቅ ያለብዎት</span>`;
+  const pairs = L.pairs ? `<div class="pairs"><span class="label">Hear the difference · <span class="am">ልዩነቱን ይስሙ</span></span>${L.pairs.map(p =>
+    `<div class="pair"><button data-sayw="${esc(p[0])}">${ICON_SPEAK.replace(/22/g,"16")}${esc(p[0])}</button><button data-sayw="${esc(p[1])}">${ICON_SPEAK.replace(/22/g,"16")}${esc(p[1])}</button></div>`).join("")}</div>` : "";
+  return `<details class="tip" ${open?"open":""}><summary>${title}</summary><p>${esc(L.tip[0])}</p><p class="am">${esc(L.tip[1])}</p>${pairs}</details>`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-sayw]"); if (b) speak(b.dataset.sayw, false); });
+document.addEventListener("toggle", e => { if (e.target.classList && e.target.classList.contains("tip") && current === "cards") S.tipOpen = e.target.open; }, true);
+
+function hintRow(L, w){
+  if (!w[2]) return "";
+  const label = L.hintLabel || "Say";
+  const th = w[2].includes("(th)") && L.level !== "pron" ? `<div class="thnote">(th) = tongue between your teeth · ምላስ በጥርሶች መካከል</div>` : "";
+  const isLatin = /^[\x00-ɏ↗↘\s]+$/.test(w[2]);
+  return `<div class="pron"><small>${esc(label)}</small><span ${isLatin?'style="font-family:var(--font-en)"':""}>${esc(w[2])}</span></div>${th}` +
+    (L.id === "p-clusters" ? `<div class="thnote">Don't say it like this · እንደዚህ አይበሉ</div>` : "");
+}
+const sayText = (L, w) => (L.speakHint && w[2]) ? w[2] : w[0];
+
+// ---------- flashcards ----------
+const S = { lesson:null, i:0, flipped:false, tipOpen:true, quiz:[], qi:0, score:0, answered:false, mode:"lesson" };
+function openLesson(id){ gate("lessons", () => openLessonNow(id)); }
+function openLessonNow(id){ S.lesson = LESSONS.find(l=>l.id===id); S.i=0; S.flipped=false; S.tipOpen=true; renderCard(); show("cards"); }
+function renderCard(){
+  const L = S.lesson, w = L.words[S.i], n = L.words.length, last = S.i===n-1;
+  $("#v-cards").innerHTML = `
+    <div class="label">${esc(L.en)} · <span class="am">${esc(L.am)}</span> — ${S.i+1} / ${n}</div>
+    <div class="progress"><i style="width:${(S.i+1)/n*100}%"></i></div>
+    ${tipBox(L, S.tipOpen)}
+    <button class="card" id="card" aria-label="Show meaning">
+      <div class="en ${w[0].length>22?"long":""}">${esc(w[0])}</div>
+      ${hintRow(L, w)}
+      ${S.flipped ? `<div class="meaning">${esc(w[1])}</div>` : `<div class="tap am">ትርጉሙን ለማየት ይንኩ · Tap to see meaning</div>`}
+    </button>
+    <div class="row">
+      <button class="btn" id="say">${ICON_SPEAK}<span>Listen<small>ያዳምጡ</small></span></button>
+      <button class="btn" id="slow">${ICON_SLOW}<span>Slow<small>በዝግታ</small></span></button>
+    </div>
+    <div class="row">
+      <button class="btn" id="prev" ${S.i===0?"disabled":""}><span>Back<small>ተመለስ</small></span></button>
+      ${last ? `<button class="btn primary" id="go"><span>Start quiz<small>ፈተና ጀምር</small></span></button>`
+             : `<button class="btn primary" id="next"><span>Next<small>ቀጣይ</small></span></button>`}
+    </div>
+    <div class="row">
+      ${last ? "" : `<button class="btn" id="skip"><span>Quiz<small>ፈተና</small></span></button>`}
+      <button class="btn gold" id="spk">${ICON_MIC(20)}<span>Speaking practice<small>መናገር ይለማመዱ</small></span></button>
+    </div>`;
+  $("#card").onclick = () => { S.flipped = !S.flipped; renderCard(); };
+  $("#say").onclick = () => speak(sayText(L, w), false);
+  $("#slow").onclick = () => speak(sayText(L, w), true);
+  $("#prev").onclick = () => { if (S.i>0){ S.i--; S.flipped=false; renderCard(); } };
+  if ($("#next")) $("#next").onclick = () => { S.i++; S.flipped=false; renderCard(); };
+  if ($("#go")) $("#go").onclick = () => startQuiz(L, "lesson");
+  if ($("#skip")) $("#skip").onclick = () => startQuiz(L, "lesson");
+  $("#spk").onclick = () => startSpeaking(L);
+}
+
+// ---------- quiz ----------
+// type 0: English -> Amharic, 1: Amharic -> English, 2: listen -> English, 3: listen -> which of two similar words
+function poolFor(w){
+  const lv = (WORDMAP[w[0]] || {}).level;
+  return LESSONS.filter(l => l.level === lv).flatMap(l => l.words).filter(x => x !== w && x[0] !== w[0]);
+}
+function buildQuestion(w, type, pool){
+  const src = (pool && pool.length >= 3) ? pool : poolFor(w);
+  const sameKind = src.filter(x => (x[0].length > 14) === (w[0].length > 14));
+  const others = shuffle(sameKind.length >= 3 ? sameKind : src).filter(x => x[0] !== w[0] && x[1] !== w[1]).slice(0, 3);
+  return { type, word: w, options: shuffle([w, ...others]) };
+}
+// ---- endless practice: new random questions every time ----
+// type 4: put words in order, 5: fill the gap, 6: which sentence is correct
+const SWAP = { is:"are", are:"is", am:"is", was:"were", were:"was", has:"have", have:"has", does:"do", do:"does",
+  "doesn't":"don't", "don't":"doesn't", "isn't":"aren't", "aren't":"isn't", "wasn't":"weren't", "weren't":"wasn't", a:"an", an:"a" };
+const QUIZ_LEN = 12;
+const pickOne = a => a[Math.floor(Math.random() * a.length)];
+function toks(s){ return s.trim().split(/\s+/).map(t => { const m = t.match(/^(["“(]*)(.*?)([.,!?;:"”)]*)$/); return { pre:m[1], core:m[2], post:m[3] }; }); }
+const joinToks = ts => ts.map(t => t.pre + t.core + t.post).join(" ");
+const plainWord = c => /^[A-Za-z][A-Za-z'’-]*$/.test(c);
+const isSentence = w => toks(w[0]).length >= 3 && !/[\/…↗↘]/.test(w[0]);
+const capLike = (src, word) => /^[A-Z]/.test(src) ? word[0].toUpperCase() + word.slice(1) : word;
+function swapIdx(w){
+  if (/\bif I were\b/i.test(w[0]) || /[\/…]/.test(w[0])) return [];
+  return toks(w[0]).map((t, i) => SWAP[t.core.toLowerCase()] ? i : -1).filter(i => i >= 0);
+}
+function correctQuestion(w){
+  const idx = swapIdx(w); if (!idx.length) return null;
+  const ts = toks(w[0]), t = ts[pickOne(idx)];
+  t.core = capLike(t.core, SWAP[t.core.toLowerCase()]);
+  const bad = joinToks(ts);
+  return { type:6, word:w, options:shuffle([w[0], bad]), correctOpt:w[0] };
+}
+function gapQuestion(w, L){
+  const ts = toks(w[0]); let cand = swapIdx(w);
+  const grammar = cand.length > 0 && Math.random() < .7;
+  if (!grammar) cand = ts.map((t, i) => t.core.length >= 3 && plainWord(t.core) ? i : -1).filter(i => i >= 0);
+  if (!cand.length) return null;
+  const i = pickOne(cand), ans = ts[i].core, opts = [ans];
+  if (grammar) opts.push(capLike(ans, SWAP[ans.toLowerCase()]));
+  const bank = shuffle([...new Set(L.words.flatMap(x => toks(x[0]).slice(1).map(t => t.core)).filter(c => c.length >= 2 && plainWord(c)))]);
+  for (const b of bank){ if (opts.length >= 4) break; if (!opts.some(o => o.toLowerCase() === b.toLowerCase())) opts.push(i === 0 ? capLike("A", b) : b); }
+  if (opts.length < 3) return null;
+  const gap = ts.map((t, k) => k === i ? t.pre + "_____" + t.post : t.pre + t.core + t.post).join(" ");
+  return { type:5, word:w, gap, options:shuffle(opts), correctOpt:ans };
+}
+function orderQuestion(w){
+  const ts = toks(w[0]); if (ts.length < 3 || ts.length > 10) return null;
+  const parts = ts.map(t => t.pre + t.core + t.post);
+  parts[parts.length - 1] = parts[parts.length - 1].replace(/[.!?]+$/, "");
+  let order = shuffle(parts.map((_, k) => k)), n = 0;
+  while (order.every((v, k) => parts[v] === parts[k]) && n++ < 10) order = shuffle(order);
+  return { type:4, word:w, parts, order, picked:[], end:(w[0].match(/[.!?]+$/) || [""])[0] };
+}
+function lessonQuiz(L){
+  const qs = [], used = new Set(), want = Math.min(QUIZ_LEN, L.words.length * 2);
+  for (let tries = 0; qs.length < want && tries < 400; tries++){
+    const w = pickOne(L.words), types = [0, 1, 2];
+    if (isSentence(w)) types.push(4, 4, 5, 5);
+    if (swapIdx(w).length) types.push(6, 6, 5);
+    const t = pickOne(types), key = w[0] + "|" + t;
+    if (used.has(key) || (qs.length && qs[qs.length - 1].word === w)) continue;
+    const q = t === 4 ? orderQuestion(w) : t === 5 ? gapQuestion(w, L) : t === 6 ? correctQuestion(w)
+      : buildQuestion(w, t, L.words.filter(x => x !== w));
+    if (!q) continue;
+    used.add(key); qs.push(q);
+  }
+  // pronunciation lessons: add listening questions with the sound pairs
+  (L.pairs ? shuffle(L.pairs).slice(0, 4) : []).forEach(p => {
+    const a = [p[0], ""], b = [p[1], ""], t = Math.random() < .5 ? a : b;
+    qs.splice(Math.floor(Math.random() * (qs.length + 1)), 0, { type:3, word:t, options:shuffle([a, b]) });
+  });
+  return qs;
+}
+function startQuiz(L, mode, items){
+  S.mode = mode; S.lesson = L;
+  if (mode === "lesson"){
+    S.quiz = lessonQuiz(L);
+  } else {
+    S.quiz = items;
+  }
+  S.qi = 0; S.score = 0; renderQ(); show("quiz");
+}
+function renderQ(){
+  const q = S.quiz[S.qi], n = S.quiz.length; S.answered = false;
+  let prompt;
+  if (q.type === 0) prompt = `<div class="ask">What does this mean? · <span class="am">ትርጉሙ ምንድን ነው?</span></div><div class="big">${esc(q.word[0])}</div>`;
+  else if (q.type === 1) prompt = `<div class="ask">Choose the English · <span class="am">በእንግሊዝኛ ይምረጡ</span></div><div class="big am">${esc(q.word[1])}</div>`;
+  else if (q.type === 4) prompt = `<div class="ask">Put the words in order · <span class="am">ቃላቱን በቅደም ተከተል ያስቀምጡ</span></div><div class="big am" style="font-size:clamp(20px,5.6vw,26px)">${esc(q.word[1])}</div>`;
+  else if (q.type === 5) prompt = `<div class="ask">Fill the gap · <span class="am">ባዶውን ቦታ ይሙሉ</span></div><div class="big">${esc(q.gap)}</div><div class="sub am">${esc(q.word[1])}</div>`;
+  else if (q.type === 6) prompt = `<div class="ask">Which sentence is correct? · <span class="am">የትኛው ትክክል ነው?</span></div><div class="big am" style="font-size:clamp(20px,5.6vw,26px)">${esc(q.word[1])}</div>`;
+  else prompt = `<div class="ask">${q.type===3 ? "Which word do you hear? · <span class='am'>የትኛውን ቃል ሰሙ?</span>" : "Listen and choose · <span class='am'>ያዳምጡና ይምረጡ</span>"}</div>
+    <button class="speakbig" id="qsay" aria-label="Play sound">${ICON_SPEAK.replace(/22/g,"40")}</button>
+    <button class="slowlink" id="qslow">${ICON_SLOW.replace(/22/g,"18")} Slow · <span class="am">በዝግታ</span></button>`;
+  const optCls = q.type === 0 ? "opt am" : "opt";
+  const optText = o => typeof o === "string" ? o : q.type === 0 ? o[1] : o[0];
+  const title = S.mode === "place" ? "Level test" : S.mode === "review" ? "Review" : "Question";
+  const body = q.type === 4
+    ? `<div class="built" id="built" aria-label="Your sentence"></div><div class="tiles" id="tiles"></div>
+       <div class="row"><button class="btn" id="oclear"><span>Clear<small>አጥፋ</small></span></button>
+       <button class="btn primary" id="ocheck" disabled><span>Check<small>አረጋግጥ</small></span></button></div>`
+    : `<div class="opts">${q.options.map((o,k)=>`<button class="${optCls}" data-k="${k}">${esc(optText(o))}</button>`).join("")}</div>`;
+  $("#v-quiz").innerHTML = `
+    <div class="label">${title} ${S.qi+1} of ${n} · <span class="am">ጥያቄ ${S.qi+1}/${n}</span></div>
+    <div class="progress"><i style="width:${S.qi/n*100}%"></i></div>
+    <div class="qprompt">${prompt}</div>
+    ${body}
+    ${S.mode === "place" ? `<button class="btn" id="qdunno"><span>I don't know<small>አላውቅም</small></span></button>` : ""}
+    <div id="fb"></div>`;
+  if (q.type === 2 || q.type === 3){ $("#qsay").onclick = () => speak(q.word[0]); $("#qslow").onclick = () => speak(q.word[0], true); setTimeout(()=>speak(q.word[0]), 250); }
+  if (q.type === 4){ renderTiles(); return; }
+  $("#v-quiz .opts").onclick = e => { const b = e.target.closest("[data-k]"); if (b) answer(+b.dataset.k); };
+  if ($("#qdunno")) $("#qdunno").onclick = () => answer(-1);
+}
+function renderTiles(){
+  const q = S.quiz[S.qi];
+  $("#built").innerHTML = q.picked.map((v, k) => `<button class="tile" data-un="${k}">${esc(q.parts[v])}</button>`).join("");
+  $("#tiles").innerHTML = q.order.map(v => `<button class="tile ${q.picked.includes(v)?"used":""}" data-v="${v}" ${q.picked.includes(v)?"disabled":""}>${esc(q.parts[v])}</button>`).join("");
+  $("#ocheck").disabled = q.picked.length !== q.parts.length;
+  $("#tiles").onclick = e => { const b = e.target.closest("[data-v]"); if (!b || S.answered) return; q.picked.push(+b.dataset.v); renderTiles(); };
+  $("#built").onclick = e => { const b = e.target.closest("[data-un]"); if (!b || S.answered) return; q.picked.splice(+b.dataset.un, 1); renderTiles(); };
+  $("#oclear").onclick = () => { if (S.answered) return; q.picked = []; renderTiles(); };
+  $("#ocheck").onclick = () => {
+    const ok = q.picked.map(v => q.parts[v]).join(" ") === q.parts.join(" ");
+    $("#built").classList.add(ok ? "right" : "wrong");
+    $("#oclear").disabled = $("#ocheck").disabled = true;
+    answer(ok ? 1 : 0);
+  };
+}
+function answer(k){
+  if (S.answered) return; S.answered = true;
+  const q = S.quiz[S.qi], target = q.correctOpt !== undefined ? q.correctOpt : q.word;
+  const ok = q.type === 4 ? k === 1 : (k >= 0 && q.options[k] === target);
+  if (ok) S.score++;
+  if (q.levelTag){ q.correct = ok; }
+  if (S.mode !== "place" && q.type !== 3){ ok ? markRight(q.word[0]) : markWrong(q.word[0]); }
+  if (q.type !== 4) document.querySelectorAll("#v-quiz .opt").forEach((b,i) => {
+    if (q.options[i] === target) b.classList.add("right"); else if (i === k) b.classList.add("wrong");
+  });
+  if ($("#qdunno")) $("#qdunno").disabled = true;
+  if (S.mode !== "place") speak(q.word[0]);
+  const last = S.qi === S.quiz.length - 1;
+  const detail = q.type === 3 ? `You heard: <b>${esc(q.word[0])}</b>` : `${esc(q.word[0])} = <span class="am">${esc(q.word[1])}</span>`;
+  $("#fb").innerHTML = S.mode === "place" ? "" : `
+    <div class="feedback ${ok?"good":"bad"}">
+      <b>${ok ? "Correct! · <span class='am'>ትክክል!</span>" : "Not quite · <span class='am'>ትክክል አይደለም</span>"}</b>
+      <span>${detail}</span>
+    </div>`;
+  $("#fb").insertAdjacentHTML("beforeend", `<button class="btn primary" id="qnext" style="margin-top:12px;width:100%"><span>${last?"See result":"Next"}<small>${last?"ውጤት ይመልከቱ":"ቀጣይ"}</small></span></button>`);
+  $("#qnext").onclick = () => { if (last) finishQuiz(); else { S.qi++; renderQ(); } };
+  $("#qnext").scrollIntoView({ behavior:"smooth", block:"nearest" });
+}
+function finishQuiz(){
+  if (S.mode === "place") return finishPlacement();
+  const n = S.quiz.length, pct = Math.round(S.score / n * 100), L = S.lesson;
+  bumpStreak();
+  if (S.mode === "review"){
+    showResult({ L, big:`${S.score}/${n}`, pct, again:startReview, kind:"Review" });
+    return;
+  }
+  store.best[L.id] = Math.max(store.best[L.id] || 0, pct); saveStore();
+  showResult({ L, big:`${S.score}/${n}`, pct, again:() => startQuiz(L, "lesson"), extra:
+    `<button class="btn gold" id="rspk">${ICON_MIC(20)}<span>Now practise speaking<small>አሁን መናገር ይለማመዱ</small></span></button>` });
+  $("#rspk").onclick = () => startSpeaking(L);
+}
+
+// ---------- review mistakes ----------
+function startReview(){
+  if (!canUse("lessons")){ showPaywall("lessons"); return; }
+  const keys = shuffle(Object.keys(store.wrong).filter(k => WORDMAP[k])).slice(0, 10);
+  if (!keys.length){ toast("No mistakes to review. Great work! · የሚከለስ ስህተት የለም"); renderHome(); return; }
+  const items = keys.map((k, i) => buildQuestion(WORDMAP[k].w, i % 3));
+  startQuiz({ id:"review", en:"Your mistakes", am:"ስህተቶችዎ", words:[] }, "review", items);
+}
+
+// ---------- placement test ----------
+function startPlacement(){
+  const pick = lv => shuffle(LESSONS.filter(l => l.level === lv).flatMap(l => l.words)).slice(0, 4);
+  const items = [];
+  ["beg","int","adv"].forEach(lv => pick(lv).forEach(w => { const q = buildQuestion(w, 0); q.levelTag = lv; items.push(q); }));
+  startQuiz({ id:"place", en:"Level test", am:"የደረጃ ፈተና", words:[] }, "place", items);
+}
+function finishPlacement(){
+  const got = lv => S.quiz.filter(q => q.levelTag === lv && q.correct).length;
+  const b = got("beg"), i = got("int"), a = got("adv");
+  const rec = (b >= 3 && i >= 3 && a >= 3) ? "adv" : (b >= 3 && i >= 3) ? "int" : "beg";
+  const L = levelOf(rec);
+  store.placed = true; saveStore();
+  $("#v-result").innerHTML = `
+    <div class="result">
+      <div class="label">Your level · <span class="am">ደረጃዎ</span></div>
+      <div class="score" style="font-size:40px">${L.en}</div>
+      <p class="am" style="margin:0;font-size:20px">${L.am}</p>
+      <p style="margin:8px 0 0;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums">Beginner ${b}/4 · Intermediate ${i}/4 · Advanced ${a}/4</p>
+    </div>
+    <p class="foot" style="margin:0">Also do the Pronunciation section. It fixes the sounds that are hardest for Amharic speakers.<br><span class="am">የአነባበብ ክፍሉንም ይስሩ። ለአማርኛ ተናጋሪዎች ከባድ የሆኑትን ድምፆች ያስተካክላል።</span></p>
+    <button class="btn primary" id="pStart"><span>Start ${L.en} lessons<small>${L.am} ትምህርቶችን ይጀምሩ</small></span></button>`;
+  $("#pStart").onclick = () => { store.level = rec; saveStore(); renderHome(); };
+  show("result");
+}
+
+// ---------- speaking practice ----------
+const SP = { lesson:null, items:[], i:0, best:[], result:null };
+const NUMS = ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve"];
+const norm = s => s.toLowerCase().replace(/[’']/g,"").replace(/[^a-z0-9\s]/g," ").split(/\s+/).filter(Boolean)
+  .map(t => /^\d+$/.test(t) && +t <= 12 ? NUMS[+t] : t);
+function compare(target, said){
+  const pool = norm(said); let total = 0, hit = 0;
+  const res = target.split(/\s+/).map(chunk => {
+    const toks = norm(chunk); if (!toks.length) return [chunk, true];
+    total++;
+    const ok = toks.every(tk => { const i = pool.indexOf(tk); if (i >= 0){ pool.splice(i,1); return true; } return false; });
+    if (ok) hit++;
+    return [chunk, ok];
+  });
+  return { res, pct: total ? Math.round(hit / total * 100) : 0 };
+}
+function startSpeaking(L){
+  if (!canUse("lessons")){ showPaywall("lessons"); return; }
+  SP.lesson = L; SP.items = shuffle(L.words).slice(0, 8); SP.i = 0; SP.best = SP.items.map(() => 0); SP.result = null;
+  renderSpeak(); show("speak");
+}
+function renderSpeak(){
+  const L = SP.lesson; if (!L) return;
+  const w = SP.items[SP.i], n = SP.items.length, last = SP.i === n-1, canMic = !!dict && !micDenied;
+  let body;
+  if (SP.result){
+    const r = SP.result;
+    const msg = r.pct === 100 ? ["Perfect!","ፍጹም!"] : r.pct >= 70 ? ["Very close!","በጣም ተቃርበዋል!"] : ["Let's try again","እንደገና እንሞክር"];
+    body = `<div class="feedback ${r.pct>=70?"good":"bad"}"><b>${msg[0]} · <span class="am">${msg[1]}</span> — ${r.pct}%</b>
+        <span>You said: “${esc(r.said)}”</span></div>
+      <div class="words">${r.res.map(([c,ok]) => `<span class="w ${ok?"ok":"no"}">${esc(c)}</span>`).join("")}</div>
+      ${r.pct < 100 ? `<p class="micnote">Red words were missing or unclear. Listen again, then repeat.<br><span class="am">ቀይ ቃላት በደንብ አልተሰሙም። እንደገና ያዳምጡና ይድገሙ።</span></p>` : ""}`;
+  } else if (canMic){
+    body = `<div class="micwrap"><button class="mic" id="micBtn" aria-label="Speak">${ICON_MIC(36)}</button>
+      <p class="micnote" id="micNote">Tap and say it · <span class="am">ይንኩና ይናገሩ</span></p>
+      <div class="heard" id="heard"></div></div>`;
+  } else {
+    body = `<p class="micnote">Listen, then say it out loud 3 times. Copy the sound exactly.<br><span class="am">ያዳምጡ፣ ከዚያ 3 ጊዜ ጮክ ብለው ይናገሩ።</span></p>
+      <p class="micnote" style="font-size:12px">The microphone check works in Chrome or the Claude desktop app.</p>
+      <div class="row"><button class="btn" id="selfNo"><span>Need practice<small>ልምምድ ያስፈልገኛል</small></span></button>
+      <button class="btn primary" id="selfYes"><span>I said it well<small>በትክክል ተናገርኩ</small></span></button></div>`;
+  }
+  $("#v-speak").innerHTML = `
+    <div class="label">Speaking · <span class="am">መናገር</span> — ${esc(L.en)} — ${SP.i+1} / ${n}</div>
+    <div class="progress"><i style="width:${(SP.i+1)/n*100}%"></i></div>
+    ${tipBox(L, false)}
+    <div class="card" style="min-height:0">
+      <div class="en ${w[0].length>22?"long":""}">${esc(w[0])}</div>
+      ${hintRow(L, w)}
+      <div class="meaning" style="font-size:18px">${esc(w[1])}</div>
+    </div>
+    <div class="row">
+      <button class="btn" id="say">${ICON_SPEAK}<span>Listen<small>ያዳምጡ</small></span></button>
+      <button class="btn" id="slow">${ICON_SLOW}<span>Slow<small>በዝግታ</small></span></button>
+    </div>
+    ${body}
+    <div class="row">
+      ${SP.result && SP.result.pct < 100 ? `<button class="btn" id="retry"><span>Try again<small>እንደገና</small></span></button>` : ""}
+      ${SP.result || !canMic ? "" : `<button class="btn" id="skipItem"><span>Skip<small>እለፍ</small></span></button>`}
+      ${SP.result ? `<button class="btn primary" id="nextItem"><span>${last?"Finish":"Next"}<small>${last?"ጨርስ":"ቀጣይ"}</small></span></button>` : ""}
+    </div>`;
+  $("#say").onclick = () => speak(w[0], false);
+  $("#slow").onclick = () => speak(w[0], true);
+  if ($("#micBtn")) $("#micBtn").onclick = () => micStart("speak");
+  if ($("#retry")) $("#retry").onclick = () => { SP.result = null; renderSpeak(); };
+  if ($("#skipItem")) $("#skipItem").onclick = nextSpeakItem;
+  if ($("#nextItem")) $("#nextItem").onclick = nextSpeakItem;
+  if ($("#selfYes")) $("#selfYes").onclick = () => { SP.best[SP.i] = 100; nextSpeakItem(); };
+  if ($("#selfNo")) $("#selfNo").onclick = () => speak(w[0], true);
+  renderSpeakMic();
+}
+function renderSpeakMic(){
+  const b = $("#micBtn"); if (!b) return;
+  const live = mic.target === "speak" && mic.state !== "idle";
+  b.classList.toggle("live", live);
+  b.innerHTML = live ? ICON_STOP(32) : ICON_MIC(36);
+  b.setAttribute("aria-label", live ? "Stop" : "Speak");
+  const n = $("#micNote");
+  if (n) n.innerHTML = mic.state === "starting" ? "Starting the microphone… · <span class='am'>ማይክሮፎን እየተከፈተ ነው</span>"
+    : live ? "Listening… tap to stop · <span class='am'>እያዳመጥኩ ነው…</span>"
+    : "Tap and say it · <span class='am'>ይንኩና ይናገሩ</span>";
+}
+function evaluateSpeech(said){
+  const w = SP.items[SP.i], r = compare(w[0], said);
+  SP.result = { ...r, said: said.trim() };
+  SP.best[SP.i] = Math.max(SP.best[SP.i], r.pct);
+  mic.target = null;
+  renderSpeak();
+}
+function nextSpeakItem(){
+  const w = SP.items[SP.i];
+  if (SP.result){ SP.best[SP.i] >= 70 ? markRight(w[0]) : markWrong(w[0]); }
+  if (SP.i < SP.items.length - 1){ SP.i++; SP.result = null; renderSpeak(); return; }
+  const L = SP.lesson, pct = Math.round(SP.best.reduce((a,b)=>a+b,0) / SP.best.length);
+  store.speak[L.id] = Math.max(store.speak[L.id] || 0, pct);
+  bumpStreak();
+  showResult({ L, big:`${pct}%`, pct, kind:"Speaking", again:() => startSpeaking(L) });
+}
+
+// ---------- results ----------
+function showResult({ L, big, pct, again, extra, kind }){
+  const list = LESSONS.filter(x => x.level === L.level), idx = list.indexOf(L), next = idx >= 0 ? list[idx+1] : null;
+  const msg = pct >= 90 ? ["Excellent work!","በጣም ጥሩ!"] : pct >= 60 ? ["Good job. Keep practising.","ጥሩ ነው። መለማመድዎን ይቀጥሉ።"] : ["Try again. You can do it!","እንደገና ይሞክሩ። ይችላሉ!"];
+  $("#v-result").innerHTML = `
+    <div class="result">
+      <div class="label">${kind ? kind+" · " : ""}${esc(L.en)} · <span class="am">${esc(L.am)}</span></div>
+      <div class="score">${big}</div>
+      <h2 style="font-size:22px">${msg[0]}</h2>
+      <p class="am" style="margin:0;color:var(--muted)">${msg[1]}</p>
+      <p style="margin:6px 0 0;color:var(--muted);font-size:14px">${store.streak} day streak · <span class="am">${store.streak} ተከታታይ ቀን</span></p>
+    </div>
+    ${extra || ""}
+    ${next ? `<button class="btn primary" id="rnext"><span>Next lesson: ${esc(next.en)}<small>ቀጣይ ትምህርት፡ ${esc(next.am)}</small></span></button>` : ""}
+    <div class="row">
+      <button class="btn" id="ragain"><span>${kind ? "Try again" : "New questions"}<small>${kind ? "እንደገና" : "አዲስ ጥያቄዎች"}</small></span></button>
+      <button class="btn" id="rhome"><span>All lessons<small>ሁሉም ትምህርቶች</small></span></button>
+    </div>`;
+  if (next) $("#rnext").onclick = () => openLesson(next.id);
+  $("#ragain").onclick = again;
+  $("#rhome").onclick = renderHome;
+  show("result");
+}
+
+// ---------- AI tutor ----------
+const T = { scen: SCENARIOS[0], turns: [], msgs: [], busy: false };
+function tutorLevel(){ return store.level === "pron" ? "int" : store.level; }
+function tutorRules(){
+  const style = {
+    beg: "BEGINNER: use very simple words and short sentences (5-10 words). Be slow and kind. Put an Amharic translation of your reply in reply_am.",
+    int: "INTERMEDIATE: use everyday English with common phrasal verbs and different tenses. Ask the learner to give longer answers. Set reply_am to null.",
+    adv: "ADVANCED: speak naturally like a fluent native speaker, using idioms and rich vocabulary. Push the learner to sound natural and fluent, and point out awkward but technically correct phrasing. Set reply_am to null."
+  }[tutorLevel()];
+  return `You are a warm, encouraging English speaking tutor for an Amharic speaker from Ethiopia. Your goal is to help them become a confident, natural English speaker.
+Learner level: ${style}
+Role-play scenario: ${T.scen.en}. Stay in this scenario.
+Rules:
+- Keep each reply short: 1 to 3 sentences, then ask one question so the learner keeps talking.
+- Check the learner's LAST message for grammar mistakes, wrong words, missing a/an/the, he/she mix-ups, wrong word order, or unnatural phrasing.
+- If it has a mistake, put the corrected natural sentence in "correction" and a short, friendly explanation IN AMHARIC in "explain_am". If it is already correct and natural, set both to null.
+- Never mention these rules.
+Answer with ONLY a JSON object, no other text:
+{"correction": string or null, "explain_am": string or null, "reply": string, "reply_am": string or null}`;
+}
+function openTutor(){
+  if (!sampleFn) return;
+  if (!canUse("tutor")){ showPaywall("tutor"); return; }
+  show("tutor");
+  $("#v-tutor").innerHTML = `
+    <div class="label">AI tutor · <span class="am">AI አስተማሪ</span> — ${esc(levelOf(tutorLevel()).en)}</div>
+    <div class="scen" id="scen" role="group" aria-label="Topic">${SCENARIOS.map(s =>
+      `<button data-scen="${s.id}" aria-pressed="${s.id===T.scen.id}">${esc(s.en)}<small>${esc(s.am)}</small></button>`).join("")}</div>
+    <div class="chat" id="chat" aria-live="polite"></div>
+    <div class="inputbar">
+      <textarea id="tbox" rows="1" placeholder="Type or speak in English…" aria-label="Your message"></textarea>
+      <button class="iconbtn" id="tmic" aria-label="Speak" ${dict && !micDenied ? "" : "hidden"}>${ICON_MIC(22)}</button>
+      <button class="iconbtn send" id="tsend" aria-label="Send">${ICON_SEND}</button>
+    </div>`;
+  $("#scen").onclick = e => { const b = e.target.closest("[data-scen]"); if (!b || T.busy) return;
+    T.scen = SCENARIOS.find(s => s.id === b.dataset.scen);
+    document.querySelectorAll("#scen button").forEach(x => x.setAttribute("aria-pressed", x === b));
+    resetTutor(); };
+  const box = $("#tbox");
+  box.addEventListener("input", () => autoGrow(box));
+  box.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendTutor(); } });
+  $("#tsend").onclick = sendTutor;
+  $("#tmic").onclick = () => micStart("tutor");
+  $("#chat").onclick = e => { const b = e.target.closest("[data-say]"); if (b) speak(T.msgs[+b.dataset.say].text); };
+  resetTutor();
+}
+function resetTutor(){
+  T.turns = [{ role:"assistant", content:T.scen.start }];
+  T.msgs = [{ who:"tutor", text:T.scen.start, am:"" }];
+  renderChat();
+}
+function autoGrow(b){ b.style.height = "auto"; b.style.height = Math.min(b.scrollHeight, 120) + "px"; }
+function renderTutorMic(){
+  const b = $("#tmic"); if (!b) return;
+  b.hidden = !(dict && !micDenied);
+  const live = mic.target === "tutor" && mic.state !== "idle";
+  b.classList.toggle("live", live);
+  b.innerHTML = live ? ICON_STOP(20) : ICON_MIC(22);
+  if (!live){ const t = $("#tbox"); if (t) t.placeholder = "Type or speak in English…"; }
+}
+function renderChat(){
+  const c = $("#chat"); if (!c) return;
+  c.innerHTML = T.msgs.map((m, i) => {
+    if (m.who === "tutor") return `<div class="msg tutor"><span>${esc(m.text)}</span>${m.am ? `<span class="tr">${esc(m.am)}</span>` : ""}
+      <button class="say" data-say="${i}">${ICON_SPEAK.replace(/22/g,"16")} Listen · <span class="am">ያዳምጡ</span></button></div>`;
+    let h = `<div class="msg me">${esc(m.text)}</div>`;
+    if (m.correction) h += `<div class="fix"><b>Better way to say it · <span class="am">የተሻለ አባባል</span></b><span>${esc(m.correction)}</span>${m.explain ? `<span class="tr">${esc(m.explain)}</span>` : ""}</div>`;
+    else if (m.ok) h += `<div class="fix ok"><b>Correct · <span class="am">ትክክል ነው</span></b></div>`;
+    return h;
+  }).join("") + (T.busy ? `<div class="thinking">Tutor is thinking… · <span class="am">እያሰበ ነው…</span></div>` : "");
+  $("#tsend").disabled = T.busy;
+  c.lastElementChild && c.lastElementChild.scrollIntoView({ behavior:"smooth", block:"end" });
+}
+async function sendTutor(){
+  const box = $("#tbox"), txt = box.value.trim();
+  if (!txt || T.busy || !sampleFn) return;
+  if (dict && dict.active()) dict.stop();
+  mic.target = null;
+  const mine = { who:"me", text:txt };
+  T.msgs.push(mine); T.turns.push({ role:"user", content:txt });
+  box.value = ""; autoGrow(box); T.busy = true; renderChat();
+  try {
+    const out = await sampleFn.json([{ role:"user", content:tutorRules() }, ...T.turns], { cache:false, modelTier:"quick" });
+    const corr = out && out.correction ? String(out.correction) : "";
+    if (corr && norm(corr).join(" ") !== norm(txt).join(" ")){ mine.correction = corr; mine.explain = out.explain_am ? String(out.explain_am) : ""; }
+    else mine.ok = true;
+    const reply = String((out && out.reply) || "Can you tell me more?");
+    T.turns.push({ role:"assistant", content:reply });
+    T.msgs.push({ who:"tutor", text:reply, am: out && out.reply_am ? String(out.reply_am) : "" });
+    speak(reply);
+  } catch (e) {
+    T.msgs.pop(); T.turns.pop(); box.value = txt;
+    const c = e && e.code;
+    if (c === "not_granted") toast("The AI tutor was not allowed. You can turn it on in this page's Permissions menu.");
+    else if (c === "rate_limited") toast("Too many messages. Wait a minute, then send again · ትንሽ ይቆዩ");
+    else toast("The tutor could not answer. Send your message again · እንደገና ይላኩ");
+  }
+  T.busy = false; renderChat();
+}
+
+if (store.profile){ renderHome(); checkMissed(); setTimeout(checkReminder, 1500); } else renderSignup();
+</script>

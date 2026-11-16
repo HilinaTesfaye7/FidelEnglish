@@ -1,0 +1,5 @@
+# Secrets and private user data: never upload these
+telegram/config.json
+telegram/data.json
+telegram/data.json.tmp
+__pycache__/

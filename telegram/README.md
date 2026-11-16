@@ -1,0 +1,31 @@
+# Fidel English on Telegram
+
+## Files
+- `webapp/index.html` – the course (Telegram Mini App). Upload the `webapp` folder to Netlify.
+- `bot.py` – the bot: free trial, Telebirr payments, approve/reject, reminders.
+- `config.json` – your settings. Keep this file private (it has your bot token).
+- `data.json` – created by the bot: your users and payments. Do not delete it.
+
+## Setup
+1. Telegram → @BotFather → `/newbot` → copy the token into `config.json` → `bot_token`.
+2. Telegram → @userinfobot → copy your Id into `config.json` → `admin_id`.
+3. Write your Telebirr number and name in `config.json`.
+4. Go to https://app.netlify.com/drop → sign up free → drag the `webapp` folder → copy the link into `config.json` → `webapp_url`.
+5. Run the bot:  `python bot.py`  (it works while this computer is on).
+6. Open your bot in Telegram and press Start.
+
+## How sign-up works
+New users press Start → tap "Share my phone" → the bot saves their phone number and Telegram ID
+and starts the 3-day trial. The course opens with their Telegram name (no second sign-up).
+
+## Owner commands
+- `/stats` – users, paying users, money in the last 30 days.
+- Payments arrive with ✅ Approve / ❌ Reject buttons. Check your Telebirr SMS first.
+
+## Users' commands
+- `/start` – menu · `/reminders_off` – stop daily reminders
+
+## Later
+- Move the bot to a small server so it runs 24/7.
+- Premium (AI tutor) needs a server with your own Claude API key.
+- Access links can be copied by a clever user; a server check will fix that later.
