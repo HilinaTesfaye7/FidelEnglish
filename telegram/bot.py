@@ -1,5 +1,7 @@
 """Fidel English Telegram bot — 4-month course.
 
+- Plans: Basic (one month), Premium (one month + AI tutor for 30 days), Full course (all 4 months).
+
 - New users share their phone (saved with their Telegram ID) and get a 3-day free trial of Month 1.
 - Each payment (default 300 Birr) opens the next month. The full course (default 1000 Birr) opens all 4.
 - Opened months stay open forever.
@@ -19,7 +21,8 @@ API = "https://api.telegram.org/bot%s/" % CFG["bot_token"]
 ADMIN = int(CFG["admin_id"])
 PRICE = int(CFG.get("price_month", CFG.get("price_basic", 300)))   # one month
 PRICE_FULL = int(CFG.get("price_full", 1000))                      # all 4 months at once
-PRICE_PREMIUM = int(CFG.get("price_premium", 1000))                # AI tutor: shown only, can't be bought yet
+PRICE_PREMIUM = int(CFG.get("price_premium", 1000))                # Premium: next month + AI tutor for 30 days
+PREMIUM_DAYS = 30
 TRIAL_DAYS = int(CFG.get("trial_days", 3))
 CLUB_LINK = (CFG.get("speaking_club_link") or "").strip()            # Telegram group invite link
 TUTOR_MODEL = CFG.get("tutor_model", "claude-haiku-5-5")
@@ -107,6 +110,7 @@ def user(u):
 def months_open(us): return max(0, min(MONTHS, int(us.get("months", 0))))
 def in_trial(us): return us.get("trial_until", 0) > now_ms()
 def has_access(us): return months_open(us) > 0 or in_trial(us)
+def has_tutor(us): return us.get("premium_until", 0) > now_ms()
 
 def course_button(us):
     q = {"m": months_open(us), "t": us.get("trial_until", 0) if in_trial(us) else 0, "b": BOT_USERNAME or ""}
@@ -115,6 +119,7 @@ def course_button(us):
 
 DOWNLOAD_BTN = {"text": "📥 Download course · ኮርሱን አውርድ", "callback_data": "dl"}
 TUTOR_BTN = {"text": "🦁 Chat with Anbessa, your AI tutor · ከ AI አስተማሪ ጋር ይወያዩ", "callback_data": "tutor"}
+UPGRADE_BTN = {"text": "⭐ Get Anbessa, the AI tutor (Premium) · ፕሪሚየም", "callback_data": "plan:premium"}
 END_TUTOR_BTN = [[{"text": "⏹ End chat · ውይይቱን ጨርስ", "callback_data": "end_tutor"}]]
 
 # ---------- AI tutor (Claude) ----------
@@ -155,9 +160,10 @@ def tutor_system(us):
             + level + " The student's name is " + (us.get("name") or "friend") + ".")
 
 def start_tutor(chat, us):
-    if months_open(us) == 0:
-        send(chat, "🦁 The AI tutor is for paid students. Open Month 1 to chat with Anbessa!\nAI አስተማሪው ለከፈሉ ተማሪዎች ነው።",
-             [[{"text": "💳 Pay · ይክፈሉ", "callback_data": "sub"}]]); return
+    if not has_tutor(us):
+        send(chat, "🦁 Anbessa, the AI tutor, is part of <b>Premium</b> (%d Birr): your next month of lessons + chat with Anbessa for %d days.\n"
+                   "AI አስተማሪው በፕሪሚየም ውስጥ ነው።" % (PRICE_PREMIUM, PREMIUM_DAYS),
+             [[{"text": "⭐ Get Premium · %d Birr" % PRICE_PREMIUM, "callback_data": "plan:premium"}]]); return
     if not tutor_client():
         send(chat, "🦁 The AI tutor is coming very soon! · AI አስተማሪው በቅርቡ ይመጣል!"); return
     us["state"] = "tutor"; us["tutor_hist"] = []; save()
@@ -174,6 +180,8 @@ def end_tutor(chat, us):
 def tutor_reply(chat, uid, us, text):
     today = datetime.now(EAT).strftime("%Y-%m-%d")
     if us.get("tutor_day") != today: us["tutor_day"], us["tutor_count"] = today, 0
+    if not has_tutor(us):
+        us["state"] = None; save(); start_tutor(chat, us); return
     if us["tutor_count"] >= TUTOR_DAILY_LIMIT:
         send(chat, "🦁 You've sent %d messages today, great work! Let's talk again tomorrow.\nለዛሬ በቂ ነው፣ ነገ እንገናኝ!" % TUTOR_DAILY_LIMIT, END_TUTOR_BTN); return
     client = tutor_client()
@@ -216,8 +224,8 @@ def learn_buttons(us):
     rows = [course_button(us)]
     if months_open(us) > 0:
         rows.append([DOWNLOAD_BTN])
-        rows.append([TUTOR_BTN])
         if CLUB_LINK: rows.append([{"text": "🎤 Join our speaking club · የንግግር ክበብ", "url": CLUB_LINK}])
+        rows.append([TUTOR_BTN] if has_tutor(us) else [UPGRADE_BTN])
     return rows
 
 def send_course_file(chat, us):
@@ -254,37 +262,47 @@ def main_menu(chat, us):
         status = "🎁 Free trial (Month 1) until <b>%s</b>\nነፃ ሙከራ (ወር 1) እስከ %s" % (fmt_date(us["trial_until"]), fmt_date(us["trial_until"]))
     else:
         status = "🔒 Your free trial has ended. Pay to open Month 1.\nነፃ ሙከራዎ አልቋል። ወር 1ን ለመክፈት ይክፈሉ።"
+    if has_tutor(us):
+        status += "\n⭐ Premium (AI tutor) until <b>%s</b>" % fmt_date(us["premium_until"])
     rows = learn_buttons(us) if has_access(us) else []
-    if n < MONTHS:
-        rows.append([{"text": "💳 Pay · ይክፈሉ", "callback_data": "sub"}, {"text": "❓ Help · እርዳታ", "callback_data": "help"}])
-    else:
-        rows.append([{"text": "❓ Help · እርዳታ", "callback_data": "help"}])
+    rows.append([{"text": "💳 Pay · ይክፈሉ", "callback_data": "sub"}, {"text": "❓ Help · እርዳታ", "callback_data": "help"}])
     send(chat, "🦁 <b>Selam %s! Welcome to Fidel English.</b>\nሰላም! እንኳን ወደ ፊደል ኢንግሊሽ በደህና መጡ።\n\n%s" % (esc(us["name"]), status), rows)
 
 def show_plans(chat, us):
     n = months_open(us)
     if n >= MONTHS:
-        send(chat, "🎓 You already have the full course! · ሙሉውን ኮርስ ከፍተዋል!", learn_buttons(us)); return
+        text = ("🎓 You have the full course (all 4 months)!\n\n"
+                "⭐ <b>Premium — %d Birr</b>: chat with Anbessa, your AI tutor, for %d days. "
+                "Practise speaking English like with a friend, and get your mistakes corrected.\n"
+                "ፕሪሚየም፦ ከ AI አስተማሪው ጋር ለ%d ቀናት ይወያዩ።" % (PRICE_PREMIUM, PREMIUM_DAYS, PREMIUM_DAYS))
+        send(chat, text, [[{"text": "⭐ Premium · AI tutor · %d Birr" % PRICE_PREMIUM, "callback_data": "plan:premium"}]]); return
+    nxt = MONTH_NAMES[n + 1].split(" · ")[0]
     text = ("📚 <b>Fidel English — 4-month course</b>\n"
             "Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 Real-life words, final exam + certificate 🎓\n\n"
-            "📘 <b>Open %s — %d Birr</b>\nYours forever once opened. Finished early? Open the next month any time.\n"
-            "%s — %d ብር። አንዴ ከተከፈተ ለዘላለም የእርስዎ ነው።" % (MONTH_NAMES[n + 1], PRICE, MONTH_AM[n + 1], PRICE))
-    rows = [[{"text": "📘 %s · %d Birr" % (MONTH_NAMES[n + 1].split(" · ")[0], PRICE), "callback_data": "plan:month"}]]
+            "📘 <b>Basic — %d Birr</b>\nOpens %s: lessons in Telegram, 📥 download, and 🎤 our speaking club.\n"
+            "%s ይከፈታል፤ ትምህርቶች፣ ማውረድና የንግግር ክበብ።\n\n"
+            "⭐ <b>Premium — %d Birr</b>\nEverything in Basic + 🦁 <b>Anbessa, your AI tutor</b> for %d days: chat in English like with a friend and get your mistakes corrected.\n"
+            "ሁሉም በመሰረታዊ ያለው + ከ AI አስተማሪ ጋር መወያየት።"
+            % (PRICE, MONTH_NAMES[n + 1], MONTH_AM[n + 1], PRICE_PREMIUM, PREMIUM_DAYS))
+    rows = [[{"text": "📘 Basic · %s · %d Birr" % (nxt, PRICE), "callback_data": "plan:month"}],
+            [{"text": "⭐ Premium · %s + AI tutor · %d Birr" % (nxt, PRICE_PREMIUM), "callback_data": "plan:premium"}]]
     if n == 0:
-        text += ("\n\n🎓 <b>Full course, all 4 months — %d Birr</b> (save %d Birr)\nሙሉ ኮርስ፣ 4 ወራት — %d ብር"
+        text += ("\n\n🎓 <b>Full course, all 4 months — %d Birr</b> (save %d Birr, no AI tutor)\nሙሉ ኮርስ፣ 4 ወራት — %d ብር"
                  % (PRICE_FULL, PRICE * MONTHS - PRICE_FULL, PRICE_FULL))
         rows.append([{"text": "🎓 Full course · %d Birr" % PRICE_FULL, "callback_data": "plan:full"}])
-    text += "\n\n🤖 AI tutor (%d Birr / month) — coming soon · በቅርቡ ይመጣል" % PRICE_PREMIUM
     send(chat, text, rows)
 
 def plan_info(us, plan):
     """(amount, label) for a plan the user is buying now."""
     if plan == "full": return PRICE_FULL, "Full course (all 4 months)"
+    if plan == "premium":
+        if months_open(us) >= MONTHS: return PRICE_PREMIUM, "Premium: AI tutor for %d days" % PREMIUM_DAYS
+        return PRICE_PREMIUM, "Premium: %s + AI tutor for %d days" % (MONTH_NAMES[months_open(us) + 1].split(" · ")[0], PREMIUM_DAYS)
     return PRICE, MONTH_NAMES[min(MONTHS, months_open(us) + 1)]
 
 def pay_instructions(chat, us, plan):
-    if months_open(us) >= MONTHS:
-        send(chat, "🎓 You already have the full course! · ሙሉውን ኮርስ ከፍተዋል!"); return
+    if months_open(us) >= MONTHS and plan != "premium":
+        show_plans(chat, us); return
     if plan == "full" and months_open(us) > 0: plan = "month"
     amount, label = plan_info(us, plan)
     us["state"], us["pay_plan"] = "proof", plan; save()
@@ -319,11 +337,20 @@ def decide(pid, ok, cb):
     if ok:
         before = months_open(us)
         us["months"] = MONTHS if p.get("plan") == "full" else min(MONTHS, before + 1)
+        if p.get("plan") == "premium":
+            us["premium_until"] = max(now_ms(), us.get("premium_until", 0)) + PREMIUM_DAYS * DAY_MS
         us["last_paid"] = now_ms()
         p["status"] = "approved"; save()
         n = months_open(us)
-        opened = "all 4 months are open" if n >= MONTHS and before == 0 else "%s is open" % MONTH_NAMES[n]
-        opened_am = "ሁሉም 4 ወራት ተከፍተዋል" if n >= MONTHS and before == 0 else "%s ተከፍቷል" % MONTH_AM[n]
+        if n == before:
+            opened, opened_am = "your course stays open", "ኮርስዎ ክፍት ነው"
+        elif n >= MONTHS and before == 0:
+            opened, opened_am = "all 4 months are open", "ሁሉም 4 ወራት ተከፍተዋል"
+        else:
+            opened, opened_am = "%s is open" % MONTH_NAMES[n], "%s ተከፍቷል" % MONTH_AM[n]
+        if p.get("plan") == "premium":
+            opened += ", and Anbessa, your AI tutor, is ready until %s 🦁" % fmt_date(us["premium_until"])
+            opened_am += "፤ AI አስተማሪው ዝግጁ ነው"
         send(int(p["uid"]), "🎉 <b>Payment confirmed!</b> %s. Enjoy learning!\nክፍያዎ ተረጋግጧል! %s።" % (opened[0].upper() + opened[1:], opened_am),
              learn_buttons(us))
         result = "✅ Approved — %s now has %d of 4 months" % (esc(us["name"]), n)
@@ -366,8 +393,8 @@ def on_message(m):
     if text.startswith("/start"):
         if us.get("state") == "tutor": us["state"] = None; save()
         arg = text[6:].strip()
-        if arg in ("month", "full"): pay_instructions(chat, us, arg)
-        elif arg in ("basic", "premium", "pay"): show_plans(chat, us)
+        if arg in ("month", "full", "premium"): pay_instructions(chat, us, arg)
+        elif arg in ("basic", "pay"): show_plans(chat, us)
         else: main_menu(chat, us)
         return
     if text == "/stats" and int(uid) == ADMIN: stats(chat); return
@@ -409,12 +436,13 @@ def on_callback(cb):
     if data == "sub": show_plans(chat, us)
     elif data in ("plan:month", "plan:basic"): pay_instructions(chat, us, "month")
     elif data == "plan:full": pay_instructions(chat, us, "full")
+    elif data == "plan:premium": pay_instructions(chat, us, "premium")
     elif data == "dl": send_course_file(chat, us)
     elif data == "tutor": start_tutor(chat, us)
     elif data == "end_tutor": end_tutor(chat, us)
     elif data == "help":
         send(chat, "❓ <b>Help</b>\n• Tap 📚 Open course to learn here in Telegram.\n• Paid months: tap 📥 Download course to learn without internet.\n"
-                   "• Paid months: tap 🦁 Chat with Anbessa to practise English with your AI tutor (/tutor). Up to %d messages a day.\n" % TUTOR_DAILY_LIMIT +
+                   "• Premium: tap 🦁 Chat with Anbessa to practise English with your AI tutor (/tutor). Up to %d messages a day.\n" % TUTOR_DAILY_LIMIT +
                    "• The course has 4 months. Each payment opens the next month.\n"
                    "• To pay: 💳 Pay → choose → pay with Telebirr → send the screenshot.\n• /reminders_off — stop daily reminders\n\n"
                    "Questions? Write to %s" % esc(CFG.get("support_contact", "the owner")))
@@ -426,12 +454,13 @@ def stats(chat):
     waiting = sum(1 for p in DB["payments"].values() if p["status"] == "waiting")
     recent = sum(p.get("amount", PRICE) for p in DB["payments"].values() if p["status"] == "approved" and t - p["at"] < 30 * DAY_MS)
     total = sum(p.get("amount", PRICE) for p in DB["payments"].values() if p["status"] == "approved")
+    premium = sum(1 for u in us if has_tutor(u))
     tu = DB.get("tutor_usage", {"input": 0, "output": 0, "messages": 0})
     cost = tu["input"] / 1e6 * TUTOR_PRICE_IN + tu["output"] / 1e6 * TUTOR_PRICE_OUT
     send(chat, "📊 <b>Stats</b>\nStudents: %d\nIn free trial: %d\nMonths open — 1: %d · 2: %d · 3: %d · 4: %d\n"
                "Waiting for approval: %d\nLast 30 days: %d Birr\nAll time: %d Birr\n\n"
-               "🦁 AI tutor: %d replies, about $%.2f so far (check the real bill at console.anthropic.com)"
-         % (len(us), trial, by_month[0], by_month[1], by_month[2], by_month[3], waiting, recent, total, tu["messages"], cost))
+               "⭐ Premium students now: %d\n🦁 AI tutor: %d replies, about $%.2f so far (check the real bill at console.anthropic.com)"
+         % (len(us), trial, by_month[0], by_month[1], by_month[2], by_month[3], waiting, recent, total, premium, tu["messages"], cost))
 
 # ---------- reminders ----------
 def reminders():
@@ -449,6 +478,16 @@ def reminders():
             send(int(us["telegram_id"]) if us.get("telegram_id") else int(uid),
                  "🦁 Ready for <b>%s</b>? Keep going — you're doing great!\n%s ለመጀመር ዝግጁ ነዎት?" % (MONTH_NAMES[n + 1], MONTH_AM[n + 1]),
                  [[{"text": "💳 Open %s · %d Birr" % (MONTH_NAMES[n + 1].split(" · ")[0], PRICE), "callback_data": "plan:month"}]])
+        pu = us.get("premium_until", 0)
+        if pu and 0 < pu - t < 3 * DAY_MS and us.get("premium_warned") != pu:
+            us["premium_warned"] = pu; changed = True
+            send(int(uid), "🦁 Your Premium (AI tutor) ends on <b>%s</b>. Renew to keep chatting with Anbessa!\nፕሪሚየምዎ %s ያልቃል።" % (fmt_date(pu), fmt_date(pu)),
+                 [[{"text": "⭐ Renew Premium · %d Birr" % PRICE_PREMIUM, "callback_data": "plan:premium"}]])
+        elif pu and pu <= t and us.get("premium_ended") != pu:
+            us["premium_ended"] = pu; changed = True
+            if us.get("state") == "tutor": us["state"] = None
+            send(int(uid), "🦁 Your Premium has ended. Your lessons stay open! Renew Premium any time to chat with Anbessa again.\nፕሪሚየምዎ አልቋል፤ ትምህርቶችዎ ግን ክፍት ናቸው።",
+                 [[{"text": "⭐ Renew Premium · %d Birr" % PRICE_PREMIUM, "callback_data": "plan:premium"}]])
         if has_access(us) and us.get("reminders", True) and now.hour >= REMIND_HOUR and us.get("last_daily") != today:
             us["last_daily"] = today; changed = True
             send(int(uid), "🦁 It's English time, %s! Your lesson is waiting.\nየእንግሊዝኛ ሰዓት ደርሷል!" % esc(us["name"]), [course_button(us)])

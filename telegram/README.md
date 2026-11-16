@@ -26,10 +26,16 @@ and starts the 3-day trial. The course opens with their Telegram name (no second
 - After changing `fidel-english.html`, run `python tools/build_telegram.py` to rebuild
   `webapp/index.html` and `offline/month1-4.html`, then push to GitHub and restart the bot.
 
-## Speaking club and AI tutor (paid students only)
+## Plans
+- Basic (`price_month`, 300): opens the next month + 📚 course, 📥 download, 🎤 speaking club.
+- Premium (`price_premium`, 1000): everything in Basic + 🦁 AI tutor for 30 days. Students with all 4 months
+  can buy Premium just for the tutor. Renewing adds 30 more days. Lessons stay open when Premium ends.
+- Full course (`price_full`, 1000): all 4 months at once, no AI tutor (only offered before the first payment).
+
+## Speaking club and AI tutor
 - `speaking_club_link` in config.json: your Telegram group invite link. Paid students get a 🎤 Join button.
-- AI tutor "Anbessa": students tap 🦁 Chat with Anbessa (or send /tutor) and chat in English; it corrects
-  their mistakes like a friend. Uses Claude Haiku 5.5, 30 messages per student per day (`tutor_daily_limit`).
+- AI tutor "Anbessa" (Premium only): students tap 🦁 Chat with Anbessa (or send /tutor) and chat in English;
+  it corrects their mistakes like a friend. Uses Claude Haiku 5.5, 30 messages per student per day (`tutor_daily_limit`).
   Setup: `pip install anthropic`, then put your key from console.anthropic.com in `anthropic_api_key`.
   `/stats` shows an estimate of what the tutor has cost; check the real bill in the Anthropic Console.
 

@@ -30,7 +30,8 @@ def head(telegram):
             + '<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}</style>\n')
 
 def common(rep):
-    rep('Open this page in the Claude app or in Chrome while signed in to use the AI tutor.', 'Coming soon · በቅርቡ ይመጣል')
+    rep('Open this page in the Claude app or in Chrome while signed in to use the AI tutor.',
+        'Premium: chat with Anbessa 🦁 in our Telegram bot · ፕሪሚየም፦ በቴሌግራም ቦቱ ውስጥ')
     rep('const contact = P.method === "phone" ? normPhone(raw)', 'const contact = P.method !== "phone" && P.method !== "gmail" ? P.contact : P.method === "phone" ? normPhone(raw)')
     rep('  show("profile");\n', '  show("profile");\n  if (P.method !== "phone" && P.method !== "gmail") $("#pfContact").closest(".field").hidden = true;\n')
 
