@@ -60,6 +60,10 @@ if (FROM_BOT){
   store.profile = Object.assign({ avatar:"🦁", goal:10, remind:"19:00", created:Date.now() }, store.profile || {},
     { name: (store.profile && store.profile.tgId === tu.id && store.profile.name) || tu.first_name || "Friend", method:"telegram", contact:"Telegram", tgId: tu.id });
   saveStore();
+} else if (FROM_BOT && !TG && !store.profile){
+  // opened from the bot in Chrome (for the microphone): no second sign-up
+  store.profile = { avatar:"🦁", goal:10, remind:"19:00", created:Date.now(), name:"Friend", method:"telegram", contact:"Telegram" };
+  saveStore();
 }
 if (store.profile){ renderHome(); checkMissed();''')
     rep('''fn:() => { delete store.profile; saveStore(); renderSignup(); } }''',

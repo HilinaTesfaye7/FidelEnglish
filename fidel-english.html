@@ -1133,14 +1133,16 @@ const mic = { target:null, text:"", partial:"", state:"idle", timer:null };
 function micStart(target){
   if (!dict || micDenied) return;
   if (dict.active()){ dict.stop(); return; }
-  mic.target = target; mic.text = ""; mic.partial = "";
+  mic.target = target; mic.text = ""; mic.partial = ""; mic.alts = [];
   stopSound();
   dict.start({ language:"en" }).catch(e => {
     const c = e && e.code;
     if (c === "not_granted"){ micDenied = true; toast("Microphone is off for this page · ማይክሮፎን ተዘግቷል"); refresh(); }
     else if (c === "unavailable"){ dict = null; refresh(); }
     else if (c === "rate_limited") toast("Please wait a moment and try again · ትንሽ ቆይተው ይሞክሩ");
-    else if (c !== "stopped" && c !== "dismissed") toast("The microphone did not start. Try again · እንደገና ይሞክሩ");
+    else if (c === "no_speech") toast("I didn't hear you. Tap Record and speak clearly · አልሰማሁዎትም፣ እንደገና ይሞክሩ");
+    else if (c === "network") toast("Speech check needs internet · ለመፈተሽ ኢንተርኔት ያስፈልጋል");
+    else if (c !== "stopped" && c !== "dismissed" && c !== "aborted") toast("The microphone did not start. Try again · እንደገና ይሞክሩ");
   });
 }
 function onDictState({ state, reason }){
@@ -1155,7 +1157,44 @@ function onDictState({ state, reason }){
   if (mic.target === "speak") renderSpeakMic(); else renderTutorMic();
 }
 function onDictPartial({ text }){ mic.partial = text; showHeard(); }
-function onDictFinal({ text }){
+// The phone's own speech recognition (Chrome, Android, iPhone Safari). Same shape as the Claude dictation
+// capability, so the speaking practice works the same way with either.
+function makeBrowserDictation(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return null;
+  let rec = null, active = false, onS = () => {}, onP = () => {}, onF = () => {};
+  return {
+    browser: true,
+    active: () => active,
+    onState(f){ onS = f; }, onPartial(f){ onP = f; }, onFinal(f){ onF = f; },
+    start(){
+      return new Promise((resolve, reject) => {
+        try {
+          rec = new SR(); rec.lang = "en-US"; rec.interimResults = true; rec.maxAlternatives = 5; rec.continuous = false;
+          rec.onstart = () => { active = true; onS({ state:"listening" }); resolve(); };
+          rec.onresult = e => {
+            let interim = "";
+            for (let i = e.resultIndex; i < e.results.length; i++){
+              const r = e.results[i];
+              if (r.isFinal) onF({ text: r[0].transcript, alts: Array.from(r).map(a => a.transcript) });
+              else interim += r[0].transcript;
+            }
+            if (interim) onP({ text: interim });
+          };
+          rec.onerror = e => {
+            const c = (e.error === "not-allowed" || e.error === "service-not-allowed") ? "not_granted" : e.error === "no-speech" ? "no_speech" : e.error === "network" ? "network" : e.error;
+            active = false; onS({ state:"idle", reason:c }); reject({ code:c });
+          };
+          rec.onend = () => { if (active){ active = false; onS({ state:"idle", reason:"stopped" }); } };
+          rec.start();
+        } catch(err){ reject({ code:"unavailable" }); }
+      });
+    },
+    stop(){ try { if (rec) rec.stop(); } catch(e){} return Promise.resolve(); }
+  };
+}
+function onDictFinal({ text, alts }){
+  if (alts) mic.alts = (mic.alts || []).concat(alts);
   mic.text += text; mic.partial = "";
   if (mic.target === "tutor"){ const b = $("#tbox"); if (b){ b.value = (b.value + text).replace(/^\s+/, ""); autoGrow(b); } }
   else { clearTimeout(mic.timer); mic.timer = setTimeout(() => { if (dict && dict.active()) dict.stop(); }, 1600); }
@@ -1166,10 +1205,15 @@ function showHeard(){
   else { const b = $("#tbox"); if (b && mic.partial) b.placeholder = mic.partial; }
 }
 (async () => {
-  if (!window.claude || !claude.use) { capsReady = true; refresh(); return; }
+  if (!window.claude || !claude.use) {
+    dict = makeBrowserDictation();
+    if (dict){ dict.onState(onDictState); dict.onPartial(onDictPartial); dict.onFinal(onDictFinal); }
+    capsReady = true; refresh(); return;
+  }
   const [t, d, s, u] = await Promise.all([claude.use("tts"), claude.use("dictation"), claude.use("sample"), claude.use("user")]);
   try { isOwner = !!(u && await u.isOwner()); } catch(e){}
   tts = t; dict = d; sampleFn = s; capsReady = true;
+  if (!dict) dict = makeBrowserDictation();
   if (dict){ dict.onState(onDictState); dict.onPartial(onDictPartial); dict.onFinal(onDictFinal); }
   refresh();
 })();
@@ -1788,8 +1832,9 @@ function startReview(){
 }
 
 // ---------- placement test ----------
+const PLACE_N = 5;
 function startPlacement(){
-  const pick = lv => shuffle(LESSONS.filter(l => l.level === lv).flatMap(l => l.words)).slice(0, 4);
+  const pick = lv => shuffle(LESSONS.filter(l => l.level === lv && !l.month).flatMap(l => l.words)).slice(0, PLACE_N);
   const items = [];
   ["beg","int","adv"].forEach(lv => pick(lv).forEach(w => { const q = buildQuestion(w, 0); q.levelTag = lv; items.push(q); }));
   startQuiz({ id:"place", en:"Level test", am:"የደረጃ ፈተና", words:[] }, "place", items);
@@ -1797,7 +1842,9 @@ function startPlacement(){
 function finishPlacement(){
   const got = lv => S.quiz.filter(q => q.levelTag === lv && q.correct).length;
   const b = got("beg"), i = got("int"), a = got("adv");
-  const rec = (b >= 3 && i >= 3 && a >= 3) ? "adv" : (b >= 3 && i >= 3) ? "int" : "beg";
+  // Fair rules: a level counts as passed with 3 of 5. One or two unknown easy words
+  // shouldn't hold back a student who does well on the harder questions.
+  const rec = (a >= 3 && i >= 3) ? "adv" : (i >= 3 || (b >= 4 && i >= 2)) ? "int" : "beg";
   const L = levelOf(rec);
   store.placed = true; saveStore();
   $("#v-result").innerHTML = `
@@ -1805,7 +1852,8 @@ function finishPlacement(){
       <div class="label">Your level · <span class="am">ደረጃዎ</span></div>
       <div class="score" style="font-size:40px">${L.en}</div>
       <p class="am" style="margin:0;font-size:20px">${L.am}</p>
-      <p style="margin:8px 0 0;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums">Beginner ${b}/4 · Intermediate ${i}/4 · Advanced ${a}/4</p>
+      <p style="margin:8px 0 0;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums">Beginner ${b}/${PLACE_N} · Intermediate ${i}/${PLACE_N} · Advanced ${a}/${PLACE_N}</p>
+      <p style="margin:6px 0 0;font-size:15px">Start with <b>${({ beg:"Month 1", int:"Month 2", adv:"Month 3" })[rec]}</b> · <span class="am">በ${({ beg:"ወር 1", int:"ወር 2", adv:"ወር 3" })[rec]} ይጀምሩ</span></p>
     </div>
     <p class="foot" style="margin:0">Also do the Pronunciation section. It fixes the sounds that are hardest for Amharic speakers.<br><span class="am">የአነባበብ ክፍሉንም ይስሩ። ለአማርኛ ተናጋሪዎች ከባድ የሆኑትን ድምፆች ያስተካክላል።</span></p>
     <button class="btn primary" id="pStart"><span>Start ${L.en} lessons<small>${L.am} ትምህርቶችን ይጀምሩ</small></span></button>`;
@@ -1815,6 +1863,7 @@ function finishPlacement(){
 
 // ---------- speaking practice ----------
 const SP = { lesson:null, items:[], i:0, best:[], result:null };
+const PASS_SPEAK = 70;
 const NUMS = ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve"];
 const norm = s => s.toLowerCase().replace(/[’']/g,"").replace(/[^a-z0-9\s]/g," ").split(/\s+/).filter(Boolean)
   .map(t => /^\d+$/.test(t) && +t <= 12 ? NUMS[+t] : t);
@@ -1840,20 +1889,24 @@ function renderSpeak(){
   let body;
   if (SP.result){
     const r = SP.result;
-    const msg = r.pct === 100 ? ["Perfect!","ፍጹም!"] : r.pct >= 70 ? ["Very close!","በጣም ተቃርበዋል!"] : ["Let's try again","እንደገና እንሞክር"];
-    body = `<div class="feedback ${r.pct>=70?"good":"bad"}"><b>${msg[0]} · <span class="am">${msg[1]}</span> — ${r.pct}%</b>
+    const pass = r.pct >= PASS_SPEAK;
+    const msg = r.pct === 100 ? ["✓ Perfect! Pass","ፍጹም! አልፈዋል"] : pass ? ["✓ Pass! Very good","አልፈዋል! በጣም ጥሩ"] : ["✗ Not yet. Try again","ገና ነው፣ እንደገና ይሞክሩ"];
+    body = `<div class="feedback ${pass?"good":"bad"}"><b style="font-size:22px">${msg[0]} · <span class="am">${msg[1]}</span></b><span>${r.pct}% correct</span>
         <span>You said: “${esc(r.said)}”</span></div>
       <div class="words">${r.res.map(([c,ok]) => `<span class="w ${ok?"ok":"no"}">${esc(c)}</span>`).join("")}</div>
       ${r.pct < 100 ? `<p class="micnote">Red words were missing or unclear. Listen again, then repeat.<br><span class="am">ቀይ ቃላት በደንብ አልተሰሙም። እንደገና ያዳምጡና ይድገሙ።</span></p>` : ""}`;
   } else if (canMic){
-    body = `<div class="micwrap"><button class="mic" id="micBtn" aria-label="Speak">${ICON_MIC(36)}</button>
-      <p class="micnote" id="micNote">Tap and say it · <span class="am">ይንኩና ይናገሩ</span></p>
+    body = `<p class="micnote">1. Tap <b>Listen</b> and repeat after me. 2. Tap <b>Record</b> and say it.<br><span class="am">1. ያዳምጡና ይድገሙ። 2. ይቅረጹና ይናገሩ።</span></p>
+      <div class="micwrap"><button class="mic" id="micBtn" aria-label="Record">${ICON_MIC(36)}</button>
+      <p class="micnote" id="micNote">🎤 Record · <span class="am">ይቅረጹ</span></p>
       <div class="heard" id="heard"></div></div>`;
   } else {
-    body = `<p class="micnote">Listen, then say it out loud 3 times. Copy the sound exactly.<br><span class="am">ያዳምጡ፣ ከዚያ 3 ጊዜ ጮክ ብለው ይናገሩ።</span></p>
-      <p class="micnote" style="font-size:12px">The microphone check works in Chrome or the Claude desktop app.</p>
-      <div class="row"><button class="btn" id="selfNo"><span>Need practice<small>ልምምድ ያስፈልገኛል</small></span></button>
-      <button class="btn primary" id="selfYes"><span>I said it well<small>በትክክል ተናገርኩ</small></span></button></div>`;
+    const inTG = !!(window.Telegram && Telegram.WebApp && Telegram.WebApp.initData);
+    body = `<div class="feedback bad" style="background:var(--gold-soft);color:var(--fg)"><b>🎤 ${inTG ? "Telegram can't use the microphone on this phone." : micDenied ? "The microphone is turned off for this page." : "This browser can't check your speaking."}</b>
+        <span>${inTG ? "Open the course in Chrome to record yourself and get ✓ or ✗." : micDenied ? "Allow the microphone in your browser settings, then reload." : "Open the course in Google Chrome to record yourself and get ✓ or ✗."}</span>
+        <span class="am">${inTG ? "ድምፅዎን ለመቅረጽና ለመፈተሽ ኮርሱን በ Chrome ይክፈቱ።" : "ለመፈተሽ ኮርሱን በ Google Chrome ይክፈቱ።"}</span></div>
+      ${inTG ? `<button class="btn primary" id="openChrome"><span>Open in Chrome<small>በ Chrome ክፈት</small></span></button>` : ""}
+      <p class="micnote">For now: tap Listen and repeat it out loud 3 times.<br><span class="am">ለአሁን፦ ያዳምጡና 3 ጊዜ ጮክ ብለው ይድገሙ።</span></p>`;
   }
   $("#v-speak").innerHTML = `
     <div class="label">Speaking · <span class="am">መናገር</span> — ${esc(L.en)} — ${SP.i+1} / ${n}</div>
@@ -1871,8 +1924,8 @@ function renderSpeak(){
     ${body}
     <div class="row">
       ${SP.result && SP.result.pct < 100 ? `<button class="btn" id="retry"><span>Try again<small>እንደገና</small></span></button>` : ""}
-      ${SP.result || !canMic ? "" : `<button class="btn" id="skipItem"><span>Skip<small>እለፍ</small></span></button>`}
-      ${SP.result ? `<button class="btn primary" id="nextItem"><span>${last?"Finish":"Next"}<small>${last?"ጨርስ":"ቀጣይ"}</small></span></button>` : ""}
+      ${SP.result ? "" : `<button class="btn" id="skipItem"><span>${canMic ? "Skip" : (last ? "Finish" : "Next")}<small>${canMic ? "እለፍ" : (last ? "ጨርስ" : "ቀጣይ")}</small></span></button>`}
+      ${SP.result ? `<button class="btn ${SP.result.pct >= PASS_SPEAK ? "primary" : ""}" id="nextItem"><span>${last?"Finish":"Next"}<small>${last?"ጨርስ":"ቀጣይ"}</small></span></button>` : ""}
     </div>`;
   $("#say").onclick = () => speak(w[0], false);
   $("#slow").onclick = () => speak(w[0], true);
@@ -1880,8 +1933,7 @@ function renderSpeak(){
   if ($("#retry")) $("#retry").onclick = () => { SP.result = null; renderSpeak(); };
   if ($("#skipItem")) $("#skipItem").onclick = nextSpeakItem;
   if ($("#nextItem")) $("#nextItem").onclick = nextSpeakItem;
-  if ($("#selfYes")) $("#selfYes").onclick = () => { SP.best[SP.i] = 100; nextSpeakItem(); };
-  if ($("#selfNo")) $("#selfNo").onclick = () => speak(w[0], true);
+  if ($("#openChrome")) $("#openChrome").onclick = () => { try { Telegram.WebApp.openLink(location.href); } catch(e){ location.href = location.href; } };
   renderSpeakMic();
 }
 function renderSpeakMic(){
@@ -1892,11 +1944,13 @@ function renderSpeakMic(){
   b.setAttribute("aria-label", live ? "Stop" : "Speak");
   const n = $("#micNote");
   if (n) n.innerHTML = mic.state === "starting" ? "Starting the microphone… · <span class='am'>ማይክሮፎን እየተከፈተ ነው</span>"
-    : live ? "Listening… tap to stop · <span class='am'>እያዳመጥኩ ነው…</span>"
-    : "Tap and say it · <span class='am'>ይንኩና ይናገሩ</span>";
+    : live ? "Listening… speak now, tap to stop · <span class='am'>እያዳመጥኩ ነው… ይናገሩ</span>"
+    : "🎤 Record · <span class='am'>ይቅረጹ</span>";
 }
 function evaluateSpeech(said){
-  const w = SP.items[SP.i], r = compare(w[0], said);
+  const w = SP.items[SP.i];
+  let r = compare(w[0], said);
+  (mic.alts || []).forEach(alt => { const r2 = compare(w[0], alt); if (r2.pct > r.pct){ r = r2; said = alt; } });
   SP.result = { ...r, said: said.trim() };
   SP.best[SP.i] = Math.max(SP.best[SP.i], r.pct);
   mic.target = null;
@@ -1907,6 +1961,7 @@ function nextSpeakItem(){
   if (SP.result){ SP.best[SP.i] >= 70 ? markRight(w[0]) : markWrong(w[0]); }
   if (SP.i < SP.items.length - 1){ SP.i++; SP.result = null; renderSpeak(); return; }
   const L = SP.lesson, pct = Math.round(SP.best.reduce((a,b)=>a+b,0) / SP.best.length);
+  if (!dict){ renderHome(); toast("Practice done! Open in Chrome to get a speaking score · በ Chrome ውጤት ያግኙ"); return; }
   store.speak[L.id] = Math.max(store.speak[L.id] || 0, pct);
   bumpStreak();
   showResult({ L, big:`${pct}%`, pct, kind:"Speaking", again:() => startSpeaking(L) });
