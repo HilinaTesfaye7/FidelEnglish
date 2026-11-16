@@ -18,6 +18,14 @@
 New users press Start → tap "Share my phone" → the bot saves their phone number and Telegram ID
 and starts the 3-day trial. The course opens with their Telegram name (no second sign-up).
 
+## 4-month course and downloads
+- Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 final exam + certificate.
+- Each payment opens the next month; the full course price opens all 4. Opened months stay open.
+- Students learn in Telegram (📚 Open course) or tap 📥 Download course to get an HTML file
+  with ONLY their paid months (their name and phone are written inside). It works without internet.
+- After changing `fidel-english.html`, run `python tools/build_telegram.py` to rebuild
+  `webapp/index.html` and `offline/month1-4.html`, then push to GitHub and restart the bot.
+
 ## Owner commands
 - `/stats` – users, paying users, money in the last 30 days.
 - Payments arrive with ✅ Approve / ❌ Reject buttons. Check your Telebirr SMS first.

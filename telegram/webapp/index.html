@@ -1327,14 +1327,14 @@ function renderProfile(){
       <button class="btn gold" id="pfPlans">See plans · <span class="am">ዕቅዶችን ይመልከቱ</span></button></div>
     <button class="btn" id="pfOut">Sign out · <span class="am">ውጣ</span></button>`;
   show("profile");
-  if (P.method === "telegram") $("#pfContact").closest(".field").hidden = true;
+  if (P.method !== "phone" && P.method !== "gmail") $("#pfContact").closest(".field").hidden = true;
   const pick = (sel, b) => document.querySelectorAll(sel + " button").forEach(x => x.setAttribute("aria-pressed", x === b));
   $("#pfAv").onclick = e => { const b = e.target.closest("[data-av]"); if (b) pick("#pfAv", b); };
   $("#pfGoal").onclick = e => { const b = e.target.closest("[data-goal]"); if (b) pick("#pfGoal", b); };
   $("#pfSave").onclick = () => {
     const name = $("#pfName").value.trim(), raw = $("#pfContact").value.trim();
     if (!name){ $("#pfErr").textContent = "Please write your name · ስምዎን ይጻፉ"; return; }
-    const contact = P.method === "telegram" ? P.contact : P.method === "phone" ? normPhone(raw) : (okEmail(raw) ? raw.toLowerCase() : null);
+    const contact = P.method !== "phone" && P.method !== "gmail" ? P.contact : P.method === "phone" ? normPhone(raw) : (okEmail(raw) ? raw.toLowerCase() : null);
     if (!contact){ $("#pfErr").textContent = P.method === "phone" ? "Write a phone number like 0912345678" : "Write an email like name@gmail.com"; return; }
     Object.assign(P, { name, contact,
       avatar: document.querySelector('#pfAv [aria-pressed="true"]').dataset.av,

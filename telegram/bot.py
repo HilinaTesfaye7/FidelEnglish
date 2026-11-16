@@ -57,6 +57,25 @@ def api(method, **params):
         print("API problem", method, e, flush=True)
     return None
 
+def api_file(method, fields, file_field, filename, content):
+    """Upload a file (multipart/form-data)."""
+    boundary = "----FidelEnglish%d" % int(time.time() * 1000)
+    parts = []
+    for k, v in fields.items():
+        parts.append(('--%s\r\nContent-Disposition: form-data; name="%s"\r\n\r\n%s\r\n' % (boundary, k, v)).encode("utf-8"))
+    parts.append(('--%s\r\nContent-Disposition: form-data; name="%s"; filename="%s"\r\nContent-Type: text/html\r\n\r\n'
+                  % (boundary, file_field, filename)).encode("utf-8") + content + b"\r\n")
+    parts.append(("--%s--\r\n" % boundary).encode("utf-8"))
+    req = urllib.request.Request(API + method, data=b"".join(parts),
+                                 headers={"Content-Type": "multipart/form-data; boundary=" + boundary})
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r: return json.load(r).get("result")
+    except urllib.error.HTTPError as e:
+        print("API error", method, e.code, e.read()[:300], flush=True)
+    except Exception as e:
+        print("API problem", method, e, flush=True)
+    return None
+
 def send(chat, text, buttons=None, markup=None):
     p = {"chat_id": chat, "text": text, "parse_mode": "HTML"}
     if buttons: p["reply_markup"] = {"inline_keyboard": buttons}
@@ -88,6 +107,38 @@ def course_button(us):
     url = CFG["webapp_url"].rstrip("/") + "/?" + urllib.parse.urlencode(q)
     return [{"text": "📚 Open course · ትምህርቱን ክፈት", "web_app": {"url": url}}]
 
+DOWNLOAD_BTN = {"text": "📥 Download course · ኮርሱን አውርድ", "callback_data": "dl"}
+
+def learn_buttons(us):
+    """Learn in Telegram, and (for paid months) download the course to learn without internet."""
+    rows = [course_button(us)]
+    if months_open(us) > 0: rows.append([DOWNLOAD_BTN])
+    return rows
+
+def send_course_file(chat, us):
+    n = months_open(us)
+    if n == 0:
+        send(chat, "📥 The download is for paid months. Pay to open Month 1 first.\nማውረድ የሚቻለው ለተከፈሉ ወራት ነው።",
+             [[{"text": "💳 Pay · ይክፈሉ", "callback_data": "sub"}]]); return
+    path = os.path.join(HERE, "offline", "month%d.html" % n)
+    try:
+        html = open(path, encoding="utf-8").read()
+    except FileNotFoundError:
+        send(chat, "Sorry, the download is not ready yet. Please learn in Telegram for now."); print("Missing", path, flush=True); return
+    lic = {"name": us.get("name", ""), "phone": us.get("phone") or "", "months": n, "bot": BOT_USERNAME or ""}
+    html = html.replace('"__FIDEL_LICENSE__"', json.dumps(lic, ensure_ascii=False).replace("</", "<\\/"), 1)
+    api("sendChatAction", chat_id=chat, action="upload_document")
+    name = "Fidel-English-Month-1.html" if n == 1 else "Fidel-English-Months-1-%d.html" % n
+    caption = ("📥 <b>Your Fidel English course — %s</b>\n\n"
+               "How to use it:\n1️⃣ Tap the file to download it.\n2️⃣ Open it with <b>Chrome</b>.\n"
+               "3️⃣ Learn anywhere, even without internet. 🦁\n\n"
+               "When you open a new month, tap 📥 Download course again.\n"
+               "This copy has your name on it. Please don't share it.\n\n"
+               "ፋይሉን አውርደው በ Chrome ይክፈቱ። ያለ ኢንተርኔት መማር ይችላሉ።"
+               % ("Month 1" if n == 1 else "Months 1–%d" % n))
+    ok = api_file("sendDocument", {"chat_id": chat, "caption": caption, "parse_mode": "HTML"}, "document", name, html.encode("utf-8"))
+    if not ok: send(chat, "Sorry, the file could not be sent. Please try again later.\nይቅርታ፣ እባክዎ ቆይተው እንደገና ይሞክሩ።")
+
 def main_menu(chat, us):
     n = months_open(us)
     if n >= MONTHS:
@@ -98,7 +149,7 @@ def main_menu(chat, us):
         status = "🎁 Free trial (Month 1) until <b>%s</b>\nነፃ ሙከራ (ወር 1) እስከ %s" % (fmt_date(us["trial_until"]), fmt_date(us["trial_until"]))
     else:
         status = "🔒 Your free trial has ended. Pay to open Month 1.\nነፃ ሙከራዎ አልቋል። ወር 1ን ለመክፈት ይክፈሉ።"
-    rows = [course_button(us)] if has_access(us) else []
+    rows = learn_buttons(us) if has_access(us) else []
     if n < MONTHS:
         rows.append([{"text": "💳 Pay · ይክፈሉ", "callback_data": "sub"}, {"text": "❓ Help · እርዳታ", "callback_data": "help"}])
     else:
@@ -108,7 +159,7 @@ def main_menu(chat, us):
 def show_plans(chat, us):
     n = months_open(us)
     if n >= MONTHS:
-        send(chat, "🎓 You already have the full course! · ሙሉውን ኮርስ ከፍተዋል!", [course_button(us)]); return
+        send(chat, "🎓 You already have the full course! · ሙሉውን ኮርስ ከፍተዋል!", learn_buttons(us)); return
     text = ("📚 <b>Fidel English — 4-month course</b>\n"
             "Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 Final exam + certificate 🎓\n\n"
             "📘 <b>Open %s — %d Birr</b>\nYours forever once opened. Finished early? Open the next month any time.\n"
@@ -169,7 +220,7 @@ def decide(pid, ok, cb):
         opened = "all 4 months are open" if n >= MONTHS and before == 0 else "%s is open" % MONTH_NAMES[n]
         opened_am = "ሁሉም 4 ወራት ተከፍተዋል" if n >= MONTHS and before == 0 else "%s ተከፍቷል" % MONTH_AM[n]
         send(int(p["uid"]), "🎉 <b>Payment confirmed!</b> %s. Enjoy learning!\nክፍያዎ ተረጋግጧል! %s።" % (opened[0].upper() + opened[1:], opened_am),
-             [course_button(us)])
+             learn_buttons(us))
         result = "✅ Approved — %s now has %d of 4 months" % (esc(us["name"]), n)
     else:
         p["status"] = "rejected"; save()
@@ -243,8 +294,9 @@ def on_callback(cb):
     if data == "sub": show_plans(chat, us)
     elif data in ("plan:month", "plan:basic"): pay_instructions(chat, us, "month")
     elif data == "plan:full": pay_instructions(chat, us, "full")
+    elif data == "dl": send_course_file(chat, us)
     elif data == "help":
-        send(chat, "❓ <b>Help</b>\n• Tap 📚 Open course to learn.\n• The course has 4 months. Each payment opens the next month.\n"
+        send(chat, "❓ <b>Help</b>\n• Tap 📚 Open course to learn here in Telegram.\n• Paid months: tap 📥 Download course to learn without internet.\n• The course has 4 months. Each payment opens the next month.\n"
                    "• To pay: 💳 Pay → choose → pay with Telebirr → send the screenshot.\n• /reminders_off — stop daily reminders\n\n"
                    "Questions? Write to %s" % esc(CFG.get("support_contact", "the owner")))
 
