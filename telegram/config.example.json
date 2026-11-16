@@ -7,6 +7,7 @@
   "support_contact": "@your_telegram_username",
   "speaking_club_link": "https://t.me/+YOUR_GROUP_INVITE_LINK",
   "anthropic_api_key": "PASTE_YOUR_ANTHROPIC_API_KEY_HERE",
+  "tutor_enabled": false,
   "tutor_model": "claude-haiku-5-5",
   "tutor_daily_limit": 30,
   "price_month": 300,

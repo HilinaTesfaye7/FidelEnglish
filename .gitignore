@@ -4,3 +4,7 @@ telegram/data.json
 telegram/data.json.tmp
 __pycache__/
 .claude/
+
+# Ad videos stay on this computer (too big for the website repo)
+fidel-english-funny-ad.mp4
+marketing/*.mp4

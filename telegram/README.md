@@ -32,6 +32,10 @@ and starts the 3-day trial. The course opens with their Telegram name (no second
   can buy Premium just for the tutor. Renewing adds 30 more days. Lessons stay open when Premium ends.
 - Full course (`price_full`, 1000): all 4 months at once, no AI tutor (only offered before the first payment).
 
+## AI tutor switch
+- `"tutor_enabled": false` in config.json (the default): the AI tutor and Premium show "coming soon",
+  and plans offer only Basic and Full course. Set it to `true` (plus the API key) to sell Premium.
+
 ## Speaking club and AI tutor
 - `speaking_club_link` in config.json: your Telegram group invite link. Paid students get a 🎤 Join button.
 - AI tutor "Anbessa" (Premium only): students tap 🦁 Chat with Anbessa (or send /tutor) and chat in English;
