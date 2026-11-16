@@ -210,7 +210,14 @@ h1,h2{text-wrap:balance;margin:0}
 .modal .box .big{font-size:72px;line-height:1.1}
 .modal .box h2{font-size:21px}
 .modal .box p{margin:0;color:var(--muted)}
-@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+.cheer{font-family:var(--font-am);font-size:30px;font-weight:700;line-height:1.2}
+.feedback .cheer{font-size:24px}
+.party{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:40}
+.party span{position:absolute;top:-10%;font-size:28px;animation:fall 2.4s ease-in forwards}
+@keyframes fall{to{transform:translateY(120vh) rotate(360deg);opacity:.2}}
+.pop{animation:pop .45s ease-out}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}.party{display:none}}
 </style>
 
 <div class="app">
@@ -1137,8 +1144,27 @@ function browserSpeak(text, slow, retry){
   // Chrome drops a sound started right after cancel(), so wait a moment when something was playing
   if (busy) setTimeout(go, 150); else go();
 }
+// ---------- recorded audio ----------
+// Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
+// The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
+const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);
+function audioBase(){ return null; }
+function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
+let player = null;
+function playRecording(text, slow){
+  const base = audioBase(), id = audioId(text);
+  if (!base || !AUDIO_IDS.has(id)) return false;
+  try { if (player){ player.pause(); player.src = ""; } } catch(e){}
+  const a = new Audio(base + id + ".mp3"); player = a;
+  let fellBack = false;
+  const fallback = () => { if (fellBack || player !== a) return; fellBack = true; browserSpeak(text, slow); };
+  a.preservesPitch = true; a.playbackRate = slow ? 0.7 : 1;
+  a.onerror = fallback;
+  const pr = a.play(); if (pr && pr.catch) pr.catch(err => { if (!err || err.name !== "AbortError") fallback(); });
+  return true;
+}
 function speak(text, slow){
-  text = String(text).replace(/\.\.\.$/, "");
+  text = String(text).replace(/\.\.\.$/, "").trim();
   if (tts){
     tts.speak(text, { language:"en", rate: slow ? 0.7 : 0.95 }).catch(e => {
       const c = e && e.code;
@@ -1146,9 +1172,10 @@ function speak(text, slow){
     });
     return;
   }
+  if (playRecording(text, slow)) return;
   browserSpeak(text, slow);
 }
-function stopSound(){ try { if (tts) tts.stop(); } catch(e){} clearTimeout(speakTimer); if (hasSpeech && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel(); }
+function stopSound(){ try { if (tts) tts.stop(); } catch(e){} try { if (player) player.pause(); } catch(e){} clearTimeout(speakTimer); if (hasSpeech && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel(); }
 
 const mic = { target:null, text:"", partial:"", state:"idle", timer:null };
 function micStart(target){
@@ -1649,7 +1676,7 @@ function renderCard(){
     <div class="row">
       <button class="btn" id="prev" ${S.i===0?"disabled":""}><span>Back<small>ተመለስ</small></span></button>
       ${last ? `<button class="btn primary" id="go"><span>Start quiz<small>ፈተና ጀምር</small></span></button>`
-             : `<button class="btn primary" id="next"><span>Next<small>ቀጣይ</small></span></button>`}
+             : `<button class="btn primary" id="next">${nextBtn()}</button>`}
     </div>
     <div class="row">
       ${last ? "" : `<button class="btn" id="skip"><span>Quiz<small>ፈተና</small></span></button>`}
@@ -1811,10 +1838,10 @@ function answer(k){
   const detail = q.type === 3 ? `You heard: <b>${esc(q.word[0])}</b>` : `${esc(q.word[0])} = <span class="am">${esc(q.word[1])}</span>`;
   $("#fb").innerHTML = S.mode === "place" ? "" : `
     <div class="feedback ${ok?"good":"bad"}">
-      <b>${ok ? "Correct! · <span class='am'>ትክክል!</span>" : "Not quite · <span class='am'>ትክክል አይደለም</span>"}</b>
+      ${(() => { const c = pickOne(ok ? CHEER_RIGHT : CHEER_WRONG); return `<b class="pop"><span class="cheer">${ok ? "✓" : "✗"} ${c[0]}</span> ${ok ? "Correct! " : "Not quite. "}<span style="font-weight:400">${c[1]}</span></b>`; })()}
       <span>${detail}</span>
     </div>`;
-  $("#fb").insertAdjacentHTML("beforeend", `<button class="btn primary" id="qnext" style="margin-top:12px;width:100%"><span>${last?"See result":"Next"}<small>${last?"ውጤት ይመልከቱ":"ቀጣይ"}</small></span></button>`);
+  $("#fb").insertAdjacentHTML("beforeend", `<button class="btn primary" id="qnext" style="margin-top:12px;width:100%">${last ? `<span>See result<small>ውጤት ይመልከቱ</small></span>` : nextBtn()}</button>`);
   $("#qnext").onclick = () => { if (last) finishQuiz(); else { S.qi++; renderQ(); } };
   $("#qnext").scrollIntoView({ behavior:"smooth", block:"nearest" });
 }
@@ -1904,7 +1931,7 @@ function compare(target, said){
 }
 function startSpeaking(L){
   if (!canUseMonth(monthOf(L))){ showPaywall(monthOf(L)); return; }
-  SP.lesson = L; SP.items = shuffle(L.words).slice(0, 8); SP.i = 0; SP.best = SP.items.map(() => 0); SP.result = null;
+  SP.lesson = L; SP.items = shuffle(L.words).slice(0, 8); SP.i = 0; SP.best = SP.items.map(() => 0); SP.result = null; SP.fails = 0;
   renderSpeak(); show("speak");
 }
 function renderSpeak(){
@@ -1914,8 +1941,9 @@ function renderSpeak(){
   if (SP.result){
     const r = SP.result;
     const pass = r.pct >= PASS_SPEAK;
-    const msg = r.pct === 100 ? ["✓ Perfect! Pass","ፍጹም! አልፈዋል"] : pass ? ["✓ Pass! Very good","አልፈዋል! በጣም ጥሩ"] : ["✗ Not yet. Try again","ገና ነው፣ እንደገና ይሞክሩ"];
-    body = `<div class="feedback ${pass?"good":"bad"}"><b style="font-size:22px">${msg[0]} · <span class="am">${msg[1]}</span></b><span>${r.pct}% correct</span>
+    if (!r.cheer) r.cheer = pickOne(pass ? CHEER_RIGHT : CHEER_WRONG);
+    const msg = r.pct === 100 ? ["✓ " + r.cheer[0], "Perfect! Pass"] : pass ? ["✓ " + r.cheer[0], "Pass! " + r.cheer[1]] : ["✗ " + r.cheer[0], "Not yet. Try again"];
+    body = `<div class="feedback ${pass?"good":"bad"} pop"><b><span class="cheer">${msg[0]}</span> ${msg[1]}</b><span>${r.pct}% correct</span>
         <span>You said: “${esc(r.said)}”</span></div>
       <div class="words">${r.res.map(([c,ok]) => `<span class="w ${ok?"ok":"no"}">${esc(c)}</span>`).join("")}</div>
       ${r.pct < 100 ? `<p class="micnote">Red words were missing or unclear. Listen again, then repeat.<br><span class="am">ቀይ ቃላት በደንብ አልተሰሙም። እንደገና ያዳምጡና ይድገሙ።</span></p>` : ""}`;
@@ -1953,7 +1981,7 @@ function renderSpeak(){
     <div class="row">
       ${SP.result && SP.result.pct < 100 ? `<button class="btn" id="retry"><span>Try again<small>እንደገና</small></span></button>` : ""}
       ${SP.result ? "" : `<button class="btn" id="skipItem"><span>${canMic ? "Skip" : (last ? "Finish" : "Next")}<small>${canMic ? "እለፍ" : (last ? "ጨርስ" : "ቀጣይ")}</small></span></button>`}
-      ${SP.result ? `<button class="btn ${SP.result.pct >= PASS_SPEAK ? "primary" : ""}" id="nextItem"><span>${last?"Finish":"Next"}<small>${last?"ጨርስ":"ቀጣይ"}</small></span></button>` : ""}
+      ${SP.result ? `<button class="btn ${SP.result.pct >= PASS_SPEAK ? "primary" : ""}" id="nextItem">${last ? `<span>Finish<small>ጨርስ</small></span>` : nextBtn()}</button>` : ""}
     </div>`;
   $("#say").onclick = () => speak(w[0], false);
   $("#slow").onclick = () => speak(w[0], true);
@@ -1980,6 +2008,8 @@ function evaluateSpeech(said){
   let r = compare(w[0], said);
   (mic.alts || []).forEach(alt => { const r2 = compare(w[0], alt); if (r2.pct > r.pct){ r = r2; said = alt; } });
   SP.result = { ...r, said: said.trim() };
+  if (r.pct >= PASS_SPEAK) SP.result.cheer = pickOne(CHEER_RIGHT);
+  else { SP.fails = (SP.fails || 0) + 1; SP.result.cheer = FAIL_STEPS[Math.min(SP.fails, FAIL_STEPS.length) - 1]; }
   SP.best[SP.i] = Math.max(SP.best[SP.i], r.pct);
   mic.target = null;
   renderSpeak();
@@ -1987,6 +2017,7 @@ function evaluateSpeech(said){
 function nextSpeakItem(){
   const w = SP.items[SP.i];
   if (SP.result){ SP.best[SP.i] >= 70 ? markRight(w[0]) : markWrong(w[0]); }
+  SP.fails = 0;
   if (SP.i < SP.items.length - 1){ SP.i++; SP.result = null; renderSpeak(); return; }
   const L = SP.lesson, pct = Math.round(SP.best.reduce((a,b)=>a+b,0) / SP.best.length);
   if (!dict){ renderHome(); toast("Practice done! Open in Chrome to get a speaking score · በ Chrome ውጤት ያግኙ"); return; }
@@ -1995,16 +2026,37 @@ function nextSpeakItem(){
   showResult({ L, big:`${pct}%`, pct, kind:"Speaking", again:() => startSpeaking(L) });
 }
 
+// ---------- fun Amharic cheers ----------
+const CHEER_RIGHT = [["ጎበዝ!","Clever!"],["ጀግና!","Hero!"],["ጀግናዬ!","My hero!"],["እሰይ!","Yay!"],["አሪፍ ነው!","Cool!"],
+  ["ምርጥ!","Excellent!"],["ልክ ነው! ጎበዝ!","That's right!"],["ዋው! ጎበዝ ጀግና!","Wow, well done!"],["ኮራሁብዎ!","I'm proud of you!"],["እሰይ እሰይ!","Yes, yes!"],["ስልሚቻል! ጎበዝ ጀግና!","Well done, hero!"]];
+const CHEER_WRONG = [["እረ ጉድ!","Oh my!"],["እረ በለው!","Oh, come on!"],["ኧረ ተው!","No way!"],["ወይኔ!","Oops!"],["ትንሽ ቀረዎት!","So close!"],["አይዞዎት!","Don't worry!"]];
+const FAIL_STEPS = [["እስቲ እንደገና!","Let's try again!"],["እረ ወይኔ!","Oh no!"],["ምን ጉድ ነው!","What happened?!"],["እረ ጎበዝ!","Come on, you can do it!"]];
+const NEXT_WORDS = [["እንቀጥል!","Next"],["ቀጣዩ ይምጣ!","Next"],["ወደፊት!","Next"],["ሌላ ይምጣ!","Next"]];
+function nextBtn(){ const n = pickOne(NEXT_WORDS); return `<span class="am">${n[0]} →</span><small>${n[1]}</small>`; }
+function party(){
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const d = document.createElement("div"); d.className = "party"; d.setAttribute("aria-hidden", "true");
+  const bits = ["🎉","🦁","⭐","🎊","👏","🌟"];
+  for (let i = 0; i < 26; i++){
+    const sp = document.createElement("span"); sp.textContent = pickOne(bits);
+    sp.style.left = Math.random() * 100 + "%"; sp.style.animationDelay = Math.random() * 0.8 + "s";
+    d.appendChild(sp);
+  }
+  document.body.appendChild(d); setTimeout(() => d.remove(), 3500);
+}
+
 // ---------- results ----------
 function showResult({ L, big, pct, again, extra, kind }){
   const list = LESSONS.filter(x => x.level === L.level), idx = list.indexOf(L), next = idx >= 0 ? list[idx+1] : null;
-  const msg = pct >= 90 ? ["Excellent work!","በጣም ጥሩ!"] : pct >= 60 ? ["Good job. Keep practising.","ጥሩ ነው። መለማመድዎን ይቀጥሉ።"] : ["Try again. You can do it!","እንደገና ይሞክሩ። ይችላሉ!"];
+  const msg = pct >= 90 ? ["Excellent work! You finished like a champion!","እልልልልል! 🎉 ጀግና!"]
+    : pct >= 60 ? ["Good job. Keep practising.","እሰይ እሰይ ጀግና! 👏"]
+    : ["Try again. You can do it!","አይዞዎት! 💪 እንደገና እንሞክር"];
   $("#v-result").innerHTML = `
     <div class="result">
       <div class="label">${kind ? kind+" · " : ""}${esc(L.en)} · <span class="am">${esc(L.am)}</span></div>
-      <div class="score">${big}</div>
-      <h2 style="font-size:22px">${msg[0]}</h2>
-      <p class="am" style="margin:0;color:var(--muted)">${msg[1]}</p>
+      <div class="score pop">${big}</div>
+      <div class="cheer pop" style="color:var(--gold)">${msg[1]}</div>
+      <h2 style="font-size:20px">${msg[0]}</h2>
       <p style="margin:6px 0 0;color:var(--muted);font-size:14px">${store.streak} day streak · <span class="am">${store.streak} ተከታታይ ቀን</span></p>
     </div>
     ${extra || ""}
@@ -2017,6 +2069,7 @@ function showResult({ L, big, pct, again, extra, kind }){
   $("#ragain").onclick = again;
   $("#rhome").onclick = renderHome;
   show("result");
+  if (pct >= 60) party();
 }
 
 // ---------- AI tutor ----------

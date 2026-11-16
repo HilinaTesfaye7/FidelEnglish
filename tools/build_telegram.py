@@ -29,6 +29,17 @@ def head(telegram):
             + ('<script src="https://telegram.org/js/telegram-web-app.js"></script>\n' if telegram else '')
             + '<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}</style>\n')
 
+AUDIO_DIR = os.path.join(ROOT, "telegram", "webapp", "audio")
+def audio_ids():
+    """IDs of the recorded sentences (see tools/make_audio.py)."""
+    if not os.path.isdir(AUDIO_DIR): return []
+    return sorted(f[:-4] for f in os.listdir(AUDIO_DIR) if f.endswith(".mp3"))
+
+def add_audio(rep, base_js):
+    ids = audio_ids()
+    rep('const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);', 'const AUDIO_IDS = new Set(%s);' % json.dumps(ids, separators=(",", ":")))
+    rep('function audioBase(){ return null; }', 'function audioBase(){ return %s; }' % base_js)
+
 def common(rep):
     rep('Open this page in the Claude app or in Chrome while signed in to use the AI tutor.',
         'Premium: chat with Anbessa 🦁 in our Telegram bot · ፕሪሚየም፦ በቴሌግራም ቦቱ ውስጥ')
@@ -69,6 +80,7 @@ if (store.profile){ renderHome(); checkMissed();''')
     rep('''fn:() => { delete store.profile; saveStore(); renderSignup(); } }''',
         '''fn:() => { delete store.profile; saveStore(); if (TG) { try { TG.close(); } catch(e){} } else renderSignup(); } }''')
     common(rep)
+    add_audio(rep, '"audio/"')
     return get() + '\n</body>\n</html>\n'
 
 # ---------- 2. Offline downloadable courses ----------
@@ -114,6 +126,8 @@ saveStore();''' % months)
     label = "Month 1" if months == 1 else "Months 1–%d" % months
     rep('<p class="foot">Every lesson:', '<p class="foot" style="margin:0">📥 Offline course · ' + label + ' · Licensed to ${esc((LICENSE && LICENSE.name) || "")} ${esc((LICENSE && LICENSE.phone) || "")}<br>Personal copy, please do not share · <span class="am">የግል ቅጂ ነው፣ አያጋሩ</span></p><p class="foot">Every lesson:')
     common(rep)
+    # recordings come from the online course when there is internet; without it the phone's voice is used
+    add_audio(rep, '(LICENSE && LICENSE.web) ? LICENSE.web.replace(/\\/$/, "") + "/audio/" : null')
     out = get() + '\n</body>\n</html>\n'
     assert out.count('"__FIDEL_LICENSE__"') == 1
     return out
