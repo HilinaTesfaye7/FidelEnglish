@@ -1,0 +1,8 @@
+// Cloudflare Workers settings: serve the course website (static files only, no server code).
+{
+  "name": "fidelenglish",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./telegram/webapp"
+  }
+}
