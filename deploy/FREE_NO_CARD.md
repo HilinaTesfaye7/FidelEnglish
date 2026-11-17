@@ -39,7 +39,9 @@ The website is already on Cloudflare. This puts the bot online too.
 PythonAnywhere emails you: open the **Web** tab and click **"Run until 1 month from today"**. Otherwise the bot pauses.
 
 ## Updating the bot later
-Make a new zip, upload it (Files), then in Bash: `cp ~/fidel/telegram/data.json ~/data-backup.json && unzip -o fidel-bot.zip -d ~/fidel && cp ~/data-backup.json ~/fidel/telegram/data.json`, then **Reload** on the Web tab.
+Make a new zip, upload it (Files), then in Bash (keeps the server's student list and settings):
+`cd ~ && cp fidel/telegram/data.json data-backup.json && cp fidel/telegram/config.json config-backup.json && unzip -o fidel-bot.zip -d fidel && cp data-backup.json fidel/telegram/data.json && cp config-backup.json fidel/telegram/config.json`
+then **Reload** on the Web tab.
 
 ## Back to running on a computer (if ever needed)
 In the PythonAnywhere Bash: `python3 setup_webhook.py off`, then run `python bot.py` on the computer.
