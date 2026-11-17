@@ -24,7 +24,6 @@ PRICE_FULL = int(CFG.get("price_full", 1000))                      # all 4 month
 PRICE_PREMIUM = int(CFG.get("price_premium", 1000))                # Premium: next month + AI tutor for 30 days
 PREMIUM_DAYS = 30
 TRIAL_DAYS = int(CFG.get("trial_days", 3))
-CLUB_LINK = (CFG.get("speaking_club_link") or "").strip()            # Telegram group invite link
 TUTOR_MODEL = CFG.get("tutor_model", "claude-haiku-5-5")
 TUTOR_ON = bool(CFG.get("tutor_enabled", False))                    # false = AI tutor and Premium show "coming soon"
 TUTOR_DAILY_LIMIT = int(CFG.get("tutor_daily_limit", 30))           # messages per student per day
@@ -36,8 +35,8 @@ NUDGE_DAYS = 25
 REMIND_HOUR = int(CFG.get("reminder_hour", 19))                    # Addis Ababa time
 EAT = timezone(timedelta(hours=3))
 DAY_MS = 86400000
-MONTH_NAMES = {1: "Month 1 · Beginner", 2: "Month 2 · Intermediate", 3: "Month 3 · Advanced", 4: "Month 4 · Real-life words, final exam + certificate"}
-MONTH_AM = {1: "ወር 1 · ጀማሪ", 2: "ወር 2 · መካከለኛ", 3: "ወር 3 · ከፍተኛ", 4: "ወር 4 · የዕለት ቃላት፣ ፈተናና ሰርተፊኬት"}
+MONTH_NAMES = {1: "Month 1 · Beginner", 2: "Month 2 · Intermediate", 3: "Month 3 · Advanced", 4: "Month 4 · Real-life words + final exam"}
+MONTH_AM = {1: "ወር 1 · ጀማሪ", 2: "ወር 2 · መካከለኛ", 3: "ወር 3 · ከፍተኛ", 4: "ወር 4 · የዕለት ቃላትና የመጨረሻ ፈተና"}
 
 def now_ms(): return int(time.time() * 1000)
 def fmt_date(ms): return datetime.fromtimestamp(ms / 1000, EAT).strftime("%d %B %Y")
@@ -231,7 +230,6 @@ def learn_buttons(us):
     rows = [course_button(us)]
     if months_open(us) > 0:
         rows.append([DOWNLOAD_BTN])
-        if CLUB_LINK: rows.append([{"text": "🎤 Join our speaking club · የንግግር ክበብ", "url": CLUB_LINK}])
         rows.append([SOON_BTN] if not TUTOR_ON else [TUTOR_BTN] if has_tutor(us) else [UPGRADE_BTN])
     return rows
 
@@ -283,8 +281,8 @@ def show_plans(chat, us):
             send(chat, "🎓 You have the full course (all 4 months)! · ሙሉውን ኮርስ ከፍተዋል!\n\n🦁 AI tutor (Premium) — coming soon · በቅርቡ ይመጣል", learn_buttons(us)); return
         nxt = MONTH_NAMES[n + 1].split(" · ")[0]
         text = ("📚 <b>Fidel English — 4-month course</b>\n"
-                "Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 Real-life words, final exam + certificate 🎓\n\n"
-                "📘 <b>Open %s — %d Birr</b>\nLessons in Telegram, 📥 download, and 🎤 our speaking club. Yours forever once opened.\n"
+                "Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 Real-life words + final exam\n\n"
+                "📘 <b>Open %s — %d Birr</b>\nLessons in Telegram and 📥 download. Yours forever once opened.\n"
                 "%s — %d ብር። አንዴ ከተከፈተ ለዘላለም የእርስዎ ነው።" % (MONTH_NAMES[n + 1], PRICE, MONTH_AM[n + 1], PRICE))
         rows = [[{"text": "📘 %s · %d Birr" % (nxt, PRICE), "callback_data": "plan:month"}]]
         if n == 0:
@@ -301,9 +299,9 @@ def show_plans(chat, us):
         send(chat, text, [[{"text": "⭐ Premium · AI tutor · %d Birr" % PRICE_PREMIUM, "callback_data": "plan:premium"}]]); return
     nxt = MONTH_NAMES[n + 1].split(" · ")[0]
     text = ("📚 <b>Fidel English — 4-month course</b>\n"
-            "Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 Real-life words, final exam + certificate 🎓\n\n"
-            "📘 <b>Basic — %d Birr</b>\nOpens %s: lessons in Telegram, 📥 download, and 🎤 our speaking club.\n"
-            "%s ይከፈታል፤ ትምህርቶች፣ ማውረድና የንግግር ክበብ።\n\n"
+            "Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 Real-life words + final exam\n\n"
+            "📘 <b>Basic — %d Birr</b>\nOpens %s: lessons in Telegram and 📥 download.\n"
+            "%s ይከፈታል፤ ትምህርቶችና ማውረድ።\n\n"
             "⭐ <b>Premium — %d Birr</b>\nEverything in Basic + 🦁 <b>Anbessa, your AI tutor</b> for %d days: chat in English like with a friend and get your mistakes corrected.\n"
             "ሁሉም በመሰረታዊ ያለው + ከ AI አስተማሪ ጋር መወያየት።"
             % (PRICE, MONTH_NAMES[n + 1], MONTH_AM[n + 1], PRICE_PREMIUM, PREMIUM_DAYS))
@@ -544,7 +542,6 @@ def main():
                                    {"command": "reminders_off", "description": "Stop daily reminders"}])
     print("AI tutor: %s" % ("ON (%s, %d messages/day)" % (TUTOR_MODEL, TUTOR_DAILY_LIMIT) if tutor_client() else
                             "OFF (add anthropic_api_key to config.json and run: pip install anthropic)"), flush=True)
-    print("Speaking club button: %s" % ("ON" if CLUB_LINK else "OFF (add speaking_club_link to config.json)"), flush=True)
     print("Bot @%s is running. Press Ctrl+C to stop." % BOT_USERNAME, flush=True)
     offset = None
     while True:

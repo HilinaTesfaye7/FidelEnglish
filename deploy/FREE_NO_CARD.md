@@ -35,8 +35,8 @@ The website is already on Cloudflare. This puts the bot online too.
 1. Go to **cron-job.org** → sign up (free).
 2. **Create cronjob**: Title `Fidel tick`, URL = the tick link from step 2.6, schedule **every 15 minutes** → Create.
 
-## Every 3 months
-PythonAnywhere emails you: open the **Web** tab and click **"Run until 3 months from today"**. Otherwise the bot pauses.
+## Every month
+PythonAnywhere emails you: open the **Web** tab and click **"Run until 1 month from today"**. Otherwise the bot pauses.
 
 ## Updating the bot later
 Make a new zip, upload it (Files), then in Bash: `cp ~/fidel/telegram/data.json ~/data-backup.json && unzip -o fidel-bot.zip -d ~/fidel && cp ~/data-backup.json ~/fidel/telegram/data.json`, then **Reload** on the Web tab.
