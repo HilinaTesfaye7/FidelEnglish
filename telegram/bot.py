@@ -58,12 +58,22 @@ def save():
 def api(method, **params):
     body = json.dumps(params).encode("utf-8")
     req = urllib.request.Request(API + method, data=body, headers={"Content-Type": "application/json"})
-    try:
-        with urllib.request.urlopen(req, timeout=40) as r: return json.load(r).get("result")
-    except urllib.error.HTTPError as e:
-        print("API error", method, e.code, e.read()[:300], flush=True)
-    except Exception as e:
-        print("API problem", method, e, flush=True)
+    return _call(req, method, 40)
+
+RETRY_WAITS = (0.5, 1.5, 3)   # free hosting (PythonAnywhere) proxy sometimes fails for a moment: try again
+
+def _call(req, method, timeout):
+    for attempt in range(len(RETRY_WAITS) + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r: return json.load(r).get("result")
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 502, 503, 504) and attempt < len(RETRY_WAITS):
+                time.sleep(RETRY_WAITS[attempt]); continue
+            print("API error", method, e.code, e.read()[:300], flush=True); return None
+        except Exception as e:
+            if attempt < len(RETRY_WAITS):
+                time.sleep(RETRY_WAITS[attempt]); continue
+            print("API problem", method, e, flush=True); return None
     return None
 
 def api_file(method, fields, file_field, filename, content, ctype="text/html"):
@@ -77,13 +87,7 @@ def api_file(method, fields, file_field, filename, content, ctype="text/html"):
     parts.append(("--%s--\r\n" % boundary).encode("utf-8"))
     req = urllib.request.Request(API + method, data=b"".join(parts),
                                  headers={"Content-Type": "multipart/form-data; boundary=" + boundary})
-    try:
-        with urllib.request.urlopen(req, timeout=120) as r: return json.load(r).get("result")
-    except urllib.error.HTTPError as e:
-        print("API error", method, e.code, e.read()[:300], flush=True)
-    except Exception as e:
-        print("API problem", method, e, flush=True)
-    return None
+    return _call(req, method, 120)
 
 def send(chat, text, buttons=None, markup=None):
     p = {"chat_id": chat, "text": text, "parse_mode": "HTML"}
