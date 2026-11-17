@@ -546,23 +546,42 @@ def main():
                             "OFF (add anthropic_api_key to config.json and run: pip install anthropic)"), flush=True)
     print("Speaking club button: %s" % ("ON" if CLUB_LINK else "OFF (add speaking_club_link to config.json)"), flush=True)
     print("Bot @%s is running. Press Ctrl+C to stop." % BOT_USERNAME, flush=True)
-    offset, last_check = None, 0
+    offset = None
     while True:
         p = {"timeout": 25, "allowed_updates": ["message", "callback_query"]}
         if offset: p["offset"] = offset
         updates = api("getUpdates", **p) or []
         for up in updates:
             offset = up["update_id"] + 1
-            try:
-                if "message" in up: on_message(up["message"])
-                elif "callback_query" in up: on_callback(up["callback_query"])
-            except Exception as e:
-                print("Error:", e, flush=True)
-        if time.time() - last_check > 60:
-            last_check = time.time()
-            try: reminders()
-            except Exception as e: print("Reminder error:", e, flush=True)
+            handle_update(up)
+        tick(min_gap=60)
         if not updates: time.sleep(1)
+
+# ---------- webhook mode (PythonAnywhere): Telegram sends each update to the web app ----------
+def ensure_username():
+    """The bot's @name, needed for the course links (asked from Telegram once)."""
+    global BOT_USERNAME
+    if not BOT_USERNAME:
+        BOT_USERNAME = CFG.get("bot_username") or ((api("getMe") or {}).get("username"))
+    return BOT_USERNAME
+
+def handle_update(up):
+    try:
+        if "message" in up: on_message(up["message"])
+        elif "callback_query" in up: on_callback(up["callback_query"])
+    except Exception as e:
+        print("Error:", e, flush=True)
+
+_last_tick = 0
+def tick(min_gap=60):
+    """Reminders and the daily backup. Polling calls it every minute; in webhook mode an outside
+    pinger (cron-job.org) calls it, and every incoming update does too, at most once per min_gap seconds."""
+    global _last_tick
+    if time.time() - _last_tick < min_gap: return False
+    _last_tick = time.time()
+    try: reminders()
+    except Exception as e: print("Reminder error:", e, flush=True)
+    return True
 
 if __name__ == "__main__":
     main()

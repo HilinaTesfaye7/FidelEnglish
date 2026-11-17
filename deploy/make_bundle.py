@@ -19,7 +19,7 @@ if not url.startswith("https://") or "PASTE" in url or "YOUR" in url: problems.a
 if problems:
     sys.exit("Fix config.json first: " + "; ".join(problems))
 
-files = ["bot.py", "config.json"] + ["offline/" + f for f in sorted(os.listdir(os.path.join(TG, "offline"))) if f.endswith(".html")]
+files = ["bot.py", "wsgi_app.py", "setup_webhook.py", "config.json"] + ["offline/" + f for f in sorted(os.listdir(os.path.join(TG, "offline"))) if f.endswith(".html")]
 if os.path.exists(os.path.join(TG, "data.json")): files.append("data.json")
 with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as z:
     for f in files:
