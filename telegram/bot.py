@@ -67,14 +67,14 @@ def api(method, **params):
         print("API problem", method, e, flush=True)
     return None
 
-def api_file(method, fields, file_field, filename, content):
+def api_file(method, fields, file_field, filename, content, ctype="text/html"):
     """Upload a file (multipart/form-data)."""
     boundary = "----FidelEnglish%d" % int(time.time() * 1000)
     parts = []
     for k, v in fields.items():
         parts.append(('--%s\r\nContent-Disposition: form-data; name="%s"\r\n\r\n%s\r\n' % (boundary, k, v)).encode("utf-8"))
-    parts.append(('--%s\r\nContent-Disposition: form-data; name="%s"; filename="%s"\r\nContent-Type: text/html\r\n\r\n'
-                  % (boundary, file_field, filename)).encode("utf-8") + content + b"\r\n")
+    parts.append(('--%s\r\nContent-Disposition: form-data; name="%s"; filename="%s"\r\nContent-Type: %s\r\n\r\n'
+                  % (boundary, file_field, filename, ctype)).encode("utf-8") + content + b"\r\n")
     parts.append(("--%s--\r\n" % boundary).encode("utf-8"))
     req = urllib.request.Request(API + method, data=b"".join(parts),
                                  headers={"Content-Type": "multipart/form-data; boundary=" + boundary})
@@ -423,6 +423,7 @@ def on_message(m):
         else: main_menu(chat, us)
         return
     if text == "/stats" and int(uid) == ADMIN: stats(chat); return
+    if text == "/backup" and int(uid) == ADMIN: daily_backup(force=True); return
     if text in ("/stop", "/reminders_off"):
         us["reminders"] = False; save(); send(chat, "🔕 Reminders are off. Send /reminders_on to turn them on."); return
     if text == "/reminders_on":
@@ -517,6 +518,19 @@ def reminders():
             us["last_daily"] = today; changed = True
             send(int(uid), "🦁 It's English time, %s! Your lesson is waiting.\nየእንግሊዝኛ ሰዓት ደርሷል!" % esc(us["name"]), [course_button(us)])
     if changed: save()
+    daily_backup(now)
+
+BACKUP_HOUR = int(CFG.get("backup_hour", 3))    # Addis Ababa time
+def daily_backup(now=None, force=False):
+    """Send data.json (students and payments) to the owner on Telegram once a day, so it is never lost."""
+    now = now or datetime.now(EAT); today = now.strftime("%Y-%m-%d")
+    if not force and (now.hour < BACKUP_HOUR or DB.get("last_backup") == today): return
+    DB["last_backup"] = today; save()
+    content = open(DATA_FILE, "rb").read()
+    users = sum(1 for k in DB["users"] if int(k) != ADMIN)
+    ok = api_file("sendDocument", {"chat_id": ADMIN, "caption": "💾 Daily backup %s · %d students. Keep this file safe." % (today, users)},
+                  "document", "fidel-data-%s.json" % today, content, "application/json")
+    if not ok: DB["last_backup"] = ""; save()       # try again at the next check
 
 # ---------- main loop ----------
 def main():

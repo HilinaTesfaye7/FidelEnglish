@@ -8,3 +8,6 @@ __pycache__/
 # Ad videos stay on this computer (too big for the website repo)
 fidel-english-funny-ad.mp4
 marketing/*.mp4
+
+# Server bundle holds the bot token and student list
+deploy/fidel-bot.zip
