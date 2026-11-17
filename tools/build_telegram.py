@@ -61,7 +61,7 @@ if (FROM_BOT){
   saveStore();
 }''')
     rep('if (b) toast("Payment is coming soon · ክፍያ በቅርቡ ይጀምራል");',
-        'if (b){ const bot = QS.get("b"); if (TG && bot){ TG.openTelegramLink("https://t.me/" + bot + "?start=" + b.dataset.plan); try { TG.close(); } catch(e){} } else toast("Open the course from our Telegram bot to pay · ከቴሌግራም ቦቱ ይክፈሉ"); }')
+        'if (b){ const bot = QS.get("b"); if (TG && bot){ toast("Opening payment in the chat… If nothing happens, close this and tap 💳 Pay · ቻቱ ውስጥ 💳 Pay ይጫኑ"); try { TG.openTelegramLink("https://t.me/" + bot + "?start=" + b.dataset.plan); } catch(e){} setTimeout(() => { try { TG.close(); } catch(e){} }, 2500); } else toast("Open the course from our Telegram bot, then tap 💳 Pay · ከቴሌግራም ቦቱ ይክፈሉ"); }')
     rep('store.trialStart = Date.now(); store.nudged', 'if (!FROM_BOT) store.trialStart = Date.now(); store.nudged')
     rep('  show("signup");\n  $("#v-signup .seg")', '''  show("signup");
   if (TG && TG.initDataUnsafe && TG.initDataUnsafe.user && !$("#suName").value) $("#suName").value = TG.initDataUnsafe.user.first_name || "";
