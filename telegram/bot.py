@@ -354,7 +354,10 @@ def new_payment(uid, us, photo, txn):
            % (pid, esc(us["name"]), (" (@%s)" % esc(us["username"])) if us.get("username") else "",
               esc(us.get("phone") or "-"), uid, esc(label), amount, months_open(us), esc(txn)))
     kb = {"inline_keyboard": [[{"text": "✅ Approve", "callback_data": "ok:" + pid}, {"text": "❌ Reject", "callback_data": "no:" + pid}]]}
-    api("sendPhoto", chat_id=ADMIN, photo=photo, caption=cap, parse_mode="HTML", reply_markup=kb)
+    if photo.startswith("doc:"):   # screenshot sent "as a file"
+        api("sendDocument", chat_id=ADMIN, document=photo[4:], caption=cap, parse_mode="HTML", reply_markup=kb)
+    else:
+        api("sendPhoto", chat_id=ADMIN, photo=photo, caption=cap, parse_mode="HTML", reply_markup=kb)
 
 def decide(pid, ok, cb):
     p = DB["payments"].get(pid)
@@ -439,14 +442,21 @@ def on_message(m):
         else:
             send(chat, "🦁 Please type a message in English, or tap ⏹ End chat.\nእባክዎ በእንግሊዝኛ ይጻፉ።", END_TUTOR_BTN)
         return
-    if m.get("photo"):
-        photo = m["photo"][-1]["file_id"]
+    doc = m.get("document") or {}
+    image_file = str(doc.get("mime_type", "")).startswith("image/")
+    if m.get("photo") or image_file:
+        photo = m["photo"][-1]["file_id"] if m.get("photo") else "doc:" + doc["file_id"]
         txn = (m.get("caption") or "").strip()
         if txn: new_payment(uid, us, photo, txn)
         else:
             us["state"], us["photo"] = "txn", photo; save()
             send(chat, "👍 Got the screenshot. Now type the <b>transaction number</b>.\nአሁን የግብይት ቁጥሩን ይጻፉ።")
         return
+    if m.get("video") or m.get("animation") or m.get("video_note") or m.get("document") or m.get("sticker"):
+        if us.get("state") in ("proof", "txn"):
+            send(chat, "📸 Please send a <b>screenshot photo</b> of your Telebirr payment, not a video or file.\n"
+                       "Take a screenshot, then tap 📎 → Gallery → choose it.\n\n"
+                       "እባክዎ የቴሌብር ክፍያውን <b>ስክሪንሾት (ፎቶ)</b> ይላኩ፤ ቪዲዮ ወይም ፋይል አይደለም።"); return
     if us.get("state") == "txn" and text:
         new_payment(uid, us, us.pop("photo"), text); return
     if us.get("state") == "proof" and text:
