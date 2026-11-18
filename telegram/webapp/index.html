@@ -324,6 +324,47 @@ html.playing #say,html.playing #slow,html.playing #qsay,html.playing #qslow{anim
 .glvl{padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px}
 .gwrap{position:relative}
 .balloon.long{font-size:11px;line-height:1.15}
+
+/* games 6-12 */
+.gchoices{display:grid;gap:8px;margin:10px 0}
+.gchoices button{min-height:50px;padding:10px 12px;border-radius:14px;background:var(--surface);border:2px solid var(--line);font-weight:600;font-size:16px;line-height:1.3;text-align:left}
+.gchoices button.ok{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.gchoices button.bad{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.gchoices button.gone{opacity:.3;text-decoration:line-through}
+.gwhy{margin:10px 0;padding:12px 14px;border-radius:14px;background:var(--gold-soft)}
+.gwhy.ok{background:var(--good-soft)}.gwhy p{margin:.35em 0}.gwhy .btn{margin-top:8px}
+.dcase{padding:4px 0}.dhead{font-size:16px}.dhead b{font-size:19px}.dhead .am{display:block;color:var(--gold);font-weight:600}
+.dstory{font-size:16px;font-weight:600;padding:12px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.dclues{padding-left:4px;list-style:none;display:grid;gap:6px;margin:10px 0}.dclues li{padding:8px 10px;border-radius:10px;background:var(--bg);border:1px dashed var(--line)}
+.dq,.hnote+.dq{font-weight:700;font-size:17px;margin:12px 0 0}
+.qplace{font-size:16px;margin:4px 0 10px}.qplace small{color:var(--muted)}
+.qchat{display:grid;gap:8px;margin-bottom:6px}
+.qmsg{display:flex;gap:8px;align-items:flex-end}.qmsg.me{justify-content:flex-end}
+.qwho{font-size:26px}.qb{max-width:82%;padding:10px 12px;border-radius:16px;background:var(--surface);border:1px solid var(--line);font-size:16px}
+.qmsg.me .qb{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.qsay{font-size:14px;padding:0 4px}
+.bgram{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px}.bgram .gsmall{width:100%;margin:.6em 0 0}
+.bgram button{padding:7px 11px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:14px}
+.tslot.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.grow.g2{grid-template-columns:1fr 1fr}
+.bbans{font-size:18px;font-weight:700}
+.mgrid{display:grid;gap:8px;margin:10px 0}.mgrid.c3{grid-template-columns:repeat(3,1fr)}.mgrid.c4{grid-template-columns:repeat(4,1fr)}
+.mcard{position:relative;aspect-ratio:3/4;border-radius:12px;perspective:600px;padding:0}
+.mcard>span{position:absolute;inset:0;display:grid;place-items:center;border-radius:12px;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .35s;padding:4px;font-weight:700;font-size:14px;line-height:1.15;text-align:center;overflow-wrap:anywhere}
+.mback{background:linear-gradient(135deg,var(--accent),#2f8f6a);font-size:26px!important}
+.mface{background:var(--surface);border:2px solid var(--line);transform:rotateY(180deg)}.mface.pic{font-size:38px!important}
+.mcard.flip .mback{transform:rotateY(180deg)}.mcard.flip .mface{transform:rotateY(0)}
+.mcard.done .mface{border-color:var(--good);background:var(--good-soft)}
+.rabad{padding:14px;border-radius:14px;background:var(--bad-soft);color:var(--bad);font-weight:700;font-size:18px;text-decoration:underline wavy;text-decoration-thickness:1px;text-underline-offset:5px}
+.hmap{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:1px;padding:10px 4px;border-radius:16px;background:linear-gradient(#cfe8b8,#e9dcb0);margin:4px 0 12px}
+.hstop{font-size:19px;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.6);opacity:.55}
+.hstop.on{opacity:1;box-shadow:0 0 0 3px var(--gold);background:#fff}.hstop.done{opacity:1}
+.hpath{width:6px;border-top:3px dotted #8a6a3a}
+.hplace{font-size:17px}.hplace small{color:var(--muted)}
+.hnote{margin:10px 0;padding:14px;border-radius:12px;background:#f6ecd2;color:#3b2a10;font-size:16px;line-height:1.5;border:1px solid #e0cfa2}
+.suword{text-align:center;font-size:28px;font-weight:700;margin:6px 0 2px}
+.suzone{margin:12px 0}
+.suwords span{font-weight:700;padding:1px 3px;border-radius:4px}.suwords .ok{color:var(--good)}.suwords .no{color:var(--bad);background:var(--bad-soft)}
 </style>
 
 <div class="app">
@@ -1467,7 +1508,7 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
-const APP_VERSION = "2026.11.18-c";
+const APP_VERSION = "2026.11.18-d";
 const AUDIO_IDS = new Set(["001aa45e","00229816","00313120","004809b3","00531c42","0060bba9","00b17b58","00bb20cc","0116feb8","01175480","011ca01f","011decbc","0121c990","014bb08e","01661479","0174f6af","019f21f3","01ce8728","01f995fd","02122b3b","02371ecc","0262d633","027455bb","02b8b9cf","02c35e3c","02d2b8aa","02e055cf","0307af34","03274595","03428138","0361fd41","039d6770","040590cc","04256cd1","044982a2","0452238f","04a81e5a","04ec0b2a","054fe78b","056b5fba","05de33a5","060cb524","0657247b","069fb2d0","06c27067","0701759e","070f18e4","07146dc0","07183376","0721c830","07565163","075f0f94","077115ad","0790016c","07a554f5","07cc25f4","07cc2b2a","07ce0d89","07dbaf6b","07e3b5dd","07e6a4fe","07f017af","080fb65e","081b47a4","081be9c5","08360eef","08ba6661","08bc5a3a","08bffd58","08d7872e","0927c745","094ef704","098dafb5","09b2721f","09de3d9e","09f2b225","09f3c039","0a0a25b5","0a0d7e4e","0a208b03","0a254f84","0a88697a","0aa5ced9","0ab739f0","0ac95089","0ae8097f","0af734af","0b2656e5","0b376c09","0b44452a","0b47d229","0b5280b3","0b98be81","0b9c3383","0bc646c6","0bd22ebf","0bd3a98b","0bd501c0","0bf7cb59","0c18c3b3","0c285a89","0c4afe69","0c4ef1e8","0c7e90f9","0c9f97f0","0ca82ddb","0cc20db7","0cc8d20b","0cfb5881","0d3c12c9","0d3c646e","0d4e8f61","0d596aa2","0d5f9984","0d78f280","0d7af261","0dad409a","0db32874","0db34df4","0dc48142","0dd0750d","0dd2c64f","0dd54251","0ddb0669","0e06f700","0e272d7a","0e6265f5","0e68b936","0eae8aa9","0eeb8757","0efc4468","0f8eb76e","0f9b4d48","0fa9f6a8","0fe06c21","0fe22ec8","0fe4afd2","0feb5e16","1007e86c","1040f89e","1061af9b","1063e625","10aac3bd","10bc2abf","10c42080","10c74ca5","10f3af30","1110f9cc","1115ed52","116b77dc","11a04478","11c84232","11d259d2","1230b6de","124e56b5","127e5c5e","12a3e4da","132fe372","134db098","134e2841","1353559f","13823e37","139d855c","13b97d3a","13d187eb","13fc4157","1400f6b3","1404d0d4","1414f107","1433f56a","14b80f80","14d104e2","14ed354d","14ee4527","1518d9ef","1537f0dd","1540d3b7","15439498","155ee43c","15743f91","15a33b8c","15b485b8","15baedb2","15f98900","1646200a","164c35a9","165985e3","1672ee98","168c7dc9","16c6e8a9","16ef9629","17000a25","173dbdc4","1742c156","17592add","17a54a0d","17b183e0","17c7fdaf","17d7deb6","17f3409f","17f839fe","181b48b3","183e60ec","184b0014","1905cf90","191f7330","196dd594","196e5c83","1978793c","19a29498","19d729d1","19eeddb7","1a07c0c0","1a0b0354","1a0fd7b6","1a17dda5","1a237819","1a30bf3b","1a452681","1a602b9f","1a83051b","1a836c35","1a956a35","1ac2693d","1b04a4c3","1b2b0b1e","1b5207f0","1b66c321","1b7baa1e","1bd670a0","1be6cd2f","1be86211","1bef9f40","1bf0e961","1c0d3d23","1c87d9a3","1c8c5837","1c9093b8","1c9cca0c","1cb1b18f","1cd87048","1ce14551","1cfc9074","1d0dfb0a","1d185ca2","1d21c060","1d247ee2","1d30d80c","1d39cf90","1d3bbea0","1d4de4e0","1d4f1469","1d9ff9f4","1dca6395","1e24c260","1eabbee7","1f093395","1f54f16f","1f6a832c","1f73ce42","1f8c8bf4","1f951fd4","1faee677","1fb7c676","1fc07d60","1fd2f9a8","1fe06cf1","1fe5a340","2006ed89","2017e1e6","205a563c","2063714f","20643100","20af1fc9","20d361a6","20e0811b","21358031","21372bcf","2171c5da","21b13f70","21fb97c8","223d9db8","2244f7e0","22693293","22752b57","228181c3","22acd0ad","22ccd730","23176214","232a6ebc","2335af1d","2347d87d","23516d83","23517043","235feaef","23859893","239467b4","239f0d8e","239fa7bb","23bc2281","23e3d71a","24025d6c","240f01ff","242faa23","24317835","243188cb","246a7583","246f4e95","24a2cde6","24e2ae28","24f3f68a","24ff37fb","2524e8b5","252b11f0","25821327","25ba10d0","25c308db","25d4a652","25debcd6","25f414d7","261da41a","263ad982","264281a5","2648cd55","265d0297","265d7687","26c22d7e","26d56b5d","26da614c","26dbff41","26f69869","2797237c","27a2b5ef","27a78440","27b7cdd5","280c6c10","2869bdb7","286cb0f0","28742cc9","28a319bc","28bc2bff","28e3585c","291280c5","291e31e6","293260af","294fc75c","2950761f","2973d788","29906857","299e768d","29ab6f83","29b4046f","29cce235","29e3a4e5","2a301713","2a407de3","2a40dc9c","2a5dcfa1","2a7b7485","2a99a29a","2a9ff1bb","2aba10bb","2ac90cd4","2af5720f","2b043744","2b121731","2b297221","2b2c583b","2b403c2f","2b6ce2a9","2b87fa67","2ba736ba","2beb8578","2c01df8d","2c0ca3d4","2c29856f","2c9351c8","2cacaa39","2cb1aef8","2cb41ebc","2cbc324b","2cc2068c","2cf26c9c","2d3beec8","2d505a99","2d5ed194","2d702e13","2d791be4","2da3613d","2db405c6","2db6483e","2dbc1605","2dc82a62","2dfff789","2e0364aa","2e430863","2e5ca582","2e7fbf8c","2e87dc8c","2eb54d5b","2eb62896","2ec3739b","2ecca61d","2ee08fb5","2ef713a1","2eff9a0d","2f249d0d","2f54deed","2f9de90c","2fa62ca8","2fa6e08a","2fd0545d","2fd9d583","2fdf6b56","2ff2eaa1","2ff4499c","2ffdb77e","3017562e","30217ad3","3075329f","3075fc4d","309b1b82","30b121a2","30cb3740","30e00be0","314777f7","31613029","31aa3d1d","31b23887","31c1b2ac","31c49222","31d5538c","31ddaa1e","31f6520f","32173416","323648be","32620045","326cf81e","328cd342","32bb9f7d","32bdf8c6","32ffac7b","332fec60","33626b90","336f28b6","33a0804f","33ef80e4","33f3ac2b","3418ab25","341dd0c9","34502ca7","34769025","348f1364","34bd63a5","34d03e9c","34d9523b","34e3c24e","34fd36bc","3503f115","350dc134","3583acfe","35a2e5c3","35a9622a","35bc1205","35cd9910","35d9793b","35f6236b","3602bd7b","3627d9a0","36310b2f","36404793","364b5f18","365f6d83","3661654a","36924d39","36f3ac13","37376d68","377270ef","37c9467d","37cc676a","37f704fe","37fb4826","37fd327a","3843f056","384b762a","3850f70c","385a8fe2","3869ad2c","3871a3fa","3880ceaf","389a9cd2","38a568e0","38ed5bd5","38f641f2","394eb590","3956576f","39593645","397e44fc","39b8fb7e","39baa088","39cb0075","39cedf65","39d9e68a","3a34f236","3a56e759","3a6124b7","3a785bf0","3a7f06b2","3aaa1373","3acb3769","3adfdd4b","3aef6fca","3b1787cc","3b48a5d4","3b6e6c8f","3b7cfa9f","3b952e97","3b9e12f2","3ba5d214","3ba788b0","3ba7e226","3bd67d3e","3bdad172","3be30a69","3c11eacf","3c18a06a","3c4b82b5","3c558683","3c5b3889","3c694558","3cb95a1d","3cbaaa4b","3d06cfac","3d471761","3d5073c9","3d6e01f6","3d95f0a4","3daaa5b6","3dab3383","3df32aad","3dff2e51","3e0553f6","3e88ae8f","3ea53a3f","3ea6e68e","3eb1ccb7","3f0b7924","3f20356b","3f32c75d","3f5dd2d4","3f9737ff","3fa824d3","3fb02e28","3fbf6ca0","3fc026e3","3fc48776","3fcc4d24","3fce41f1","3fd0afc7","3fe76807","3fee2bfa","3ff21de3","3ff50c63","3ff93e24","3ffbf1a2","4044a22d","40696bf5","40c3d08c","40c8a856","40cc9489","411fbcf6","412ac7fe","41375928","4167453d","416a0d4a","41796b9e","4187b494","418d17e8","41bda2f1","41d0c56b","41d4a0bb","41e63010","420372be","421236fc","423c56a1","424bf2ef","4253fae3","425a12c1","42720baf","428a1095","429867bb","4299e5a2","429bb099","42c0d21b","42c3bd2c","42d9307c","432a2145","433047e6","43352167","433e54d0","437e797a","43bfecef","43c18e91","43cc19a0","43e60e25","44071e65","4434cfb0","444fb0dd","449d3223","44cf5580","44d616fb","44e67b40","453ce36a","45508061","45754c79","45939473","45b1c069","45b7a90d","45c62597","45e7f9cf","45ea80f4","45ec6270","45f35ca1","4620047c","4623bed9","46364e8e","4639a1fd","463d6f1e","4660d711","4662bd5a","466387c8","4681fa0b","468ed253","4695ae9c","46abebc4","46c737bf","46ff9c40","47056cad","470c4cb2","471a1a63","47260334","47338311","47388410","473c0cb5","4785af1d","483b48c7","4875c5dc","4880662c","48924daa","48a743a7","48c905cd","490a9476","4914d1b5","49150acc","4930944f","494372ec","4968666d","4990fac7","49928756","49bc73fc","49bd309f","49cb36a8","49cbe0a2","49cd2e3f","49d82b55","49e40ec1","49e62bf4","49e685b7","49ef4c1c","49f57491","4a0420f2","4a5908cf","4a5c9ae0","4a7181df","4a7239e5","4a902517","4a97bc20","4a9c9bdf","4ac6ffe2","4ada6b9d","4b0b8a4d","4b3e1071","4b3f475d","4b5fee59","4b7d2d24","4b7f3b3f","4bc1bd9b","4bc7bc46","4bfc13e1","4c1c9962","4c1d7d7e","4c63a939","4c8c324f","4cab6d45","4d37e3a3","4d56d846","4d62bdfa","4d653c43","4d66e82d","4d7ab99b","4db211e5","4dc43303","4dd58d63","4dec6320","4e15ba2b","4e262630","4e3fd5f8","4e624c06","4e750a0e","4ea8000f","4eaf15b9","4ec3604a","4ecbf102","4f0156e0","4f0befe5","4f292a60","4f2dea57","4f3c1fe0","4f7aba56","4f9cd7b3","4fc94586","4fdf4739","4ff3719b","5016e995","505b97a5","5067929a","506dff3e","50ae46ec","50b8d09c","50bb0cae","50e1667d","51157d8f","5136dd21","5145be59","515cb682","516fb2f9","517fedc2","518fd7f6","51abcf83","51ae487f","51c0af55","51e4d0ac","52156c10","521886c5","521d0429","523fd00d","52651235","5269d14d","526f8abd","527dae8a","5286d285","52a93014","52b2fb61","52ca7b78","52e0efbd","537138d7","537d3b2a","538b10e9","53cacdb9","53ea038b","53ee19d9","54155c3c","5473c0c0","54cb0ef9","54e455d9","54f0dbc0","5505928f","55231493","55288252","5553661e","5584392f","558d7bd9","55b76ae1","55c54c11","55f2e27d","5616d48b","56358de9","5650fff9","56584a12","566cacba","567bf772","568f4ba4","569c2adf","56e823b0","56e941c9","56eb14c4","570ae59c","57274862","572cccae","5755d438","57610944","57829278","578a2160","578e5fc9","579612b7","57addc3b","57bdc22a","57be9a42","57c2f1bb","57c9729f","57cfdaf1","5835969b","58756da0","588a5993","58a52996","592318c4","592bf24c","59329985","5934a3eb","59a2fa4c","59cceb38","59eb05af","5a45cc6a","5a4e7e46","5a51fa8f","5a5a77e6","5a663556","5a6d4b62","5a7cc269","5ab75106","5acad8be","5ae9aa74","5b290b82","5bb421a2","5bd5639c","5bf36d0c","5cb7530d","5cb9c0bc","5cbf8a02","5ce25eaf","5d50cdb1","5d9a1a42","5dc96e78","5ddb609c","5de96032","5df5f0a4","5e532346","5e560689","5e68dcc8","5e8a5a16","5ea410bd","5eda7294","5f027dd8","5f23ed79","5f3ac6ce","5f54c8a6","5f66c2da","5f7782c6","5f7fac49","5fb91e8c","5fbf9d42","5fcc4ca4","5fd56df9","5fdddd75","60225e02","6031d3a6","603e9a11","603eb799","60592dd7","606eeb1f","60a47fa5","60ba4e8f","60cae230","60ce0ffa","60d582fc","60f36d2b","611003d0","6111abc2","61159eab","6124b429","6149bb25","614e3f74","61726fb6","618b149e","619bfa9b","61ad4f33","61d843b4","61e6be1a","6261fbe7","626b3de3","62ced114","62f1812e","62f4ea2d","62f55e3e","634f5f81","63533de0","63780eb9","6386aa28","63884386","63884a9a","639045b3","639aacf1","63a7b05b","63b75f31","63d94e31","63f1336c","64105202","6460a6a4","647fc411","648591b8","6499cfbf","65023a2e","6508ea2b","6509819e","6529a43d","652f2c70","6586ccd8","65addf86","65b9a7eb","65be6234","65d5776b","65e07215","65f77d83","66284255","662dcc9e","665c79fc","6663127c","67194a41","672531c6","6728c250","6744660e","6744c9d1","67616713","67718091","67864094","67ddadbd","67eb44ba","67f8be31","6803cec6","6815c86c","68348a7e","6840fb8f","68491a20","6849d686","686e39f4","687ad92a","688089d5","688c380e","68c63ff8","68f26dc6","69045bfe","694b8994","695617da","697299ee","697554ff","69f9493e","6a00e7ab","6a0ec46c","6a2fc0f5","6a40feb5","6a4c7597","6a5bc848","6a72bc2f","6a786eb0","6a8e170f","6ad5d9e0","6ae080ff","6ae27b6a","6b0fd141","6b1d3b6c","6b560ded","6b579971","6b6930df","6b791396","6b81ce15","6b98ed8f","6c0fe2e8","6c152232","6c33113b","6c467fdb","6c4a85a0","6c6e2525","6c94b6b3","6c9c0573","6cab33b5","6ceb2d06","6d072a8d","6d20ec64","6d33c266","6d3a0633","6d3c3230","6d3dfe1f","6d5a5b82","6d5ee2e9","6d8b34d5","6d9542b8","6d9f9964","6da98727","6dde8d93","6de87ae9","6e247dcf","6e2cf523","6e7a23ca","6e82d356","6e89ccea","6ea6834f","6ee2f34e","6f079545","6f169df3","6f2b75fe","6f2bddff","6f3cacb8","6f410694","6f4b93f0","6f6a7549","6f76a1e8","6fc016c9","6fc11327","6fc186c4","6fc48979","6feb13ef","6ff800fa","70039e64","7007efad","70395506","7039e728","70507c68","709a9cd7","70b773a8","70bb9e41","7114cd16","7119e196","71224fd9","7128a711","71430585","714c5d9d","715d036e","717ac4c1","71befcc6","71cd882f","720769dc","720c3fd5","7223876d","722a15f5","724ac642","726d795e","727b390b","7299430b","729d01bd","72aa19b1","72b59f93","72bc8ba4","72bf1629","72ea8bed","732fd909","73a148fa","73b95561","73e2257c","742581dc","742fae85","7442b7db","7459af7b","745b0184","7463108e","74a3af95","74abfaef","74ac1742","74b6650e","74c37c29","74da67bf","7511aade","7539802b","7546bcf7","75493323","756ddb47","75cfb98d","75ec7915","76043e40","762b5203","7665043e","769aad03","76ad8705","76c55440","76c74cb5","77173e83","773611af","77588aab","77688e8b","776bba29","77800af0","77a740bf","77cab028","77d5dd87","77ea5ec8","78308d9a","7845e323","78556c69","78788714","788a906e","789b5da3","789bf05e","789d1b0a","789e98a1","78a7d9c2","78b57bc1","78bbfc97","78c7c40f","78cc3d4d","791fcdf6","7929175f","79359b2f","7958ea0a","79d72e21","79d90ec3","79ee2bf0","7a240c9f","7a36eb68","7a41004d","7a710d0b","7a78762f","7a8c7df8","7aa0b009","7ac1715d","7b06a524","7b0a3953","7b5c9de1","7b7a7318","7bc4afa4","7c1146d8","7c38b8cf","7c475ba6","7c53e7e7","7cb4dcd0","7cc7ca5b","7cd4964e","7d0a67b4","7d516f09","7d6f0881","7d814bc3","7d8c66dd","7dbcf168","7dc04b1c","7dc56d18","7ddd8a37","7e47596b","7e4bab8d","7e99683a","7ed6ea03","7f12a7e1","7f1f8c7b","7f28cea3","7f752a8d","7f94ae62","7f9856a2","7f9bc9f9","7fa5ff5c","7fdbc9e4","800446b2","800a802f","802aa78e","802b2b09","80595b9e","808d4b38","80bf0e94","8115391e","811fd016","812d107e","81351db9","8137f66b","8153dc69","816e7941","816f30ca","8175abb9","81aaa096","81ac3ac8","81c5d856","81fa6638","823a751f","82fbf5cd","83337a05","8353e068","8353e8bc","83563d1c","838e72c3","8390060e","84431c26","845572c0","84647087","846a8782","847c50e3","848317f2","84874d36","84b0c203","84b4e968","84fe9c47","850b0ba7","853ab7cf","8570ac7e","8580a1d0","85b34bce","8639eaf6","86596a8b","86cdcfd7","8728787f","876fffdd","8793ae11","87de7a96","8818b3c2","881defa1","885230e7","888603c3","888e7aa2","8894a815","88ab4733","88ba4b47","88befbdc","88cba592","88d54e49","890b1c1e","891cfe4f","8952b0d0","8954da9e","89a3b5d3","89ba8972","89c58dde","89eabb08","8a524c53","8a54de97","8a7324ef","8a9cb671","8aef8fca","8af8ee12","8afbf69a","8b030cb8","8b05cb63","8b14992a","8b242db1","8b3dc597","8b6b382b","8b878281","8bb8038d","8c141b56","8c249c9f","8c6d7308","8c837212","8c856de1","8c9a1101","8cdbd876","8d461b27","8d4dbc73","8d57e66a","8d7d2e85","8d858f87","8d9eaf64","8da02093","8dd57a29","8dd5fafd","8df57242","8e2c7aa1","8e37eca1","8e4139ed","8e48ff3d","8e66bf0e","8e751b64","8e9dbaf3","8ec274c9","8f0bfe7c","8f240a75","8f5653f4","8f7f7669","8f9aa8b4","8fadd4d6","8ff0a3b7","8ff53680","9039b5ff","903cb32b","905255c5","9065459e","906ad500","906b3662","90ab5b95","90afcf6f","90be958c","90c96b12","90d66739","90fbb0eb","91052cc9","910df2a4","911a6fea","9124c041","91639729","917807f0","91bf1295","91c5cb32","91dd7983","91e2af23","91f27549","921dbe85","923df2af","92604968","9266c24f","926b5821","926fe8f8","9280b53d","9280b647","92a4b5ed","92acce65","92b18d26","92b91df5","92b96d8f","92d0caf8","92dfe029","931e8091","9322deaa","93307ca7","935c7b1c","936e53b2","93ae68c7","93c2a834","93d0250d","93d18d9d","93d394b6","93d839dc","94108933","94122cfc","94271132","943220f8","94a998a4","94cec525","962530d2","9625faa2","963335ee","96385f0f","9652bb75","965c92e2","966464cd","9687c651","969dcb5b","96b2f361","971b5145","9731a285","97b3cff3","97bb3b45","97be55f9","97ecc182","98218ed6","9852363a","9868eebd","9875a2ff","9879153e","989a92eb","98d3be69","98dbac97","99038d3b","992a04a8","99380614","994c2d1c","99828abe","99863551","99b3eedb","99eb4fd7","9a80639d","9a99eae3","9ae8cbff","9afa1011","9afb5255","9afb96a3","9b14a4fe","9b1b9086","9b47cc32","9b7fbf00","9b80f214","9bb4b855","9bef9616","9c0bc01e","9c0f4226","9c15cd96","9c3dd718","9c7f8847","9caca44d","9cb764d0","9cd96b85","9d2cfb7d","9d5aab4a","9d74b89c","9d83c35e","9d9d3f3d","9dc3714b","9dd3b0d6","9dd4f7f1","9dd95ad6","9dddcf20","9df80468","9df8353d","9e3b124f","9e4811b2","9e85caee","9e8bdf86","9e9c281a","9ec0c37f","9eeaa244","9f29eeb2","9f3a514a","9f4aa2c6","9f4e603b","9f519cc9","9f582d0d","9f5c2a13","9f8b2731","9fd30889","a00b5c52","a024744d","a037cd15","a07f6ef3","a0910439","a09a37ba","a0baa9f7","a0de2c7a","a0e8b370","a1053e23","a1121c17","a11e56c2","a14ab27e","a170360a","a1845b2b","a19ec17f","a1a40c3c","a1c25de3","a1f3723f","a1f580d7","a21bff97","a21eeee5","a234df25","a2567906","a25e0f12","a274872f","a274c5b7","a2780a89","a2825d2f","a294f13b","a296bdc8","a2987fe4","a2c4f48c","a2fd7d0c","a30a44b2","a30b70bf","a3106dd7","a316e024","a321c468","a33d83d4","a343524e","a346e251","a3475eab","a3536b91","a375c122","a37f187c","a3c94395","a3ce328d","a3ce4d61","a3d72107","a41dde14","a42b0849","a4326f1a","a4495584","a44dcebd","a451d95a","a4546d58","a4b37d52","a4cbd71d","a4dbeec3","a4e05858","a4fa3da7","a502b123","a50d5560","a5a22c23","a5a2f9cc","a5af70a3","a5b0274e","a63d48d3","a63d9e18","a6437233","a64bb8e7","a678481f","a6ad95e2","a6bbaca9","a6d2eb91","a6f50710","a77dbecf","a7f9c52a","a7fbff74","a847e0a9","a8532270","a8761ba5","a87f8823","a88f5386","a8971b25","a8f7fa72","a942e91a","a953c75c","a989e1bf","a9b2bec2","a9d2b7a6","aa200fde","aa3365ee","aa55ea31","aa8eba31","aaabe991","aadbbddb","ab3e0bff","ab858838","ab9dbba7","abbfa767","abcf525f","abd338c1","abe9e67c","abefd65f","abf25dce","ac08b9c5","ac0b80a0","ac0e65a9","ac247217","ac3c2a26","ac54fe77","ac56f17f","ac5851c6","ac70aad4","ac92ea89","ac93d31e","accea5f8","acee3473","ad27ee58","ad2b5cca","ad2d0842","ad4cb0f7","ad7ca6b9","adab074a","add3e6ea","add52add","ade176a3","ae0bbdb5","ae11b050","ae92f8e6","aea0985f","aeb44395","aed72c13","aee47c2c","aee9c3f0","aeedaa22","aef9a146","af29706f","af33e36f","af410285","af58f9f5","af7bc702","af9641c5","afa391b8","afad8963","afc5a651","afc72a55","afe2fb36","b025d597","b0273523","b067944a","b0696849","b0cebd65","b0f8458c","b0fee263","b106156c","b1091b9b","b10ab399","b1514998","b1db7b28","b1dd2116","b1ea6248","b1f6e350","b20295f9","b2103b0a","b27143a8","b273c6a5","b27956b8","b2947d9b","b2972ae3","b29f7c8f","b2d60a87","b2ed1d5a","b2f18316","b2f7573a","b2fd7693","b301669b","b33572bd","b338c84b","b33d2ce0","b349ff23","b34b4bef","b397b1d8","b3a43630","b3d0821a","b3d39637","b3dc8f5f","b3e79cb2","b3ea317c","b401e629","b40eb21c","b458eda7","b47cd771","b4862855","b4d30cb3","b520746a","b532b2fb","b5976f14","b59f7dd2","b5a63c47","b5b3478c","b5dc7b3e","b628025d","b6779c5f","b682ba1f","b695ccbe","b6e00083","b71c52e2","b7665894","b799a941","b7ba8535","b7f7e9f6","b80c6ede","b8297e9a","b82be7c3","b8516454","b86fe016","b88522ba","b89df01a","b8a2998c","b8d16159","b8e0ac61","b8e12858","b8e13c0f","b8ebd55d","b9201a3e","b926f28c","b93bfeba","b945e5f7","b9522c08","b96a80a9","b96d8ad8","b978dbba","b97ada4e","b985d4c4","b9cf1d1c","b9d577e0","b9f7a551","ba3866bc","ba872bcf","bae03dbe","bae239b9","baedbfaa","bb08850f","bb1fc4f8","bb357f55","bb411722","bb4ecf1c","bb50feb6","bb52e301","bb5f80fd","bb761199","bb8e8bcb","bbd6188c","bbeaffa9","bc09cf52","bc1c8771","bc24cb70","bc3cb75b","bc466e34","bc5387d6","bc5e79a5","bc710b2b","bc74811b","bc7a115e","bc8d2561","bca48773","bcba4153","bcf81bb6","bd012361","bd022a20","bd0aeeb0","bd47467b","bd4c18bb","bd659388","bd93ede1","bda7e060","bdeaa8d7","bdeb87dc","be248829","be2f5538","be43a526","be5d4dbf","be6eb534","be785a9b","be821266","be851041","bead6a94","bed2118c","bef086ed","bef3f4e4","bf12767e","bf1f2dac","bf32b60b","bf4a5b12","bf64d9cc","bf776d3b","bfbd1178","bfdde556","bfe3de32","bfe7af96","bfe92fa7","c002ac03","c021d8e3","c02c5b9f","c0300286","c03c7c1f","c06d00da","c0846390","c0854917","c095b883","c0c47303","c0fa8b09","c0fedcdb","c10f81fb","c10f9996","c11fd08f","c1267b0e","c12b2e58","c1630315","c19246c6","c1948a38","c1bf0f5c","c1d73291","c1f3d1f0","c2076af7","c212b600","c22df50f","c23526ef","c242f5b7","c2431b24","c26f2442","c2954bc2","c2a38951","c2cd959e","c2d71942","c2e71bdb","c2ec8866","c33f3df6","c34fd708","c3aeaceb","c3c62acc","c3ce710c","c3dc8aa0","c3f2fc37","c406332a","c417f1e5","c46f8f49","c472db65","c490b43e","c4b27e90","c4da6e99","c5022712","c51c6fb0","c51f5d7a","c52bb172","c530aed7","c53b9cf3","c556a208","c5710a04","c5a24dbd","c5bc5b18","c5c23c2a","c5c76498","c60b9999","c6235b06","c62e682c","c630015f","c63af9b1","c63b1e20","c660dfa1","c6e3dc70","c7247576","c747960f","c767a47b","c80f0af4","c83137cf","c83cc1ed","c8647fe5","c86d4239","c87d8df5","c8887d35","c8ac5e94","c8adc170","c8d632fc","c8da2303","c8e88d9d","c8f069e0","c8f728fa","c9011403","c944ea21","c94abe25","c9b13248","c9bbc70b","c9bbf5d3","c9bc0450","c9d648d8","c9d9572a","c9dcf817","c9dfafd6","ca192f6d","ca3b5c4d","ca455f40","ca4f3ddf","ca5938d9","ca5f71e6","ca9e274e","cada780b","caee0aef","cafec03c","cb18332c","cb373bb3","cb532ae5","cb731c53","cb7a9702","cb96ba79","cba09f8d","cba3574f","cbc1aeeb","cbcb897f","cbcf766d","cbf7ea73","cbfd3c67","cc056b54","cc1019b5","cc20cfdc","cc25a532","cc2fa082","cc58f6f3","cc628958","cc799e8d","cccb0055","ccd9dbd0","ccff7e48","cd18e6cd","cd1ac90c","cd2b8f36","cd3724bc","cd506d36","cd598b24","cd5c038f","cd684270","cd689cae","cd778e55","cd8117d1","cd84ee3f","cd86acc3","cdbba678","cdbc383d","cdc4b940","cddb04a2","cdfef8ec","ce14165c","ce1ad479","ce1bae35","ce22db7c","ce334aca","ce71d770","ce86a573","ce918837","ceae2708","ced71285","cedfa3c5","cee3fbcd","cef2bc99","cef90b6c","cf1ed96f","cf4d8d0b","cf516428","cf5efb33","cfa1ba29","cfe3bdee","cfe5e0f9","d01fc26d","d0485366","d053c0a0","d0789e16","d09a49cb","d0a6278f","d0d1a6f0","d0ec74bd","d0f065f9","d0f37504","d13b2f71","d141e303","d1571f8e","d15caf72","d16022ed","d16579e9","d17325c5","d18d3a0b","d1a382b8","d1a81eb8","d1df8006","d218e28d","d25ae1a2","d290e8b6","d2fe4989","d3045648","d308e2b3","d32f14bb","d33a6f32","d35ec4c9","d3a73602","d3a7f696","d40b04e2","d410bbef","d43ff4c1","d45d10db","d4639c84","d46ad4e0","d4c4579c","d4c90084","d4ee4008","d5275710","d52792d1","d52b52ff","d52cee3e","d52dda65","d535b815","d5515b6d","d55b1b98","d55f6f1e","d592eec6","d5b60ff3","d5c6965d","d5d24505","d5e9b25b","d5f657bd","d60f9fc8","d6209ac8","d63556b0","d65d1a25","d6697678","d677fb5e","d67a0605","d6af75ae","d6cb8065","d6d20bf7","d70b1c04","d70ceb7f","d7278604","d7352afc","d763417c","d76345b8","d76a9191","d7854567","d7a4ab9e","d8134330","d816831d","d822d4ff","d8610b70","d865781f","d8ab04cb","d8db91e5","d8e5a40e","d91550eb","d941ac7f","d951b2e9","d965114a","d968cc3f","d9889f50","d98a03cf","d9945c72","d9cdec69","d9fa987b","da16c367","da2bd281","da7296d5","daab1377","daef9304","db180147","db22a733","db31978c","db3f1e9e","db603a30","db935ed0","db96e234","db97597d","dba4f4f8","dbb32f18","dbc51e80","dbdf2a1f","dc12b039","dc55535f","dc97fe62","dcb746fb","dcf6fb48","dcff22d3","dd1a9c54","dd640d16","dd6a8f50","dd836727","dd85598a","dd892310","dda96e99","ddb6df6e","ddb80126","ddd42fdc","ddeaa26d","de0a9e80","de38baa3","de435b38","de5c1a77","de805769","de897825","deaf55e0","dec57f60","df2ceb42","df3654b6","df5e6b26","df6209ba","df807192","dfa2efb1","e0302a4d","e042111b","e0776c6b","e0955764","e0dd1db4","e11bc48d","e14b6990","e15b8e88","e1bcacaa","e1d08197","e1d572a0","e2331d98","e2c03087","e2c119fb","e2c6e907","e2d93690","e2e9eb75","e30dd47e","e3284971","e3637a44","e3ca5dec","e40fe6a9","e4147dba","e422e7e3","e443b019","e44f21fd","e45d3143","e48027e9","e4b958bc","e4e2be4c","e4e6f467","e4fba21c","e5185c1a","e522e976","e540bba9","e5419b0d","e57379fd","e57e05eb","e5ac9c2d","e5d211ae","e5dec38e","e5ffc3cb","e62eab56","e63776b3","e66176f9","e684353a","e698de9f","e6b3ffba","e6ef5696","e6fb31ad","e70e6b3d","e73a16c6","e76ec231","e78631fd","e790a2f2","e7a7fe9a","e7c0775e","e7c10fec","e7d5bc53","e7d9a49f","e7df7fe9","e812f405","e818b76d","e819bb9a","e81fffc8","e8239b77","e83015ac","e858fcbd","e85afaf2","e8750e6f","e8769f71","e88950be","e91c79ce","e920f785","e9237dd1","e924af87","e9271806","e9461a30","e956ef47","e9680605","e96898d5","e9941862","e9c7abe9","e9cdbfc2","e9dd1fed","e9e6eb7b","e9f2a935","ea5a62ea","ea683c1b","ea7d3eb5","ea81eea2","ea8aea2b","eae6b243","eb0d45da","eb1a2c14","eb45b784","eb4e51f2","eb5d7f84","eb6739a2","eb6dbd38","eb811517","ebaa2fd8","ebb76fff","ec07635b","ec18301d","ec1d3b5b","ec266ec8","ec38aa26","ec39ae3b","ec4a028a","ec5181de","ec576872","ec5df34f","ec829ff8","eca9d228","ecaff58c","eccc3179","ecce6ab4","ecddd828","ecf21807","ed28de2a","ed2b0a20","ed354321","ed5511e1","eda17c15","edc18ed8","eddf29e0","ede11b23","edf9006c","ee3d49e1","ee4a05ee","ee5a9959","ee7b9448","ee84fad8","eea0df3c","eea93889","eebcffdb","eecc3dd0","eee08ef0","eee83268","ef314fe6","ef3e2929","ef46fe0d","ef6fa4c2","efb2c5bd","efbd9dd2","efe07a6a","efeb5a2c","f00b7c66","f03af0ca","f03e2abc","f040127e","f047e94b","f04c9e45","f0748851","f085438e","f0adedba","f0b1c980","f0f208e4","f134e99e","f1776509","f184ae40","f196cd54","f1c00784","f1c6ff15","f1ccfd64","f1d186e0","f1e04bf4","f203a92b","f20c212f","f2115ec2","f21e1b5a","f2791e01","f28ddab5","f2e6e702","f30bf1f8","f35d757e","f37665d9","f3890727","f3ac9ae3","f4743fb1","f47af1d7","f486b7fd","f492f093","f498a1e0","f502c124","f50b5838","f50f4766","f525fc23","f539574c","f55050a6","f55c314b","f5682bb7","f585727a","f590e1e5","f5936606","f597272f","f59fbfb8","f5a11076","f5ce03fb","f5d7dd55","f5dd1c77","f604a411","f616ed43","f64adb1a","f65b9a03","f6960d57","f69b55f3","f6bd0d7d","f6bd3104","f6e80baa","f72d3849","f7372cda","f73d2622","f7458ab4","f75d891b","f77afa9a","f787ab43","f79d3664","f7a1b142","f7a644dc","f7df2f66","f7f62b49","f85880f2","f86235e1","f87bcf25","f894568e","f8a56cde","f8aa942a","f8be90ab","f9337fdd","f934d7ce","f959ddc6","f9ab647a","f9efa80a","fa0d9e73","fa0f4bed","fa41edf8","fa47c7de","fa4f375b","fa56340f","fa6031d8","fac5e378","fae33ac0","fb03f5e1","fb073c54","fb368a8e","fb419151","fb43b370","fb49307b","fb54ce6f","fb769281","fb96d671","fbaf0d9d","fbd984bf","fbdcb91d","fc2e40d3","fc46ec12","fc5d25e9","fc9d0077","fca77633","fcc8ddcd","fced1ad4","fd41bb73","fd6a0c8e","fd6f774a","fdba13cf","fdcf4e1f","fdd2b0cb","fde44fbc","fdf9d899","fe18fbb0","fe691321","fe7131cd","fe744dc9","fe827d2b","fe840217","febac799","fed8c598","fefc5031","ff5179c9","ff5ded4d","ff79b33c","ff7cd839"]);
 function audioBase(){ return "audio/"; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
@@ -1522,6 +1563,7 @@ function onDictState({ state, reason }){
   mic.state = state;
   if (reason === "not_granted") micDenied = true;
   if (reason === "unavailable") dict = null;
+  if (mic.target === "game"){ suOnState(state); return; }
   if (state === "idle" && mic.target === "speak" && !$("#v-speak").hidden){
     clearTimeout(mic.timer);
     if (mic.text.trim()) evaluateSpeech(mic.text); else renderSpeak();
@@ -1529,7 +1571,7 @@ function onDictState({ state, reason }){
   }
   if (mic.target === "speak") renderSpeakMic(); else renderTutorMic();
 }
-function onDictPartial({ text }){ mic.partial = text; showHeard(); }
+function onDictPartial({ text }){ mic.partial = text; if (mic.target === "game"){ const h = $("#suHeard"); if (h) h.textContent = (mic.text + " " + mic.partial).trim(); return; } showHeard(); }
 // The phone's own speech recognition (Chrome, Android, iPhone Safari). Same shape as the Claude dictation
 // capability, so the speaking practice works the same way with either.
 // Where the learner can record with automatic checking, when this page can't (downloaded file, Telegram).
@@ -1867,7 +1909,7 @@ function renderHome(){
   let acts = "";
   if (!store.placed) acts += `<button class="action gold" id="aPlace"><span class="ic">${ICON_TARGET}</span><span style="flex:1;min-width:0"><b>Find your level</b><span class="s am">ደረጃዎን ይወቁ · 3-minute test</span></span></button>`;
   if (nextL) acts += `<button class="action" data-open="${nextL.id}"><span class="ic">${ICON_PLAY}</span><span style="flex:1;min-width:0"><b>Next lesson: ${esc(nextL.en)}</b><span class="s am">ቀጣይ ትምህርት፡ ${esc(nextL.am)}</span></span></button>`;
-  { const gb = (store.game || {}).bestNight; acts += `<button class="action gold" id="aGame"><span class="ic" style="font-size:22px">🎮</span><span style="flex:1;min-width:0"><b>Games: play and learn</b><span class="s"><span class="am">ጨዋታዎች፡ ይጫወቱና ይማሩ!</span> · 5 games${gb ? ` · 🐺 night ${gb}` : ""}</span></span></button>`; }
+  { const gb = (store.game || {}).bestNight; acts += `<button class="action gold" id="aGame"><span class="ic" style="font-size:22px">🎮</span><span style="flex:1;min-width:0"><b>Games: play and learn</b><span class="s"><span class="am">ጨዋታዎች፡ ይጫወቱና ይማሩ!</span> · 12 games${gb ? ` · 🐺 night ${gb}` : ""}</span></span></button>`; }
   if (wrongN && canUse("lessons")) acts += `<button class="action" id="aReview"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Review your mistakes (${wrongN})</b><span class="s am">ስህተቶችዎን ይከልሱ</span></span></button>`;
   if (capsReady){
     acts += sampleFn
@@ -2370,7 +2412,7 @@ function openGames(){
       return `<button class="gcard" data-game="${g.id}"><span class="gci">${g.ic}</span><span class="gct"><b>${g.en}</b><span class="am">${g.am}</span>
         <small>${g.d} · <span class="am">${g.dam}</span></small></span><span class="gcs"><span class="gskill">${g.skill}<br><span class="am">${g.skillAm}</span></span>${b ? `<small>🏆 ${b}</small>` : ""}</span></button>`; }).join("")}</div>
     <p class="foot">Every game uses words from your lessons. Play every day! · <span class="am">ሁሉም ጨዋታዎች ከትምህርቶችዎ ቃላት ይጠቀማሉ። በየቀኑ ይጫወቱ!</span></p>`;
-  $("#v-game").querySelectorAll("[data-game]").forEach(b => b.onclick = () => ({ village:renderGameStart, run:runIntro, tower:towerIntro, spell:spellIntro, balloon:balloonIntro })[b.dataset.game]());
+  $("#v-game").querySelectorAll("[data-game]").forEach(b => b.onclick = () => (({ village:renderGameStart, run:runIntro, tower:towerIntro, spell:spellIntro, balloon:balloonIntro })[b.dataset.game] || GAME_START[b.dataset.game])());
   show("game");
 }
 function gameIntro(id, rules, play){
@@ -2688,6 +2730,550 @@ function balloonPlay(){
     requestAnimationFrame(loop);
   };
   round(); requestAnimationFrame(loop);
+}
+
+// ---------- 7 more games: Word Detective, Talk Quest, Sentence Builder, Word Match, Sentence Race, Treasure Hunt, Speak Up ----------
+GAMES.push(
+  { id:"detective", ic:"🕵️", en:"Word Detective", am:"የቃል መርማሪ", skill:"Reading", skillAm:"ንባብ", d:"Read the clues and solve the mystery", dam:"ፍንጮቹን አንብበው ምስጢሩን ይፍቱ" },
+  { id:"talk", ic:"🗣️", en:"Talk Quest", am:"የንግግር ጉዞ", skill:"Conversation", skillAm:"ንግግር", d:"Choose the best reply in real-life talks", dam:"በእውነተኛ ንግግር ትክክለኛውን መልስ ይምረጡ" },
+  { id:"builder", ic:"🧩", en:"Sentence Builder", am:"ዓረፍተ ነገር ገንቢ", skill:"Grammar", skillAm:"ሰዋሰው", d:"Put the words in order, then check", dam:"ቃላቱን በቅደም ተከተል አስቀምጠው ይፈትሹ" },
+  { id:"match", ic:"🧠", en:"Word Match", am:"ቃል ማዛመድ", skill:"Memory", skillAm:"ማስታወስ", d:"Flip the cards and find the pairs", dam:"ካርዶቹን ገልብጠው ጥንዶቹን ያግኙ" },
+  { id:"race", ic:"🏃", en:"Sentence Race", am:"የዓረፍተ ነገር ሩጫ", skill:"Correcting", skillAm:"ማረም", d:"Fix the wrong sentence before time runs out", dam:"ጊዜው ሳያልቅ የተሳሳተውን ዓረፍተ ነገር ያርሙ" },
+  { id:"hunt", ic:"🗺️", en:"Treasure Hunt", am:"የሀብት ፍለጋ", skill:"Instructions", skillAm:"መመሪያ", d:"Follow English clues to the treasure", dam:"የእንግሊዝኛ ፍንጮችን ተከትለው ሀብቱን ያግኙ" },
+  { id:"speakup", ic:"🎤", en:"Speak Up", am:"ይናገሩ", skill:"Speaking", skillAm:"መናገር", d:"Say it out loud and get checked", dam:"ጮክ ብለው ይናገሩና ይፈተሹ" });
+const GAME_START = { detective:() => detectiveIntro(), talk:() => talkIntro(), builder:() => builderIntro(), match:() => matchIntro(), race:() => raceIntro(), hunt:() => huntIntro(), speakup:() => speakIntro() };
+function choiceButtons(opts, cls){ return `<div class="gchoices ${cls || ""}">${opts.map((o, i) => `<button data-c="${i}">${esc(o)}</button>`).join("")}</div>`; }
+function stars(n){ return "⭐".repeat(n) + "☆".repeat(3 - n); }
+
+// ===== 1. Word Detective =====
+const MYSTERIES = [
+  { lv:1, t:"Who took the cake?", tam:"ኬኩን ማን ወሰደው?", story:"Mum made a chocolate cake. At 4 o'clock, half of the cake was gone!",
+    clues:["Someone was in the kitchen at 3 o'clock.", "The person had chocolate on their hands.", "Abel was at football practice from 2 to 5."],
+    extra:"Sara loves chocolate. She was in the kitchen at 3.", q:"Who took the cake?", opts:["Sara", "Abel", "Mum"], a:0,
+    why:"Abel was at football, so it wasn't him. Sara was in the kitchen and loves chocolate.", wam:"አቤል እግር ኳስ ላይ ነበር። ሳራ ኩሽና ውስጥ ነበረችና ቸኮሌት ትወዳለች።" },
+  { lv:1, t:"Where is the cat?", tam:"ድመቷ የት ናት?", story:"Grandma can't find her cat, Mimi.",
+    clues:["Mimi is not in the kitchen.", "She is not under the bed.", "Mimi loves warm places."],
+    extra:"The sun is shining on the window all morning.", q:"Where is Mimi?", opts:["On the window", "In the kitchen", "Under the bed"], a:0,
+    why:"Not the kitchen, not under the bed, and she loves warm places. The sunny window is warm!", wam:"ኩሽናም ከአልጋ ስርም አይደለችም፤ ሞቃት ቦታ ትወዳለች። መስኮቱ ፀሐያማ ነው።" },
+  { lv:1, t:"Whose phone is ringing?", tam:"የማን ስልክ ነው የሚጠራው?", story:"A phone is ringing under the sofa.",
+    clues:["The phone is red.", "Hana's phone is blue.", "Meron's phone is in her bag."],
+    extra:"Dawit has a red phone. He sat on the sofa this morning.", q:"Whose phone is it?", opts:["Dawit's", "Hana's", "Meron's"], a:0,
+    why:"Hana's is blue and Meron's is in her bag. Dawit has a red phone and sat on the sofa.", wam:"የሐና ሰማያዊ ነው፣ የሜሮን ቦርሳዋ ውስጥ ነው። ዳዊት ቀይ ስልክ አለውና ሶፋው ላይ ተቀምጦ ነበር።" },
+  { lv:1, t:"When is the party?", tam:"ግብዣው መቼ ነው?", story:"Liya is planning a birthday party for her brother.",
+    clues:["The party is not on a school day.", "It is the day after Friday."],
+    extra:"School days are Monday to Friday.", q:"What day is the party?", opts:["Saturday", "Friday", "Sunday"], a:0,
+    why:"The day after Friday is Saturday, and Saturday is not a school day.", wam:"ከአርብ በኋላ ያለው ቀን ቅዳሜ ነው።" },
+  { lv:2, t:"Who broke the window?", tam:"መስኮቱን ማን ሰበረው?", story:"At 4 pm, a football broke the school window.",
+    clues:["Kebede was reading in the library from 3 to 5.", "Liya doesn't like sports at all.", "Yonas was in the garden at 4 pm."],
+    extra:"Yonas had a football under his arm when the teacher found him.", q:"Who broke the window?", opts:["Yonas", "Kebede", "Liya"], a:0,
+    why:"Kebede was in the library and Liya doesn't play sports. Yonas was outside with a football at 4 pm.", wam:"ከበደ ቤተ መጻሕፍት ነበር፣ ሊያ ስፖርት አትወድም። ዮናስ በ10 ሰዓት ውጭ ኳስ ይዞ ነበር።" },
+  { lv:2, t:"The lost keys", tam:"የጠፉት ቁልፎች", story:"Mr. Tesfaye can't find his car keys.",
+    clues:["He came home, put his bag on the table, then made coffee.", "The keys are not in his bag.", "When he makes coffee, he always puts things down next to the coffee machine."],
+    extra:"His coat pockets are empty.", q:"Where are the keys?", opts:["Next to the coffee machine", "In his bag", "In his coat"], a:0,
+    why:"Not in the bag or the coat. He made coffee, and he always puts things next to the coffee machine.", wam:"ቦርሳውም ኮቱም ውስጥ የለም። ቡና ሲያፈላ እቃዎችን ከቡና ማሽኑ አጠገብ ያስቀምጣል።" },
+  { lv:2, t:"Who is the doctor?", tam:"ሐኪሙ ማነው?", story:"Three friends have different jobs: a doctor, a teacher and a driver.",
+    clues:["Almaz works in a school.", "Biniam doesn't work in a hospital.", "Chala wears a white coat at work."],
+    extra:"Biniam drives a bus every day.", q:"Who is the doctor?", opts:["Chala", "Almaz", "Biniam"], a:0,
+    why:"Almaz is the teacher and Biniam is the driver, so Chala, in a white coat, is the doctor.", wam:"አልማዝ መምህር፣ ቢኒያም ሹፌር ነው፤ ስለዚህ ነጭ ገዋን የሚለብሰው ጫላ ሐኪሙ ነው።" },
+  { lv:2, t:"The missing money", tam:"የጠፋው ገንዘብ", story:"100 birr is missing from the shop.",
+    clues:["The cashier counted the money at 7 pm. It was all there.", "The shop closed at 8 pm.", "Only the cleaner came in after 7:30."],
+    extra:"The next morning, the cleaner bought new shoes for exactly 100 birr.", q:"Who probably took the money?", opts:["The cleaner", "The cashier", "A customer at 6 pm"], a:0,
+    why:"The money was all there at 7 pm. Only the cleaner came in after that.", wam:"ገንዘቡ ከምሽቱ 1 ሰዓት ሙሉ ነበር። ከዚያ በኋላ የገባው ጽዳት ሰራተኛው ብቻ ነው።" },
+  { lv:3, t:"The early guest", tam:"ቀድሞ የመጣው እንግዳ", story:"Someone came before the party started and ate half the injera.",
+    clues:["The party started at 7.", "Selam's bus arrived at 7:30.", "Martha was helping her mother until 7."],
+    extra:"Abebe said he was stuck in traffic, but he came on foot.", q:"Who ate the injera?", opts:["Abebe", "Selam", "Martha"], a:0,
+    why:"Selam arrived late and Martha was busy. Abebe lied: you can't be stuck in traffic when you walk!", wam:"ሰላም ዘግይታ መጣች፣ ማርታ ስራ ላይ ነበረች። አበበ ዋሽቷል፤ በእግር የመጣ ሰው በትራፊክ አይያዝም!" },
+  { lv:3, t:"The secret meeting", tam:"ሚስጥራዊው ቀጠሮ", story:"You find a note: \"Meet me tomorrow where people borrow books for free, not where they buy them.\"",
+    clues:["You can buy books in a bookshop.", "Students study in a classroom.", "You borrow books and give them back later."],
+    extra:"A library lends books for free.", q:"Where is the meeting?", opts:["At the library", "At the bookshop", "In the classroom"], a:0,
+    why:"'Borrow for free' means a library. A bookshop sells books.", wam:"'በነፃ መዋስ' ቤተ መጻሕፍትን ያመለክታል። መጻሕፍት መደብር ይሸጣል።" },
+  { lv:3, t:"The secret gift", tam:"ሚስጥራዊው ስጦታ", story:"A birthday card says: \"Happy birthday to my favourite neighbour!\" There is no name.",
+    clues:["The handwriting is beautiful.", "Tomas lives on the other side of the city.", "Sami lives next door, but he can't write English yet."],
+    extra:"Ruth lives next door and teaches art.", q:"Who sent the card?", opts:["Ruth", "Tomas", "Sami"], a:0,
+    why:"Tomas isn't a neighbour, and Sami can't write English. Ruth is a neighbour and an art teacher with beautiful handwriting.", wam:"ቶማስ ጎረቤት አይደለም፣ ሳሚ እንግሊዝኛ መጻፍ አይችልም። ሩት ጎረቤትና የስዕል መምህርት ናት።" },
+  { lv:3, t:"The wet floor", tam:"እርጥቡ ወለል", story:"The floor near the door is wet and dirty, but it didn't rain today.",
+    clues:["The dog was alone in the house all day.", "The dog's water bowl is still full.", "The plant pot near the door is on the floor."],
+    extra:"There is soil on the dog's nose.", q:"What happened?", opts:["The dog knocked over the plant pot", "Someone washed the floor", "Water came from the dog's bowl"], a:0,
+    why:"The bowl is full, nobody was home, and the plant pot fell. The soil on the dog's nose shows it was the dog!", wam:"ሳህኑ ሙሉ ነው፣ ማንም ቤት አልነበረም፣ የአበባው ማስቀመጫ ወድቋል። በውሻው አፍንጫ ላይ ያለው አፈር ውሻው መሆኑን ያሳያል!" }];
+function detectiveIntro(){ gameIntro("detective", [
+  ["🕵️ Read a short mystery and the clues.", "አጭር ምስጢርና ፍንጮቹን ያንብቡ።"],
+  ["🔍 Stuck? Open an extra clue (fewer points).", "ከተቸገሩ ተጨማሪ ፍንጭ ይክፈቱ (ነጥቡ ያንሳል)።"],
+  ["⭐ Easy → medium → hard cases. 3 wrong answers and the case is closed.", "ቀላል → መካከለኛ → ከባድ። 3 ስህተት ጨዋታውን ያበቃል።"]], detectivePlay); }
+function detectivePlay(){
+  const run = ++GRUN, D = { i:0, score:0, hearts:3, missed:new Map(), list:[1, 2, 3].flatMap(l => shuffle(MYSTERIES.filter(m => m.lv === l))) };
+  const area = () => $("#dArea");
+  $("#v-game").innerHTML = gameHudHTML([`<span id="dLife">${lives(3)}</span>`, `<span>⭐ <b id="dScore">0</b></span>`, `<span class="glvl" id="dLvl">Easy</span>`]) + `<div id="dArea"></div>`;
+  show("game"); wireSnd();
+  const render = () => {
+    if (GRUN !== run) return;
+    if (D.i >= D.list.length){ gameOverPanel(area(), "detective", D.score, "🏆 You solved every case! · <span class=\"am\">ሁሉንም ምስጢሮች ፈቱ!</span>", D.missed, detectivePlay); return; }
+    const m = D.list[D.i]; D.extra = false; D.tries = 0;
+    $("#dLvl").textContent = ["", "Easy", "Medium", "Hard"][m.lv];
+    area().innerHTML = `<div class="dcase"><div class="dhead">🕵️ Case ${D.i + 1} · <b>${esc(m.t)}</b><span class="am">${esc(m.tam)}</span></div>
+      <p class="dstory">${esc(m.story)}</p>
+      <ol class="dclues">${m.clues.map(c => `<li>🔎 ${esc(c)}</li>`).join("")}<li id="dExtra" hidden>💡 ${esc(m.extra)}</li></ol>
+      <button class="btn" id="dHint">💡 Extra clue (−5 ⭐)</button>
+      <p class="dq">${esc(m.q)}</p>${choiceButtons(shuffle(m.opts.map((o, k) => [o, k])).map(x => x[0]))}<div id="dWhy"></div></div>`;
+    const order = [...area().querySelectorAll("[data-c]")].map(b => m.opts.indexOf(b.textContent));
+    $("#dHint").onclick = () => { if (D.extra) return; D.extra = true; $("#dExtra").hidden = false; $("#dHint").disabled = true; };
+    area().querySelector(".gchoices").onclick = e => {
+      const b = e.target.closest("[data-c]"); if (!b || b.disabled) return;
+      const k = order[+b.dataset.c];
+      if (k === m.a){
+        const pts = Math.max(5, 20 + m.lv * 5 - (D.extra ? 5 : 0) - D.tries * 8); D.score += pts; $("#dScore").textContent = D.score;
+        b.classList.add("ok"); area().querySelectorAll("[data-c]").forEach(x => x.disabled = true); SFX.win();
+        $("#dWhy").innerHTML = `<div class="gwhy ok"><b>✅ Case solved! +${pts} ⭐ · <span class="am">${esc(pickOne(CHEER_RIGHT)[0])}</span></b><p>${esc(m.why)}</p><p class="am">${esc(m.wam)}</p>
+          <button class="btn gold" id="dNext">Next case · ቀጣይ ምስጢር →</button></div>`;
+        $("#dNext").onclick = () => { D.i++; render(); };
+      } else {
+        D.tries++; D.hearts--; b.classList.add("bad"); b.disabled = true; SFX.bite(); $("#dLife").textContent = lives(D.hearts);
+        D.missed.set(m.q, [m.opts[m.a], m.tam]);
+        if (!D.extra){ D.extra = true; $("#dExtra").hidden = false; $("#dHint").disabled = true; }
+        if (D.hearts <= 0) setTimeout(() => gameOverPanel(area(), "detective", D.score, "🕵️ Case closed! · <span class=\"am\">ጨዋታው አለቀ!</span>", D.missed, detectivePlay), 900);
+        else $("#dWhy").innerHTML = `<div class="gwhy"><b>❌ Not quite. Read the clues again. · <span class="am">ፍንጮቹን እንደገና ያንብቡ።</span></b></div>`;
+      }
+    };
+  };
+  render();
+}
+
+// ===== 2. Talk Quest =====
+const TALKS = [
+  { place:"Meeting new people", am:"ሰው መተዋወቅ", ic:"🤝", who:"🧑", turns:[
+    ["Hi! I'm Sam. What's your name?", ["My name is Hana. Nice to meet you.", "I am fine, thank you.", "Yes, I do."], "ስሜ ሐና ነው። ስለተዋወቅን ደስ ብሎኛል።", "Answer the question (your name) and be friendly."],
+    ["Where are you from?", ["I'm from Ethiopia.", "I'm twenty years old.", "It's Monday."], "ከኢትዮጵያ ነኝ።", "'Where are you from?' asks about your country or city."],
+    ["What do you do?", ["I'm a student.", "I do it every day.", "Yes, please."], "ተማሪ ነኝ።", "'What do you do?' means 'What is your job?'"]] },
+  { place:"At a restaurant", am:"ምግብ ቤት", ic:"🍽️", who:"🧑‍🍳", turns:[
+    ["Are you ready to order?", ["Yes, I'd like the chicken, please.", "Yes, I'm a waiter.", "I ordered yesterday."], "አዎ፣ ዶሮውን እፈልጋለሁ።", "Use 'I'd like… please' to order politely."],
+    ["Anything to drink?", ["A glass of water, please.", "Water is a drink.", "I eat bread."], "አንድ ብርጭቆ ውሃ፣ እባክዎ።", "Just name the drink and add 'please'."],
+    ["How was your meal?", ["It was delicious, thank you.", "It will be two o'clock.", "I'm a meal."], "በጣም ጣፋጭ ነበር፣ አመሰግናለሁ።", "'How was…?' asks your opinion about the past: 'It was…'."]] },
+  { place:"Shopping", am:"ግብይት", ic:"🛍️", who:"🧑‍💼", turns:[
+    ["Can I help you?", ["Yes, I'm looking for a shirt.", "No, I can't.", "Help is a verb."], "አዎ፣ ሸሚዝ እየፈለግኩ ነው።", "'I'm looking for…' tells the shop worker what you want."],
+    ["What size are you?", ["Medium, I think.", "I'm very happy.", "It's blue."], "መካከለኛ ይመስለኛል።", "Sizes: small, medium, large."],
+    ["That's 600 birr.", ["Could you give me a discount?", "I'm 600 birr.", "Goodbye, birr."], "ቅናሽ ሊያደርጉልኝ ይችላሉ?", "'Could you give me a discount?' is a polite way to bargain."]] },
+  { place:"Asking for directions", am:"አቅጣጫ መጠየቅ", ic:"🧭", who:"👮", turns:[
+    ["You look lost. Can I help?", ["Yes, please. How do I get to the bank?", "Yes, I lost.", "No, I'm Hana."], "አዎ እባክዎ። ወደ ባንክ እንዴት እሄዳለሁ?", "'How do I get to…?' is how we ask the way."],
+    ["Go straight and turn left at the church.", ["Is it far from here?", "I don't like churches.", "Turn left is good."], "ከዚህ ሩቅ ነው?", "Ask a follow-up question to understand better."],
+    ["It's about five minutes on foot.", ["Great, thank you so much!", "My foot is five.", "I'm walking yesterday."], "በጣም ጥሩ፣ በጣም አመሰግናለሁ!", "'On foot' means walking. Thank the person."]] },
+  { place:"At a hotel", am:"ሆቴል", ic:"🏨", who:"🛎️", turns:[
+    ["Good evening. Do you have a reservation?", ["Yes, it's under the name Kebede.", "Yes, I reserve.", "Good evening is nice."], "አዎ፣ በከበደ ስም ነው።", "'Under the name…' tells them whose booking it is."],
+    ["How many nights will you stay?", ["Three nights, please.", "I stay at night.", "Many nights are dark."], "ሶስት ምሽት።", "Answer with a number: 'Three nights'."],
+    ["Breakfast is from 7 to 10.", ["What time is check-out?", "I don't eat from 7 to 10.", "Breakfast is my friend."], "መውጫ ሰዓቱ ስንት ነው?", "Check-in = arrive, check-out = leave the hotel."]] },
+  { place:"Phone call", am:"የስልክ ጥሪ", ic:"📞", who:"☎️", turns:[
+    ["Hello, Abay Company. How can I help you?", ["Hello, could I speak to Mr. Alemu, please?", "I'm a phone.", "Help me is good."], "ሰላም፣ አቶ አለሙን ማነጋገር እችላለሁ?", "On the phone: 'Could I speak to…, please?'"],
+    ["I'm sorry, he's in a meeting.", ["Can I leave a message?", "Meetings are boring.", "Sorry too."], "መልዕክት ማስቀመጥ እችላለሁ?", "'Can I leave a message?' when the person is busy."],
+    ["Of course. What's your number?", ["It's 0911 234 567.", "My number is happy.", "Of course, yes."], "0911 234 567 ነው።", "Say your phone number slowly, in groups."]] },
+  { place:"At the hospital", am:"ሆስፒታል", ic:"🏥", who:"🧑‍⚕️", turns:[
+    ["What seems to be the problem?", ["I've had a headache for three days.", "The problem is seeming.", "I'm a doctor."], "ለሶስት ቀን ራስ ምታት አለብኝ።", "Say what hurts and for how long: 'for three days'."],
+    ["Are you taking any medicine?", ["Only some painkillers.", "Medicine is in the hospital.", "I take a taxi."], "የህመም ማስታገሻ ብቻ።", "Painkillers = medicine for pain."],
+    ["Take this twice a day after meals.", ["Should I take it with water?", "I don't like meals.", "Twice is two."], "በውሃ ልውሰደው?", "Ask a clear question to understand the instructions."]] },
+  { place:"At the airport", am:"አውሮፕላን ማረፊያ", ic:"✈️", who:"🛂", turns:[
+    ["May I see your passport, please?", ["Here you are.", "Yes, you may see.", "My passport is Ethiopian food."], "ይኸውልዎ።", "When you give something to someone: 'Here you are.'"],
+    ["What's the purpose of your visit?", ["I'm here on business.", "My purpose is purple.", "I visit purpose."], "ለስራ ጉዳይ ነው የመጣሁት።", "'Purpose' = why you came: on business, on holiday, to study."],
+    ["Do you have anything to declare?", ["No, nothing to declare.", "I declare I'm hungry.", "Yes, I have a bag."], "አይ፣ የምገልጸው ነገር የለም።", "'Declare' = tell customs about special things you carry."]] },
+  { place:"At work", am:"በስራ ቦታ", ic:"💼", who:"👩‍💼", turns:[
+    ["Could you send me the report by Friday?", ["Sure, I'll send it by Thursday.", "Friday is a report.", "I could, yesterday."], "እርግጥ፣ እስከ ሐሙስ እልከዋለሁ።", "'By Friday' = not later than Friday."],
+    ["The client wants to move the meeting.", ["No problem. When would suit them?", "Meetings can't walk.", "The client is moving house."], "ችግር የለም። መቼ ይመቻቸዋል?", "'Move a meeting' = change its time. 'When would suit them?' is polite."],
+    ["Great job on the presentation!", ["Thanks, I really appreciate it.", "Yes, I know. I'm the best.", "Job is great."], "አመሰግናለሁ፣ በጣም አደንቃለሁ።", "Accept praise politely. Don't sound proud."]] },
+  { place:"Job interview", am:"የስራ ቃለ መጠይቅ", ic:"🎯", who:"🧑‍💼", turns:[
+    ["Tell me about yourself.", ["I'm an accountant with five years of experience in banking.", "I'm tall and I like injera.", "About myself is good."], "በባንክ ዘርፍ አምስት ዓመት ልምድ ያለኝ የሂሳብ ባለሙያ ነኝ።", "Talk about your work and experience, not your looks."],
+    ["What is your biggest weakness?", ["Sometimes I focus too much on details, but I'm learning to manage my time.", "I have no weaknesses at all.", "My weakness is this interview."], "አንዳንዴ ዝርዝር ላይ ብዙ አተኩራለሁ፤ ጊዜዬን ማስተዳደር እየተማርኩ ነው።", "Be honest, and show how you are improving."],
+    ["Do you have any questions for us?", ["Yes. What does a typical day look like in this role?", "No. When do I get paid?", "Questions are difficult."], "አዎ። በዚህ ስራ የተለመደ ቀን ምን ይመስላል?", "Always ask a smart question about the job."]] }];
+function talkIntro(){ gameIntro("talk", [
+  ["🗣️ Someone talks to you: at a restaurant, a hotel, an interview…", "ሰዎች ያናግሩዎታል፦ ምግብ ቤት፣ ሆቴል፣ ቃለ መጠይቅ…"],
+  ["👆 Choose the best reply. The talks get harder.", "ምርጡን መልስ ይምረጡ። ንግግሮቹ እየከበዱ ይሄዳሉ።"],
+  ["❤️ 3 lives. Finish all 10 places!", "3 ሕይወት። 10ሩንም ቦታዎች ይጨርሱ!"]], talkPlay); }
+function talkPlay(){
+  const run = ++GRUN, Q = { s:0, t:0, score:0, hearts:3, missed:new Map(), log:[] };
+  $("#v-game").innerHTML = gameHudHTML([`<span id="qLife">${lives(3)}</span>`, `<span>⭐ <b id="qScore">0</b></span>`, `<span class="glvl" id="qStep">1/10</span>`]) + `<div id="qArea"></div>`;
+  show("game"); wireSnd();
+  const render = () => {
+    if (GRUN !== run) return;
+    if (Q.s >= TALKS.length){ gameOverPanel($("#qArea"), "talk", Q.score, "🏆 You finished every talk! · <span class=\"am\">ሁሉንም ንግግሮች ጨረሱ!</span>", Q.missed, talkPlay); return; }
+    const sc = TALKS[Q.s], tn = sc.turns[Q.t], opts = shuffle(tn[1].map((o, k) => [o, k]));
+    $("#qStep").textContent = `${Q.s + 1}/${TALKS.length}`;
+    if (Q.t === 0) Q.log = [];
+    $("#qArea").innerHTML = `<div class="qplace">${sc.ic} <b>${esc(sc.place)}</b> · <span class="am">${esc(sc.am)}</span> <small>${Q.t + 1}/${sc.turns.length}</small></div>
+      <div class="qchat">${Q.log.join("")}<div class="qmsg npc"><span class="qwho">${sc.who}</span><span class="qb">${esc(tn[0])} <button class="qsay" data-sayw="${esc(tn[0])}" aria-label="Listen">🔊</button></span></div></div>
+      ${choiceButtons(opts.map(x => x[0]), "long")}<div id="qWhy"></div>`;
+    if (gameStore().sound) speak(tn[0]);
+    $("#qArea").querySelector(".gchoices").onclick = e => {
+      const b = e.target.closest("[data-c]"); if (!b || b.disabled) return;
+      const k = opts[+b.dataset.c][1];
+      $("#qArea").querySelectorAll("[data-c]").forEach(x => x.disabled = true);
+      const good = k === 0, right = tn[1][0];
+      if (good){ Q.score += 10 + Q.s * 2; b.classList.add("ok"); SFX.win(); markRight(right); }
+      else { Q.hearts--; b.classList.add("bad"); SFX.bite(); Q.missed.set(right, [right, tn[2]]); $("#qLife").textContent = lives(Q.hearts);
+        $("#qArea").querySelectorAll("[data-c]").forEach((x, i) => { if (opts[i][1] === 0) x.classList.add("ok"); }); }
+      $("#qScore").textContent = Q.score;
+      Q.log.push(`<div class="qmsg npc"><span class="qwho">${sc.who}</span><span class="qb">${esc(tn[0])}</span></div><div class="qmsg me"><span class="qb">${esc(right)}</span></div>`);
+      $("#qWhy").innerHTML = `<div class="gwhy ${good ? "ok" : ""}"><b>${good ? "✅ " + esc(pickOne(CHEER_RIGHT)[0]) : "❌ Better: " + esc(right)}</b><p class="am">${esc(tn[2])}</p><p>💡 ${esc(tn[3])}</p>
+        <button class="btn gold" id="qNext">${Q.hearts <= 0 ? "See score" : "Continue · ቀጥል"} →</button></div>`;
+      if (gameStore().sound) speak(right);
+      $("#qNext").onclick = () => {
+        if (Q.hearts <= 0){ gameOverPanel($("#qArea"), "talk", Q.score, "🗣️ Game over · <span class=\"am\">ጨዋታው አለቀ!</span>", Q.missed, talkPlay); return; }
+        Q.t++; if (Q.t >= sc.turns.length){ Q.t = 0; Q.s++; Q.score += 5; if (Q.s < TALKS.length) gameMsgIn("🎉 " + sc.place + " done!", "ጎበዝ! ቀጣዩ ቦታ", 1200); }
+        render();
+      };
+    };
+  };
+  render();
+}
+
+// ===== 3. Sentence Builder (uses the grammar lessons and their tips) =====
+const LOWER_START = /^(The|A|An|My|Your|His|Her|Our|Their|This|That|These|Those|He|She|It|We|They|You|There|What|Where|When|Why|How|Who|Whose|Which|Do|Does|Did|Is|Are|Was|Were|Can|Could|Will|Would|Should|Have|Has|Had|If|Although|Even|Unless|Instead|First|On|In|At|Yesterday|Today|Tomorrow|Let's|Let|Breakfast|Coffee|English|Not|Yes|No|Your|Our|Please|May|Must|Am|Some|Many|Much|Every|Each|However|Therefore|Because|So|But|And)$/;
+function builderIntro(){
+  GRUN++; stopSound();
+  const gl = LESSONS.filter(l => l.grammar);
+  $("#v-game").innerHTML = `<div class="gstart"><div class="gbadge">🧩</div><h1>Sentence Builder</h1><p class="am gsub">ዓረፍተ ነገር ገንቢ</p>
+    <p>Tap the words in the right order, then press <b>Check</b>. Tap a word again to take it back. 💡 Hint shows the next word.</p>
+    <p class="am">ቃላቱን በትክክለኛ ቅደም ተከተል ይንኩ፣ ከዚያ <b>Check</b> ይጫኑ። ቃሉን መልሰው ለማንሳት እንደገና ይንኩት።</p>
+    ${gameBest("builder") ? `<p class="grec">🏆 Your best: ${gameBest("builder")} ⭐</p>` : ""}
+    <p class="label">Choose grammar · <span class="am">ሰዋሰው ይምረጡ</span></p>
+    <div class="bgram">${[1, 2, 3].map(m => `<p class="gsmall"><b>${MONTHS[m - 1].en} · ${esc(MONTHS[m - 1].sub)}</b></p>` + gl.filter(l => monthOf(l) === m).map(l => `<button data-gl="${l.id}">${esc(l.en)}</button>`).join("")).join("")}</div>
+    <div class="grow"><button class="btn gold" data-gl="mix">🎲 Mixed: easy → hard</button><button class="btn" id="gBack">All games · ሁሉም ጨዋታዎች</button></div></div>`;
+  $("#gBack").onclick = openGames;
+  $("#v-game").querySelectorAll("[data-gl]").forEach(b => b.onclick = () => builderPlay(b.dataset.gl));
+  show("game");
+}
+function builderPlay(gid){
+  const run = ++GRUN, gl = LESSONS.filter(l => l.grammar);
+  const okW = w => isSentence(w) && toks(w[0]).length <= 11;
+  let items;
+  if (gid === "mix") items = [1, 2, 3].flatMap(m => shuffle(gl.filter(l => monthOf(l) === m).flatMap(l => l.words.filter(okW).map(w => [w, l]))).slice(0, 4));
+  else { const L = gl.find(l => l.id === gid); items = shuffle(L.words.filter(okW)).slice(0, 8).map(w => [w, L]); }
+  const B = { i:0, score:0, missed:new Map(), placed:[], tries:0, hints:0, done:false };
+  $("#v-game").innerHTML = gameHudHTML([`<span class="glvl" id="bbN">1/${items.length}</span>`, `<span>⭐ <b id="bbScore">0</b></span>`]) + `<div id="bbArea"></div>`;
+  show("game"); wireSnd();
+  const render = () => {
+    if (GRUN !== run) return;
+    if (B.i >= items.length){ gameOverPanel($("#bbArea"), "builder", B.score, `🧩 Well built! ${items.length} sentences · <span class="am">ጎበዝ!</span>`, B.missed, () => builderPlay(gid)); return; }
+    const [w, L] = items[B.i], q = orderQuestion(w);
+    if (!q){ B.i++; render(); return; }
+    const chips = q.order.map(pi => { const t = q.parts[pi]; return pi === 0 && LOWER_START.test(t) ? t[0].toLowerCase() + t.slice(1) : t; });
+    Object.assign(B, { q, w, L, chips, placed:[], tries:0, hints:0, done:false });
+    $("#bbN").textContent = `${B.i + 1}/${items.length}`;
+    draw();
+  };
+  const draw = () => {
+    const { q, w, L, chips } = B;
+    $("#bbArea").innerHTML = `<p class="gsmall">🧩 ${esc(L.en)}</p><div class="tq"><span class="am">${esc(w[1])}</span></div>
+      <div class="tline" id="bbLine">${B.placed.length ? B.placed.map((k, i) => `<button class="tslot on ${B.bad && B.bad[i] ? "bad" : ""}" data-p="${i}">${esc(i === 0 ? cap(chips[k]) : chips[k])}</button>`).join("") : `<span class="gsmall">Tap the words below · ቃላቱን ይንኩ</span>`}<span class="tend">${B.placed.length === chips.length ? esc(q.end) : ""}</span></div>
+      <div class="tchips">${chips.map((t, k) => `<button data-k="${k}" ${B.placed.includes(k) ? "disabled" : ""}>${esc(t)}</button>`).join("")}</div>
+      <div class="grow g2"><button class="btn" id="bbHint" ${B.done ? "disabled" : ""}>💡 Hint</button><button class="btn gold" id="bbCheck" ${B.placed.length === chips.length && !B.done ? "" : "disabled"}>✔ Check</button></div><div id="bbWhy"></div>`;
+    if (B.done) showWhy();
+    $("#bbArea").querySelector(".tchips").onclick = e => { const b = e.target.closest("[data-k]"); if (!b || B.done) return; B.placed.push(+b.dataset.k); B.bad = null; gameBeep(520, 640, .06, "triangle", .05); draw(); };
+    $("#bbLine").onclick = e => { const b = e.target.closest("[data-p]"); if (!b || B.done) return; B.placed.splice(+b.dataset.p, 1); B.bad = null; draw(); };
+    $("#bbHint").onclick = () => {
+      const want = B.q.parts[B.placed.length]; let i = 0;
+      while (i < B.placed.length && B.q.parts[B.q.order[B.placed[i]]] === B.q.parts[i]) i++;
+      B.placed = B.placed.slice(0, i);
+      const k = B.chips.findIndex((_, kk) => !B.placed.includes(kk) && B.q.parts[B.q.order[kk]] === B.q.parts[i]);
+      if (k >= 0){ B.placed.push(k); B.hints++; } B.bad = null; draw();
+    };
+    $("#bbCheck").onclick = check;
+  };
+  const cap = t => t[0].toUpperCase() + t.slice(1);
+  const check = () => {
+    const got = B.placed.map(k => B.q.parts[B.q.order[k]]), ok = got.every((t, i) => t === B.q.parts[i]);
+    if (ok){
+      B.done = true; const pts = Math.max(3, 15 - B.tries * 5 - B.hints * 3); B.score += pts; B.pts = pts; markRight(B.w[0]);
+      $("#bbScore").textContent = B.score; SFX.win(); sayIfOn(B.w[0]); draw();
+    } else {
+      B.tries++; B.bad = got.map((t, i) => t !== B.q.parts[i]); gameBeep(200, 120, .15, "square", .06);
+      if (B.tries >= 2){ B.done = true; B.pts = 0; B.missed.set(B.w[0], B.w); markWrong(B.w[0]); }
+      draw();
+    }
+  };
+  const showWhy = () => {
+    const good = B.pts > 0;
+    $("#bbWhy").innerHTML = `<div class="gwhy ${good ? "ok" : ""}"><b>${good ? `✅ Correct! +${B.pts} ⭐` : "📝 The correct sentence:"}</b>
+      <p class="bbans">${esc(B.w[0])} <button class="qsay" data-sayw="${esc(B.w[0])}" aria-label="Listen">🔊</button></p>
+      ${B.L.tip ? `<p>💡 ${esc(B.L.tip[0])}</p><p class="am">${esc(B.L.tip[1])}</p>` : ""}
+      <button class="btn gold" id="bbNext">Next · ቀጣይ →</button></div>`;
+    $("#bbNext").onclick = () => { B.i++; render(); };
+  };
+  render();
+}
+
+// ===== 4. Word Match (memory) =====
+const PICS = { Dog:"🐶", Cat:"🐱", Cow:"🐄", Goat:"🐐", Sheep:"🐑", Chicken:"🐔", Horse:"🐴", Lion:"🦁", Bird:"🐦", Fish:"🐟", Monkey:"🐒",
+  Water:"💧", Bread:"🍞", Coffee:"☕", Tea:"🍵", Milk:"🥛", Meat:"🥩", Egg:"🥚", Rice:"🍚", Car:"🚗", Bus:"🚌", Taxi:"🚕", Train:"🚆",
+  Plane:"✈️", Bicycle:"🚲", Shirt:"👕", Dress:"👗", Shoes:"👟", Hat:"👒", Socks:"🧦", Jacket:"🧥", Scarf:"🧣", Red:"🔴", Blue:"🔵", Green:"🟢", Yellow:"🟡" };
+const OPPOSITES = [["hot","cold"],["big","small"],["happy","sad"],["cheap","expensive"],["early","late"],["open","closed"],["full","empty"],["fast","slow"],
+  ["old","new"],["strong","weak"],["easy","difficult"],["rich","poor"],["clean","dirty"],["tall","short"],["borrow","lend"],["buy","sell"],["remember","forget"],["arrive","leave"]];
+const MATCH_LV = [null,
+  { n:4, en:"Pictures", am:"ስዕሎች", make:() => shuffle(Object.keys(PICS).filter(k => WORDMAP[k])).slice(0, 4).map(k => [k, PICS[k], true]) },
+  { n:6, en:"English ↔ Amharic", am:"እንግሊዝኛ ↔ አማርኛ", make:() => shuffle(gameWords(1, w => w[0].length <= 12 && w[1].length <= 12)).slice(0, 6).map(w => [w[0], w[1]]) },
+  { n:6, en:"Opposites", am:"ተቃራኒዎች", make:() => shuffle(OPPOSITES).slice(0, 6).map(p => [p[0], p[1], false, true]) },
+  { n:8, en:"Harder words", am:"ከበድ ያሉ ቃላት", make:() => shuffle(gameWords(3, w => w[0].length <= 14 && w[1].length <= 14)).slice(0, 8).map(w => [w[0], w[1]]) }];
+function matchIntro(){ gameIntro("match", [
+  ["🧠 Flip two cards. Find the pairs that match.", "ሁለት ካርዶች ይገልብጡ። የሚዛመዱትን ጥንዶች ያግኙ።"],
+  ["🖼️ Level 1 pictures → 2 Amharic → 3 opposites → 4 harder words.", "ደረጃ 1 ስዕሎች → 2 አማርኛ → 3 ተቃራኒዎች → 4 ከበድ ያሉ ቃላት።"],
+  ["⏱️ Fewer tries and less time = more stars!", "ባነሰ ሙከራና ጊዜ = ብዙ ኮከቦች!"]], () => matchPlay(1, 0)); }
+function matchPlay(lv, total){
+  const run = ++GRUN, cfg = MATCH_LV[lv], pairs = cfg.make();
+  const cards = shuffle(pairs.flatMap((p, i) => [{ id:i, t:p[0], en:true }, { id:i, t:p[1], pic:p[2], am:!p[2] && !p[3] }]));
+  const M = { open:[], found:0, tries:0, t0:Date.now(), lock:false };
+  $("#v-game").innerHTML = gameHudHTML([`<span class="glvl">Level ${lv}/4</span>`, `<span>🔁 <b id="mTries">0</b></span>`, `<span>⏱️ <b id="mTime">0</b>s</span>`]) +
+    `<p class="gsmall" style="text-align:center">${cfg.en} · <span class="am">${cfg.am}</span></p>
+    <div class="mgrid c4">${cards.map((c, k) => `<button class="mcard" data-k="${k}" aria-label="Card"><span class="mback">🦁</span><span class="mface ${c.pic ? "pic" : ""} ${c.am ? "am" : ""}">${esc(c.t)}</span></button>`).join("")}</div><div id="mPanel"></div>`;
+  show("game"); wireSnd();
+  const tick = setInterval(() => { if (GRUN !== run || !$("#mTime")){ clearInterval(tick); return; } $("#mTime").textContent = Math.round((Date.now() - M.t0) / 1000); }, 500);
+  $("#v-game").querySelector(".mgrid").onclick = e => {
+    const b = e.target.closest(".mcard"); if (!b || M.lock || b.classList.contains("flip")) return;
+    const k = +b.dataset.k; b.classList.add("flip"); M.open.push(k); gameBeep(600, 700, .05, "triangle", .05);
+    const c = cards[k]; if (c.en) sayIfOn(c.t);
+    if (M.open.length < 2) return;
+    M.tries++; $("#mTries").textContent = M.tries;
+    const [a, z] = M.open.map(i => cards[i]), els = M.open.map(i => $(`.mcard[data-k="${i}"]`)); M.open = [];
+    if (a.id === z.id){
+      M.found++; els.forEach(x => x.classList.add("done")); gameBeep(700, 1100, .12, "triangle", .08);
+      if (M.found === pairs.length){
+        clearInterval(tick);
+        const secs = Math.round((Date.now() - M.t0) / 1000), st = M.tries <= pairs.length + 2 ? 3 : M.tries <= pairs.length * 2 ? 2 : 1;
+        const pts = pairs.length * 10 + st * 10 + Math.max(0, 60 - secs); total += pts; SFX.win(); if (st === 3) party();
+        const last = lv >= 4;
+        $("#mPanel").innerHTML = `<div class="gshop"><p class="gtitle">${stars(st)} Level ${lv} done! · <span class="am">${esc(pickOne(CHEER_RIGHT)[0])}</span></p>
+          <p class="gsmall">${M.tries} tries · ${secs} seconds · +${pts} ⭐ · total ${total} ⭐</p>
+          <div class="gmiss">${pairs.map(p => `<button data-sayw="${esc(p[0])}">🔊 ${esc(p[0])} = <span class="${p[2] ? "" : "am"}">${esc(p[1])}</span></button>`).join("")}</div>
+          <div class="grow">${last ? "" : `<button class="btn gold" id="mNext">Level ${lv + 1} →</button>`}<button class="btn ${last ? "gold" : ""}" id="mEnd">${last ? "Finish · ጨርስ 🏆" : "Stop here · እዚህ አቁም"}</button></div></div>`;
+        $("#mPanel").scrollIntoView({ block:"nearest" });
+        if (!last) $("#mNext").onclick = () => matchPlay(lv + 1, total);
+        $("#mEnd").onclick = () => gameOverPanel($("#mPanel"), "match", total, `🧠 Memory master! · <span class="am">የማስታወስ ጀግና!</span>`, new Map(), () => matchPlay(1, 0));
+      }
+    } else { M.lock = true; setTimeout(() => { els.forEach(x => x.classList.remove("flip")); M.lock = false; }, 850); }
+  };
+}
+
+// ===== 5. Sentence Race (fix the mistake) =====
+const RACE = [
+  [1, "She go to school every day.", "She goes to school every day.", ["She going to school every day.", "She go to the school every day."], "He / she / it: add -s to the verb (go → goes)."],
+  [1, "I am agree with you.", "I agree with you.", ["I am agreeing with you.", "I agrees with you."], "'Agree' is a verb. Don't put 'am' before it."],
+  [1, "He have two brothers.", "He has two brothers.", ["He haves two brothers.", "He having two brothers."], "He / she / it + has (not have)."],
+  [1, "I have a umbrella.", "I have an umbrella.", ["I have the a umbrella.", "I has an umbrella."], "Use 'an' before a vowel sound: an umbrella, an apple."],
+  [1, "They is my friends.", "They are my friends.", ["They am my friends.", "They be my friends."], "They / we / you + are."],
+  [1, "I can to swim.", "I can swim.", ["I can swimming.", "I cans swim."], "After 'can', use the verb with no 'to'."],
+  [1, "She don't like coffee.", "She doesn't like coffee.", ["She not like coffee.", "She doesn't likes coffee."], "He / she / it + doesn't + verb (no -s)."],
+  [1, "My birthday is on May.", "My birthday is in May.", ["My birthday is at May.", "My birthday in May."], "Months use 'in': in May. Days use 'on': on Monday."],
+  [1, "We was at home.", "We were at home.", ["We is at home.", "We be at home."], "We / you / they + were (past of 'are')."],
+  [1, "She is my freind.", "She is my friend.", ["She is my frend.", "She is my freand."], "Spelling: f-r-i-e-n-d."],
+  [2, "Yesterday I eat injera.", "Yesterday I ate injera.", ["Yesterday I eating injera.", "Yesterday I eated injera."], "'Yesterday' = past. Eat → ate (irregular)."],
+  [2, "I goed to the market.", "I went to the market.", ["I go to the market yesterday.", "I wented to the market."], "Go → went. It's irregular, no -ed."],
+  [2, "He is more tall than me.", "He is taller than me.", ["He is tallest than me.", "He is more taller than me."], "Short adjectives: add -er (tall → taller)."],
+  [2, "I didn't went to work.", "I didn't go to work.", ["I didn't goes to work.", "I not went to work."], "After 'didn't', use the base verb: didn't go."],
+  [2, "Where you are going?", "Where are you going?", ["Where you going?", "Where are going you?"], "In questions, 'are' comes before 'you'."],
+  [2, "I am going to home.", "I am going home.", ["I am go home.", "I going to home."], "'Home' needs no 'to': go home, come home."],
+  [2, "Explain me the problem.", "Explain the problem to me.", ["Explain to me problem.", "Explain me about the problem."], "Explain something TO someone."],
+  [2, "There is many people here.", "There are many people here.", ["There is much people here.", "There are much people here."], "Many people = plural → 'there are'."],
+  [2, "I will call you when I will arrive.", "I will call you when I arrive.", ["I call you when I will arrive.", "I will call you when I arrived."], "After 'when' (future), use the present: when I arrive."],
+  [2, "Tommorow is Sunday.", "Tomorrow is Sunday.", ["Tomorow is Sunday.", "Tommorrow is Sunday."], "Spelling: t-o-m-o-r-r-o-w (one m, two r)."],
+  [3, "If I will have time, I will help you.", "If I have time, I will help you.", ["If I had time, I will help you.", "If I will have time, I help you."], "After 'if' (future idea), use the present: If I have time…"],
+  [3, "I look forward to hear from you.", "I look forward to hearing from you.", ["I look forward hearing from you.", "I look forward to heard from you."], "'Look forward to' + -ing."],
+  [3, "I have been to Gondar last year.", "I went to Gondar last year.", ["I have went to Gondar last year.", "I go to Gondar last year."], "With a finished time (last year), use the past simple."],
+  [3, "I am living here since 2020.", "I have lived here since 2020.", ["I live here since 2020.", "I am lived here since 2020."], "'Since + a time' → present perfect: I have lived."],
+  [3, "The news are very good.", "The news is very good.", ["The news were very good.", "The new is very good."], "'News' is uncountable, so it takes 'is'."],
+  [3, "Despite of the rain, we went out.", "Despite the rain, we went out.", ["Although of the rain, we went out.", "Despite the rain, we go out yesterday."], "'Despite' has no 'of'. (In spite OF = despite.)"],
+  [3, "She asked me where do I live.", "She asked me where I live.", ["She asked me where I do live.", "She asked to me where I live."], "Reported questions use normal word order: where I live."],
+  [3, "I'm used to wake up early.", "I'm used to waking up early.", ["I'm use to wake up early.", "I used to waking up early."], "'Be used to' + -ing = it is normal for me."],
+  [3, "This is the more beautiful city I have ever seen.", "This is the most beautiful city I have ever seen.", ["This is the beautifulest city I have ever seen.", "This is most beautiful city I ever seen."], "'The most' + long adjective, with 'ever'."],
+  [3, "I recieved your message.", "I received your message.", ["I receeved your message.", "I received you message."], "Spelling rule: 'i before e, except after c' → receive."],
+  [3, "He suggested me to rest.", "He suggested that I rest.", ["He suggested me resting.", "He suggested to me rest."], "Suggest + that + person + verb."],
+  [3, "Neither of the answers are correct.", "Neither of the answers is correct.", ["Neither the answers are correct.", "Neither of answer is correct."], "'Neither of…' takes a singular verb: is."]];
+function raceIntro(){ gameIntro("race", [
+  ["🏃 A sentence with a mistake appears. Pick the corrected sentence.", "ስህተት ያለበት ዓረፍተ ነገር ይታያል። የታረመውን ይምረጡ።"],
+  ["⏱️ Be quick! Time gets shorter as you go.", "ይፍጠኑ! ጊዜው እየቀነሰ ይሄዳል።"],
+  ["💡 Wrong? You'll see a short reason. Learn and keep running!", "ከተሳሳቱ አጭር ማብራሪያ ያያሉ። ተምረው ይቀጥሉ!"]], racePlay); }
+function racePlay(){
+  const run = ++GRUN, R = { i:0, score:0, hearts:3, streak:0, missed:new Map(), list:[1, 2, 3].flatMap(l => shuffle(RACE.filter(r => r[0] === l))), t:0, max:15, lock:false };
+  $("#v-game").innerHTML = gameHudHTML([`<span id="raLife">${lives(3)}</span>`, `<span>⭐ <b id="raScore">0</b></span>`, `<span class="glvl" id="raLvl">Easy</span>`]) +
+    `<div class="ttime"><i id="raBar"></i></div><div id="raArea"></div>`;
+  show("game"); wireSnd();
+  const render = () => {
+    if (GRUN !== run) return;
+    if (R.i >= R.list.length){ R.over = true; gameOverPanel($("#raArea"), "race", R.score, "🏆 You fixed them all! · <span class=\"am\">ሁሉንም አረሙ!</span>", R.missed, racePlay); return; }
+    const it = R.list[R.i]; R.opts = shuffle([it[2], ...it[3]]); R.lock = false;
+    R.max = Math.max(7, 16 - R.i * .35); R.t = R.max;
+    $("#raLvl").textContent = ["", "Easy", "Medium", "Hard"][it[0]];
+    $("#raArea").innerHTML = `<p class="gsmall">${R.i + 1}/${R.list.length} · Fix the mistake · <span class="am">ስህተቱን ያርሙ</span></p>
+      <div class="rabad">❌ ${esc(it[1])}</div>${choiceButtons(R.opts, "long")}<div id="raWhy"></div>`;
+    $("#raArea").querySelector(".gchoices").onclick = e => { const b = e.target.closest("[data-c]"); if (b && !R.lock) answer(R.opts[+b.dataset.c] === it[2], b); };
+  };
+  const answer = (ok, b) => {
+    const it = R.list[R.i]; R.lock = true;
+    $("#raArea").querySelectorAll("[data-c]").forEach((x, i) => { x.disabled = true; if (R.opts[i] === it[2]) x.classList.add("ok"); });
+    if (ok){ R.streak++; const pts = 10 + Math.round(R.t) + (R.streak >= 3 ? 5 : 0); R.score += pts; SFX.win(); sayIfOn(it[2]);
+      $("#raWhy").innerHTML = `<div class="gwhy ok"><b>✅ +${pts} ⭐ ${R.streak >= 3 ? "🔥x" + R.streak : ""}</b><p>💡 ${esc(it[4])}</p></div>`;
+      setTimeout(() => { R.i++; render(); }, 1600); }
+    else { R.streak = 0; R.hearts--; if (b) b.classList.add("bad"); SFX.bite(); $("#raLife").textContent = lives(R.hearts); R.missed.set(it[2], [it[2], "❌ " + it[1]]);
+      $("#raWhy").innerHTML = `<div class="gwhy"><b>${b ? "❌" : "⏰ Time!"} Correct: ${esc(it[2])}</b><p>💡 ${esc(it[4])}</p>
+        <button class="btn gold" id="raNext">${R.hearts <= 0 ? "See score" : "Next · ቀጣይ"} →</button></div>`;
+      $("#raNext").onclick = () => { if (R.hearts <= 0){ R.over = true; gameOverPanel($("#raArea"), "race", R.score, "🏃 Race over! · <span class=\"am\">ሩጫው አለቀ!</span>", R.missed, racePlay); } else { R.i++; render(); } }; }
+    $("#raScore").textContent = R.score;
+  };
+  const tick = setInterval(() => {
+    if (GRUN !== run || !$("#raBar")){ clearInterval(tick); return; }
+    if (R.lock || R.over) return;
+    R.t -= .1; $("#raBar").style.width = Math.max(0, R.t / R.max * 100) + "%"; $("#raBar").className = R.t < 4 ? "low" : "";
+    if (R.t <= 0) answer(false, null);
+  }, 100);
+  render();
+}
+
+// ===== 6. Treasure Hunt =====
+const HUNT = [
+  { ic:"🏡", place:"The village", am:"መንደሩ", tasks:[
+    ["Grandpa gives you an old map. He whispers: \"Go to the market first and find the woman who sells red apples.\"", "Where do you go first?", ["To the market", "To the river", "To the school"], "He says: 'Go to the market first.'"],
+    ["The map has a word with mixed letters: T – K – R – A – M – E", "What word do the letters make?", ["MARKET", "TICKET", "MAKER"], "M-A-R-K-E-T uses all six letters."]] },
+  { ic:"🛒", place:"The market", am:"ገበያው", tasks:[
+    ["The apple woman smiles: \"The next clue is behind the shop with the blue door, between the bakery and the bank.\"", "Where is the next clue?", ["Behind the shop with the blue door", "Inside the bank", "Under the red apples"], "'Behind the shop with the blue door'."],
+    ["Behind the shop you find a note: \"Cross the river, but don't swim! The water is deep. Use the bridge.\"", "How do you cross the river?", ["Use the bridge", "Swim across", "Wait for the rain"], "'Don't swim… Use the bridge.'"]] },
+  { ic:"🌉", place:"The bridge", am:"ድልድዩ", tasks:[
+    ["Walk to the bridge. Under the wooden bench there is a note: \"The key is not here. It is next to the tallest tree.\"", "Where is the key?", ["Next to the tallest tree", "Under the wooden bench", "On the bridge"], "The note says the key is next to the tallest tree."],
+    ["The key has words on it: \"I open the door of the place where people go to pray.\"", "Which place does the key open?", ["The church", "The bank", "The kitchen"], "People pray in a church."]] },
+  { ic:"🌳", place:"The forest", am:"ጫካው", tasks:[
+    ["The path splits in two. A sign says: \"Left: hyenas live here. Right: safe path to the old church.\"", "Which way do you go?", ["Right", "Left", "Back home"], "Right is the safe path to the church."],
+    ["A monkey holds a paper: \"I'm hungry. Give me something yellow and long, and I'll give you the clue.\"", "What do you give the monkey?", ["A banana", "Some bread", "An orange"], "A banana is yellow and long."]] },
+  { ic:"⛪", place:"The old church", am:"የድሮው ቤተ ክርስቲያን", tasks:[
+    ["The priest says: \"The treasure is on the mountain. You must arrive before sunset, because the path is dangerous in the dark.\"", "When must you get there?", ["Before it gets dark", "After midnight", "Tomorrow evening"], "Before sunset = before it gets dark."],
+    ["He gives you a riddle: \"I have hands, but I cannot clap. I have a face, but I cannot smile.\"", "What is it?", ["A clock", "A monkey", "A mirror"], "A clock has hands and a face!"]] },
+  { ic:"⛰️", place:"The mountain top", am:"የተራራው ጫፍ", tasks:[
+    ["At the top there are three boxes: gold, silver and wooden. A note says: \"The treasure is not in the gold box. The silver box is empty.\"", "Which box has the treasure?", ["The wooden box", "The gold box", "The silver box"], "Not gold, and silver is empty, so it's the wooden box."],
+    ["The wooden box has a lock with a question: \"If you hadn't learned English, you ___ this treasure.\"", "Choose the right words:", ["wouldn't have found", "won't find", "don't find"], "If + had + past participle → would have + past participle."]] }];
+function huntIntro(){ gameIntro("hunt", [
+  ["🗺️ Grandpa's old map leads to a hidden treasure!", "የአያት የድሮ ካርታ ወደ ተደበቀ ሀብት ይመራል!"],
+  ["📜 Read each English clue carefully and choose what to do.", "እያንዳንዱን የእንግሊዝኛ ፍንጭ በጥንቃቄ ያንብቡና ምን እንደሚያደርጉ ይምረጡ።"],
+  ["💡 Use a hint to remove a wrong answer (−5 🪙). 6 places, 1 treasure 💎", "ፍንጭ አንድ የተሳሳተ መልስ ያስወግዳል። 6 ቦታዎች፣ 1 ሀብት 💎"]], huntPlay); }
+function huntPlay(){
+  const run = ++GRUN, H = { s:0, k:0, coins:0, hearts:3, missed:new Map(), removed:new Set() };
+  $("#v-game").innerHTML = gameHudHTML([`<span id="hLife">${lives(3)}</span>`, `<span>🪙 <b id="hCoins">0</b></span>`]) + `<div class="hmap" id="hMap"></div><div id="hArea"></div>`;
+  show("game"); wireSnd();
+  const map = () => { $("#hMap").innerHTML = HUNT.map((p, i) => `<span class="hstop ${i < H.s ? "done" : i === H.s ? "on" : ""}" title="${esc(p.place)}">${i < H.s ? "✅" : p.ic}</span>`).join('<span class="hpath"></span>') + '<span class="hpath"></span><span class="hstop ' + (H.s >= HUNT.length ? "on" : "") + '">💎</span>'; };
+  const render = () => {
+    if (GRUN !== run) return; map();
+    if (H.s >= HUNT.length){
+      H.coins += 50; party(); SFX.win();
+      gameOverPanel($("#hArea"), "hunt", H.coins + H.hearts * 10, "💎 You found the treasure! · <span class=\"am\">ሀብቱን አገኙ! ጀግና!</span>", H.missed, huntPlay); return; }
+    const p = HUNT[H.s], t = p.tasks[H.k]; H.removed = new Set(); H.tried = false;
+    H.opts = shuffle(t[2].map((o, i) => [o, i]));
+    $("#hArea").innerHTML = `<div class="hplace">${p.ic} <b>${esc(p.place)}</b> · <span class="am">${esc(p.am)}</span> <small>${H.k + 1}/${p.tasks.length}</small></div>
+      <div class="hnote">📜 ${esc(t[0])} <button class="qsay" data-sayw="${esc(t[0])}" aria-label="Listen">🔊</button></div>
+      <p class="dq">${esc(t[1])}</p>${choiceButtons(H.opts.map(x => x[0]), "long")}
+      <div class="grow"><button class="btn" id="hHint">💡 Hint (−5 🪙)</button></div><div id="hWhy"></div>`;
+    $("#hHint").onclick = () => {
+      const wrong = H.opts.map((x, i) => [x, i]).filter(([x, i]) => x[1] !== 0 && !H.removed.has(i));
+      if (wrong.length <= 1){ return; }
+      const [, i] = pickOne(wrong); H.removed.add(i); H.coins = Math.max(0, H.coins - 5); $("#hCoins").textContent = H.coins;
+      const b = $("#hArea").querySelector(`[data-c="${i}"]`); b.disabled = true; b.classList.add("gone");
+      if (wrong.length <= 2) $("#hHint").disabled = true;
+    };
+    $("#hArea").querySelector(".gchoices").onclick = e => {
+      const b = e.target.closest("[data-c]"); if (!b || b.disabled) return;
+      if (H.opts[+b.dataset.c][1] === 0){
+        const c = H.tried ? 5 : 15; H.coins += c; $("#hCoins").textContent = H.coins; b.classList.add("ok"); SFX.win();
+        $("#hArea").querySelectorAll("[data-c]").forEach(x => x.disabled = true); $("#hHint").disabled = true;
+        const lastHere = H.k + 1 >= p.tasks.length;
+        $("#hWhy").innerHTML = `<div class="gwhy ok"><b>✅ +${c} 🪙 · <span class="am">${esc(pickOne(CHEER_RIGHT)[0])}</span></b><p>💡 ${esc(t[3])}</p>
+          <button class="btn gold" id="hNext">${lastHere ? (H.s + 1 >= HUNT.length ? "Open the box! 💎" : "Go to " + esc(HUNT[H.s + 1].place) + " " + HUNT[H.s + 1].ic) : "Next clue →"}</button></div>`;
+        $("#hNext").onclick = () => { if (lastHere){ H.s++; H.k = 0; } else H.k++; render(); };
+      } else {
+        H.tried = true; H.hearts--; b.classList.add("bad"); b.disabled = true; SFX.bite(); $("#hLife").textContent = lives(H.hearts);
+        H.missed.set(t[1], [t[2][0], p.am]);
+        if (H.hearts <= 0) setTimeout(() => gameOverPanel($("#hArea"), "hunt", H.coins, "🗺️ Lost in the adventure! · <span class=\"am\">በጉዞው ጠፉ!</span>", H.missed, huntPlay), 800);
+        else $("#hWhy").innerHTML = `<div class="gwhy"><b>❌ Read the clue again · <span class="am">ፍንጩን እንደገና ያንብቡ</span></b></div>`;
+      }
+    };
+  };
+  render();
+}
+
+// ===== 7. Speak Up (browser or Claude speech checking; never fakes a score) =====
+const SPU = { on:false };
+function speakIntro(){
+  const can = !!dict && !micDenied;
+  gameIntro("speakup", [
+    ["🎤 You see a word or sentence. Tap 🔊 to hear it, then tap Record and say it.", "ቃል ወይም ዓረፍተ ነገር ያያሉ። ለመስማት 🔊 ይንኩ፣ ከዚያ ይቅረጹና ይናገሩ።"],
+    ["✅ The game checks which words you said correctly (70% to pass).", "ጨዋታው በትክክል የተናገሩትን ቃላት ይፈትሻል (ለማለፍ 70%)።"],
+    [can ? "🔒 The first time, your phone asks to use the microphone. Tap Allow." : "⚠️ Speech checking does not work here. You can still listen and repeat, but nothing will be scored.",
+     can ? "የመጀመሪያ ጊዜ ስልክዎ ማይክሮፎን ለመጠቀም ፈቃድ ይጠይቃል። 'Allow' ይንኩ።" : "እዚህ የንግግር ፍተሻ አይሰራም። ማዳመጥና መድገም ይችላሉ፤ ግን ነጥብ አይሰጥም።"]], () => speakPlay(1, 0));
+}
+const SU_LV = [null,
+  { en:"Words", am:"ቃላት", pick:() => gameWords(1, w => /^[A-Za-z]{3,10}$/.test(w[0])) },
+  { en:"Short phrases", am:"አጫጭር ሀረጎች", pick:() => gameWords(1, w => { const n = w[0].split(/\s+/).length; return n >= 2 && n <= 4 && !/[\/…↗↘]/.test(w[0]); }) },
+  { en:"Sentences", am:"ዓረፍተ ነገሮች", pick:() => gameWords(2, w => isSentence(w) && toks(w[0]).length <= 9) },
+  { en:"Everyday expressions", am:"የዕለት አገላለጾች", pick:() => gameWords(4, w => w[0].length <= 40) }];
+function speakPlay(lv, total){
+  const run = ++GRUN, can = !!dict && !micDenied, items = shuffle(SU_LV[lv].pick()).slice(0, 6);
+  Object.assign(SPU, { run, lv, total, items, i:0, best:items.map(() => 0), can, res:null });
+  $("#v-game").innerHTML = gameHudHTML([`<span class="glvl">Level ${lv}/4 · ${SU_LV[lv].en}</span>`, `<span>⭐ <b id="suScore">${total}</b></span>`]) + `<div id="suArea"></div>`;
+  show("game"); wireSnd(); suRender();
+}
+function suRender(){
+  if (GRUN !== SPU.run) return;
+  SPU.can = !!dict && !micDenied;
+  const w = SPU.items[SPU.i], live = mic.target === "game" && mic.state !== "idle", r = SPU.res;
+  let body;
+  if (SPU.can){
+    body = `<div class="micwrap"><button class="mic ${live ? "live" : ""}" id="suMic" aria-label="${live ? "Stop" : "Record"}">${live ? ICON_STOP(32) : ICON_MIC(36)}</button>
+      <p class="micnote">${mic.state === "starting" ? "Starting the microphone… · <span class='am'>ማይክሮፎን እየተከፈተ ነው</span>" : live ? "Listening… speak now · <span class='am'>እያዳመጥኩ ነው… ይናገሩ</span>" : "🎤 Tap to record · <span class='am'>ለመቅረጽ ይንኩ</span>"}</p>
+      <div class="heard" id="suHeard">${live ? esc((mic.text + " " + mic.partial).trim()) : ""}</div></div>
+      ${r ? `<div class="gwhy ${r.pct >= PASS_SPEAK ? "ok" : ""}"><b>${r.pct >= PASS_SPEAK ? "✅" : "🔁"} ${r.pct}% · <span class="am">${esc(r.cheer[0])}</span></b>
+        <p class="suwords">${r.res.map(([t, ok]) => `<span class="${ok ? "ok" : "no"}">${esc(t)}</span>`).join(" ")}</p>
+        <p class="gsmall">I heard · ሰማሁ: "${esc(r.said)}"</p></div>` : ""}`;
+  } else {
+    const inTG = !!(window.Telegram && Telegram.WebApp && Telegram.WebApp.initData);
+    body = `<div class="gwhy"><b>⚠️ ${inTG ? "Telegram can't check speaking on this phone." : micDenied ? "The microphone is turned off for this page." : "This browser can't check speaking."}</b>
+      <p>Your speaking is <b>not being checked</b> here, so there is no score. Tap 🔊, listen, and repeat it out loud 3 times.</p>
+      <p class="am">እዚህ ንግግርዎ አይፈተሽም፤ ነጥብም የለም። 🔊 ይንኩ፣ ያዳምጡና 3 ጊዜ ጮክ ብለው ይድገሙ።</p>
+      ${inTG ? `<button class="btn gold" id="suChrome">Open in Chrome to get checked</button>` : ""}</div>`;
+  }
+  $("#suArea").innerHTML = `<p class="gsmall" style="text-align:center">${SPU.i + 1} / ${SPU.items.length} · ${SU_LV[SPU.lv].en} · <span class="am">${SU_LV[SPU.lv].am}</span></p>
+    <div class="suword">${esc(w[0])}</div><p class="am" style="text-align:center;margin:0 0 10px">${esc(w[1])}</p>
+    <div class="grow g2"><button class="btn" data-sayw="${esc(w[0])}">🔊 Listen</button><button class="btn" id="suSlow">🐢 Slow</button></div>
+    <div class="suzone">${body}</div>
+    <div class="grow"><button class="btn ${r && r.pct >= PASS_SPEAK || !SPU.can ? "gold" : ""}" id="suNext">${SPU.i + 1 < SPU.items.length ? "Next · ቀጣይ →" : "Finish level · ደረጃውን ጨርስ"}</button></div>`;
+  $("#suSlow").onclick = () => speak(w[0], true);
+  if ($("#suMic")) $("#suMic").onclick = () => { SPU.res = null; micStart("game"); suRender(); };
+  if ($("#suChrome")) $("#suChrome").onclick = () => { try { Telegram.WebApp.openLink(location.href); } catch(e){ location.href = location.href; } };
+  $("#suNext").onclick = () => {
+    if (dict && dict.active()) dict.stop();
+    mic.target = null; SPU.res = null; SPU.i++;
+    if (SPU.i < SPU.items.length){ suRender(); return; }
+    suLevelDone();
+  };
+}
+function suLevelDone(){
+  if (!SPU.can){
+    $("#suArea").innerHTML = `<div class="gshop"><p class="gtitle">👏 Practice done · <span class="am">ልምምዱ ተጠናቀቀ</span></p><p class="gsmall">Not scored: speech checking isn't available here. · ነጥብ አልተሰጠም።</p>
+      <div class="grow">${SPU.lv < 4 ? `<button class="btn gold" id="suLv">Level ${SPU.lv + 1} →</button>` : ""}<button class="btn" id="suAll">All games · ሁሉም ጨዋታዎች</button></div></div>`;
+    if ($("#suLv")) $("#suLv").onclick = () => speakPlay(SPU.lv + 1, 0);
+    $("#suAll").onclick = openGames; return;
+  }
+  const pts = SPU.best.reduce((a, b) => a + Math.round(b / 10), 0), passed = SPU.best.filter(b => b >= PASS_SPEAK).length;
+  SPU.total += pts; const st = passed >= SPU.items.length - 1 ? 3 : passed >= SPU.items.length / 2 ? 2 : passed ? 1 : 0;
+  const missed = new Map(SPU.items.filter((w, i) => SPU.best[i] < PASS_SPEAK).map(w => [w[0], w]));
+  if (SPU.lv >= 4 || st === 0){ gameOverPanel($("#suArea"), "speakup", SPU.total, `🎤 ${passed}/${SPU.items.length} said well ${stars(st)}`, missed, () => speakPlay(1, 0)); return; }
+  SFX.win(); if (st === 3) party();
+  $("#suArea").innerHTML = `<div class="gshop"><p class="gtitle">${stars(st)} Level ${SPU.lv} done! · <span class="am">${esc(pickOne(CHEER_RIGHT)[0])}</span></p>
+    <p class="gsmall">${passed}/${SPU.items.length} said well · +${pts} ⭐ · total ${SPU.total} ⭐</p>${missedHTML(missed)}
+    <div class="grow"><button class="btn gold" id="suLv">Level ${SPU.lv + 1} →</button><button class="btn" id="suEnd">Stop here · እዚህ አቁም</button></div></div>`;
+  $("#suLv").onclick = () => speakPlay(SPU.lv + 1, SPU.total);
+  $("#suEnd").onclick = () => gameOverPanel($("#suArea"), "speakup", SPU.total, "🎤 Good speaking! · <span class=\"am\">ጎበዝ ተናጋሪ!</span>", missed, () => speakPlay(1, 0));
+}
+function suOnState(state){
+  if (current !== "game" || GRUN !== SPU.run) return;
+  if (state === "idle"){
+    clearTimeout(mic.timer);
+    if (mic.text.trim()){
+      const w = SPU.items[SPU.i]; let said = mic.text, r = compare(w[0], said);
+      (mic.alts || []).forEach(alt => { const r2 = compare(w[0], alt); if (r2.pct > r.pct){ r = r2; said = alt; } });
+      SPU.res = { ...r, said: said.trim(), cheer: r.pct >= PASS_SPEAK ? pickOne(CHEER_RIGHT) : pickOne(FAIL_STEPS) };
+      SPU.best[SPU.i] = Math.max(SPU.best[SPU.i], r.pct);
+      if (r.pct >= PASS_SPEAK){ markRight(w[0]); gameBeep(700, 1100, .12, "triangle", .08); } else markWrong(w[0]);
+    }
+    mic.target = null;
+  }
+  suRender();
 }
 
 // ---------- tip box (grammar / pronunciation) ----------
