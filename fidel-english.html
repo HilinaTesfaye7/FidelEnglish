@@ -504,6 +504,11 @@ html.playing #say,html.playing #slow,html.playing #qsay,html.playing #qslow{anim
 .pnamebox input{font:inherit;font-size:20px;text-align:center;padding:10px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--fg)}
 .petcard .petmini{font-size:30px;background:var(--gold-soft)}.pdot{font-size:11px;padding:2px 6px;border-radius:999px;background:#ff4d6d;color:#fff;vertical-align:middle}
 @media (max-width:380px){.pa-acts{grid-template-columns:repeat(4,1fr)}.proom{height:270px}}
+.glvpick{margin:12px 0 0;padding:12px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.glvpick>div{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0 4px}
+.glvpick button{padding:8px 4px;border-radius:12px;background:var(--bg);border:2px solid transparent;font-weight:700;font-size:14px}
+.glvpick button small{display:block;font-weight:500;font-size:12px;color:var(--muted)}.glvpick button.on{border-color:var(--gold);background:var(--gold-soft)}
+.glvpick .gsmall{margin:4px 0 0}
 </style>
 
 <div class="app">
@@ -895,6 +900,34 @@ const LESSONS = [
     ["Could I speak to the manager, please?","እባክዎ ሥራ አስኪያጁን ማነጋገር እችላለሁ?"],["I'm afraid this is not acceptable.","ይቅርታ፣ ይህ ተቀባይነት የለውም።"],
     ["The internet has been down since yesterday.","ኢንተርኔቱ ከትናንት ጀምሮ አይሰራም።"],["Thank you for sorting it out so quickly.","በፍጥነት ስለፈቱት እናመሰግናለን።"]]},
 
+  { id:"idioms2", level:"int", hard:true, en:"More idioms (B2)", am:"ተጨማሪ ፈሊጦች",
+    tip:["Native speakers use these idioms every day. Their meaning is NOT in the single words: 'It's not rocket science' = it's easy. Learn the whole sentence and when to use it.",
+         "እንግሊዝኛ ተናጋሪዎች እነዚህን ፈሊጦች በየቀኑ ይጠቀማሉ። ትርጉማቸው በእያንዳንዱ ቃል ውስጥ አይገኝም፡ 'It's not rocket science' = ቀላል ነገር ነው። ሙሉ ዓረፍተ ነገሩን ይማሩ።"],
+    words:[["It's not rocket science.","ቀላል ነገር ነው፤ ብዙ ዕውቀት አይጠይቅም።"],["I'm in hot water with my boss.","ከአለቃዬ ጋር ችግር ውስጥ ገብቻለሁ።"],
+    ["Let's cross that bridge when we come to it.","ችግሩ ሲመጣ ያኔ እንፈታዋለን።"],["She has a heart of gold.","በጣም ደግ ልብ አላት።"],
+    ["Don't cry over spilt milk.","ባለፈና በማይመለስ ነገር አትጸጸት።"],["He's still on the fence.","ገና አልወሰነም።"],
+    ["That's the last straw!","ከዚህ በላይ መታገስ አልችልም!"],["Good, we're on the same page.","ጥሩ፣ ተግባብተናል።"],
+    ["I'm feeling a bit blue today.","ዛሬ ትንሽ አዝኛለሁ።"],["It's a long shot, but let's try.","ዕድሉ ትንሽ ነው፤ ግን እንሞክር።"],
+    ["He let the cat out of the bag.","ሚስጥሩን አወጣው።"],["Stop beating yourself up.","ራስህን መውቀስ አቁም።"],
+    ["It's late. Time to hit the road.","መሽቷል። የምንሄድበት ሰዓት ደርሷል።"],["My daughter is the apple of my eye.","ልጄ ከምንም በላይ የምወዳት ናት።"],
+    ["I'm all thumbs today.","ዛሬ ሁሉም ነገር ከእጄ እያመለጠ ነው።"],["Keep your chin up!","አይዞህ፣ ተስፋ አትቁረጥ!"],
+    ["That phone cost me a pretty penny.","ያ ስልክ ብዙ ገንዘብ አስወጣኝ።"],["We'll have to tighten our belts this month.","በዚህ ወር ወጪያችንን መቀነስ አለብን።"],
+    ["He's such a couch potato.","ቀኑን ሙሉ ሶፋ ላይ ቴሌቪዥን የሚያይ ሰነፍ ነው።"],["Get your act together!","ራስህን አስተካክል!"],
+    ["Can I take a rain check on dinner?","እራቱን ለሌላ ጊዜ እናድርገው?"],["Don't bite off more than you can chew.","ከአቅምህ በላይ አትሸከም።"],
+    ["We've been friends through thick and thin.","በክፉም በደጉም ጓደኛሞች ነን።"],["He was paid under the table.","በድብቅ (ሕገ ወጥ በሆነ መንገድ) ተከፈለው።"],
+    ["Forget it. It's water under the bridge.","ተወው። ያለፈ ነገር ነው፤ ረስቼዋለሁ።"]]},
+  { id:"b2words", level:"int", hard:true, hintLabel:"Example", en:"Strong words (B2)", am:"ጠንካራ ቃላት",
+    tip:["Replace easy words with stronger ones: 'get' → achieve, 'chance' → opportunity, 'think about' → consider, 'very needed' → essential. Each card shows an example sentence.",
+         "ቀላል ቃላትን በጠንካራ ቃላት ይተኩ፡ 'get' → achieve (ማሳካት)፣ 'chance' → opportunity (ዕድል)፣ 'think about' → consider (ማጤን)። እያንዳንዱ ካርድ ምሳሌ ዓረፍተ ነገር ያሳያል።"],
+    words:[["reliable","አስተማማኝ","She's reliable; she's never late."],["achieve","ማሳካት","You can achieve your goals."],["opportunity","ዕድል","This job is a great opportunity."],
+    ["efficient","ቀልጣፋ","The new system is more efficient."],["significant","ጉልህ","There was a significant change."],["generous","ለጋስ","He's generous with his time."],
+    ["available","የሚገኝ","Is the manager available now?"],["approximately","በግምት","It takes approximately two hours."],["previous","ቀዳሚ","My previous job was in a bank."],
+    ["responsible","ኃላፊነት የሚሰማው","She's responsible for the team."],["deadline","የመጨረሻ ቀን","The deadline is Friday."],["purpose","ዓላማ","What's the purpose of your visit?"],
+    ["improve","ማሻሻል","I want to improve my English."],["decrease","መቀነስ","Prices will decrease next month."],["convince","ማሳመን","She convinced me to stay."],
+    ["suggest","መጠቆም","I suggest we leave early."],["appreciate","ማድነቅ / ማመስገን","I really appreciate your help."],["consider","ማጤን","Please consider my offer."],
+    ["essential","እጅግ አስፈላጊ","Water is essential for life."],["attitude","አመለካከት","He has a positive attitude."],["confident","በራስ የሚተማመን","I feel confident about the exam."],
+    ["obvious","ግልጽ","The answer is obvious."],["requirement","መስፈርት","English is a requirement for this job."],["anxious","የተጨነቀ","I'm anxious about the interview."]]},
+
   // ---------------- ADVANCED ----------------
   { id:"g-perfect", level:"adv", grammar:true, en:"Present perfect", am:"የአሁን ፍጹም ጊዜ",
     tip:["Use have / has + past participle for life experiences and for things that started in the past and continue now: I have lived here for five years. Have you ever been to Lalibela? Don't use it with a finished time like 'yesterday'.",
@@ -1077,6 +1110,34 @@ const LESSONS = [
     ["Let's put everything in writing.","ሁሉንም ነገር በጽሑፍ እናስፍር።"],["We need some time to consider your proposal.","ሀሳብዎን ለማጤን ጊዜ ያስፈልገናል።"],
     ["If you increase the order, we can lower the price.","ትዕዛዙን ከጨመሩ ዋጋውን መቀነስ እንችላለን።"],["Is there any flexibility on the delivery date?","በማስረከቢያ ቀኑ ላይ ማሻሻያ ማድረግ ይቻላል?"],
     ["I think we've reached a fair compromise.","ፍትሐዊ ስምምነት ላይ የደረስን ይመስለኛል።"],["We look forward to a long and successful partnership.","ረጅምና ስኬታማ አጋርነትን በጉጉት እንጠብቃለን።"]]},
+
+  { id:"idioms3", level:"adv", hard:true, en:"Advanced idioms (C1)", am:"ከፍተኛ ደረጃ ፈሊጦች",
+    tip:["These idioms are common at work, in the news and in serious conversations. Using one or two correctly makes you sound truly fluent. Never translate them word by word.",
+         "እነዚህ ፈሊጦች በስራ ቦታ፣ በዜናና በቁም ነገር ንግግሮች የተለመዱ ናቸው። አንድ ሁለቱን በትክክል መጠቀም በጣም አቀላጥፈው የሚናገሩ ያስመስልዎታል። ቃል በቃል አይተርጉሟቸው።"],
+    words:[["Let's not jump to conclusions.","በችኮላ ድምዳሜ ላይ አንድረስ።"],["He has a chip on his shoulder.","ቂም ይዞ በቀላሉ ይናደዳል።"],
+    ["The elephant in the room is the budget.","ሁሉም የሚያውቁትና የማይናገሩት ዋናው ችግር በጀቱ ነው።"],["She's burning the candle at both ends.","ቀንና ሌሊት እየሰራች ራሷን እያደከመች ነው።"],
+    ["Social media is a double-edged sword.","ማኅበራዊ ሚዲያ ጥቅምም ጉዳትም አለው።"],["I think we're barking up the wrong tree.","የተሳሳተ ቦታ ላይ እያተኮርን ያለን ይመስለኛል።"],
+    ["You're skating on thin ice.","አደገኛ ሁኔታ ውስጥ ነህ።"],["Don't put all your eggs in one basket.","ሁሉንም ተስፋህን በአንድ ነገር ላይ አትጣል።"],
+    ["I'm afraid that ship has sailed.","ይቅርታ፣ ዕድሉ አልፏል።"],["It failed, so it's back to the drawing board.","አልተሳካም፤ ስለዚህ ከመጀመሪያው እንጀምራለን።"],
+    ["This is just the tip of the iceberg.","ይህ የችግሩ ትንሽ ክፍል ብቻ ነው።"],["He's a jack of all trades.","ብዙ ሙያ የሚችል ሰው ነው።"],
+    ["We need to think outside the box.","በአዲስና በፈጠራ መንገድ ማሰብ አለብን።"],["Right, let's get down to business.","እሺ፣ ወደ ዋናው ጉዳይ እንግባ።"],
+    ["The project is still up in the air.","ፕሮጀክቱ ገና አልተወሰነም።"],["Take his promises with a pinch of salt.","የእሱን ቃል ሙሉ በሙሉ አትመን።"],
+    ["He's the black sheep of the family.","በቤተሰቡ ውስጥ የተለየውና የሚነቀፈው እሱ ነው።"],["I'm caught between a rock and a hard place.","ሁለቱም ምርጫዎች መጥፎ ናቸው።"],
+    ["You're cutting it fine; the train leaves in five minutes.","ጊዜህ በጣም ጠባብ ነው፤ ባቡሩ በአምስት ደቂቃ ይሄዳል።"],["It goes without saying that safety comes first.","ደህንነት እንደሚቀድም መናገር አያስፈልግም።"],
+    ["Let sleeping dogs lie.","የተረሳ ችግርን አትቀስቅስ።"],["Every cloud has a silver lining.","ከመጥፎ ነገርም ጥሩ ነገር ይገኛል።"],
+    ["Our donation is a drop in the ocean.","የእኛ ልገሳ ከሚያስፈልገው አንጻር እጅግ ትንሽ ነው።"],["She hit the ground running in her new job.","በአዲሱ ስራዋ ወዲያውኑ በብቃት ጀመረች።"],
+    ["You have to read between the lines.","ያልተነገረውን ድብቅ ትርጉም መረዳት አለብህ።"]]},
+  { id:"c1words", level:"adv", hard:true, hintLabel:"Example", en:"Power words (C1)", am:"ኃይለኛ ቃላት",
+    tip:["These words appear in news, university and professional English. Learn the meaning AND the example, then try to use one in your own sentence today.",
+         "እነዚህ ቃላት በዜና፣ በዩኒቨርሲቲና በሙያዊ እንግሊዝኛ ይገኛሉ። ትርጉሙንና ምሳሌውን ይማሩ፤ ዛሬ በራስዎ ዓረፍተ ነገር አንዱን ለመጠቀም ይሞክሩ።"],
+    words:[["inevitable","የማይቀር","Mistakes are inevitable when you learn."],["ambiguous","አሻሚ","The instructions were ambiguous."],["reluctant","ፈቃደኛ ያልሆነ","He was reluctant to talk."],
+    ["meticulous","እጅግ ጥንቁቅ","She's meticulous about details."],["feasible","ተግባራዊ ሊሆን የሚችል","Is the plan feasible?"],["profound","ጥልቅ","It had a profound effect on me."],
+    ["substantial","ከፍተኛ / ጉልህ","They made a substantial profit."],["consensus","የጋራ መግባባት","We reached a consensus."],["undermine","ማዳከም","Lies undermine trust."],
+    ["mitigate","ማቃለል","We must mitigate the risks."],["scrutinise","በጥልቀት መመርመር","Experts will scrutinise the data."],["advocate","መሟገት / ደጋፊ","She advocates for girls' education."],
+    ["controversial","አከራካሪ","It's a controversial decision."],["deteriorate","መባባስ","His health began to deteriorate."],["eloquent","አንደበተ ርቱዕ","She gave an eloquent speech."],
+    ["pragmatic","ተግባራዊ አስተሳሰብ ያለው","We need a pragmatic solution."],["resilient","ጽኑ (ከችግር ቶሎ የሚያገግም)","Children are often resilient."],["ubiquitous","በሁሉም ቦታ የሚገኝ","Smartphones are ubiquitous now."],
+    ["unprecedented","ታይቶ የማይታወቅ","The storm caused unprecedented damage."],["compelling","አሳማኝ","She made a compelling argument."],["diligent","ትጉህ","He's a diligent student."],
+    ["tentative","ጊዜያዊ / ያልተረጋገጠ","We made a tentative plan."],["vulnerable","ተጋላጭ","Old people are vulnerable to cold."],["coherent","የተቀናጀ / ግልጽ","Write a coherent essay."]]},
 
   // ---------------- PRONUNCIATION ----------------
   { id:"p-th1", level:"pron", hintLabel:"Sound", en:"TH as in think", am:"የ'th' ድምፅ (think)",
@@ -1768,7 +1829,7 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
-const APP_VERSION = "2026.11.18-g";
+const APP_VERSION = "2026.11.18-h";
 const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);
 function audioBase(){ return null; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
@@ -2233,25 +2294,37 @@ $("#v-home").addEventListener("click", e => {
 
 // ---- game levels: words get harder as you play (1 Beginner -> 4 Expert: idioms and euphemisms) ----
 let GTIERS = null;
+const EXPERT_IDS = /^(idioms-int|idioms|idioms2|idioms3|euph-int|euph|c1vocab|c1words|g-inv|g-mixed)$/;
+function gameTiersOf(l){
+  if (l.level === "pron" || l.id === "abc") return [];
+  if (l.id === "idioms-beg") return [1, 2];
+  const m = monthOf(l);
+  if (m === 1) return [1];
+  if (m === 4) return [];
+  if (/^idioms/.test(l.id)) return l.level === "int" ? [2, 2, 3, 3, 4, 4] : [3, 3, 4, 4];
+  if (EXPERT_IDS.test(l.id)) return l.level === "int" ? [2, 3, 4] : [3, 4, 4];
+  if (l.hard) return l.level === "int" ? [2, 2, 3] : [3, 3, 4];
+  return [2];
+}
 function gameTiers(){
   if (GTIERS) return GTIERS;
   const T = [[], [], [], [], []], seen = T.map(() => new Set());
   LESSONS.forEach(l => {
-    if (l.level === "pron" || l.id === "abc") return;
-    const m = monthOf(l), t = /^(idioms|euph)/.test(l.id) && l.level !== "beg" ? 4 : Math.min(3, m);
-    // hard lessons: counted twice in their own level and also used one level up (adv hard = expert level)
-    const tiers = l.hard ? [t, t, Math.min(4, t + 1), Math.min(4, t + 1)] : [t];
+    // Level 1 beginner words only; above that: idioms, euphemisms and hard lessons (idioms count double). Everyday Month 4 words stay out of the games.
+    const tiers = gameTiersOf(l);
     l.words.forEach(w => { if (!w[1] || /[\/…↗↘]/.test(w[0])) return;
       tiers.forEach((tt, k) => { const key = w[0] + "|" + k; if (!seen[tt].has(key)){ seen[tt].add(key); T[tt].push(w); } }); });
   });
   return GTIERS = T;
 }
-const HARD_WORDS = () => GTIERS_HARD || (GTIERS_HARD = new Set(LESSONS.filter(l => l.hard || /^(idioms-int|idioms|euph)/.test(l.id)).flatMap(l => l.words.map(w => w[0]))));
+const HARD_WORDS = () => GTIERS_HARD || (GTIERS_HARD = new Set(LESSONS.filter(l => l.hard || EXPERT_IDS.test(l.id)).flatMap(l => l.words.map(w => w[0]))));
 let GTIERS_HARD = null;
 // higher levels prefer longer sentences and the hard lessons; the filter is skipped when too few items are left
+function gameStartLv(){ const g = (store.games || {}).lv; return g || ({ beg:1, int:2, adv:3 })[store.level] || 1; }
+const effLv = L => Math.min(4, Math.max(1, L + gameStartLv() - 1));
 function gameWords(level, ok, min){
   const T = gameTiers(); min = min || 8;
-  const lv = Math.min(4, Math.max(1, level)), H = HARD_WORDS();
+  const lv = effLv(level), H = HARD_WORDS();
   const harder = w => lv <= 1 || H.has(w[0]) || w[0].split(/\s+/).length >= (lv === 2 ? 5 : 7);
   for (let t = lv; t >= 1; t--){
     const a = T[t].filter(ok); if (a.length < min) continue;
@@ -2260,9 +2333,9 @@ function gameWords(level, ok, min){
   return T[1];
 }
 const LEVEL_NAMES = [null, ["Beginner", "ጀማሪ"], ["Intermediate", "መካከለኛ"], ["Advanced", "ከፍተኛ"], ["Expert: idioms & euphemisms", "ባለሙያ፡ ፈሊጦችና ለስላሳ አገላለጾች"]];
-const lvlChip = L => `⬆️ Lv ${L}`;
+const lvlChip = L => `⬆️ Lv ${effLv(L)}`;
 function levelUp(L){
-  const n = LEVEL_NAMES[L], el = $("#gLvl"); if (el) el.textContent = lvlChip(L);
+  const n = LEVEL_NAMES[effLv(L)], el = $("#gLvl"); if (el) el.textContent = lvlChip(L);
   if (L > 1){ gameMsgIn(`⬆️ Level ${L}: ${n[0]}`, n[1] + " · ከበድ ይላል!", 2200); SFX.win(); }
 }
 // ---------- game: Save the Village (hyenas carry Amharic words, tap the English word to throw your spear) ----------
@@ -2369,7 +2442,7 @@ function nextNight(){
   $("#gPanel").innerHTML = `<div class="gask" id="gAsk"></div><div class="gopts" id="gOpts"></div>`;
   $("#gOpts").onclick = e => { const b = e.target.closest("[data-i]"); if (b) gameAnswer(b, S.opts[+b.dataset.i]); };
   gameAsk();
-  const lv = up && L > 1 ? ` · ⬆️ Level ${L}: ${LEVEL_NAMES[L][0]}` : "", lvAm = up && L > 1 ? ` · ${LEVEL_NAMES[L][1]}` : "";
+  const EL = effLv(L), lv = up && (L > 1 || EL > 1) ? ` · ⬆️ Level ${EL}: ${LEVEL_NAMES[EL][0]}` : "", lvAm = up && (L > 1 || EL > 1) ? ` · ${LEVEL_NAMES[EL][1]}` : "";
   if (up && $("#gLvl")) $("#gLvl").textContent = lvlChip(L);
   if (S.boss) gameMsg(`🌙 Night ${n} · 👑 The boss is coming!${lv}`, `ሌሊት ${n} · የጅቦቹ አለቃ እየመጣ ነው!${lvAm}`, 2600);
   else gameMsg(`🌙 Night ${n}${lv}`, `ሌሊት ${n}${lvAm}`, lv ? 2600 : 1600);
@@ -2668,11 +2741,16 @@ function gameBest(id){ return id === "village" ? ((store.game || {}).best || 0) 
 function setBest(id, v){ if (!store.games) store.games = {}; const rec = v > 0 && v > (store.games[id] || 0); if (rec){ store.games[id] = v; saveStore(); } return rec; }
 function openGames(){
   stopSound(); GS = null; GRUN++; gameStore();
+  const sl = gameStartLv();
   $("#v-game").innerHTML = `<div class="ghub-h"><h1>🎮 Games</h1><p class="am">ጨዋታዎች · ይጫወቱና ይማሩ!</p></div>
+    <div class="glvpick"><b>My level · <span class="am">ደረጃዬ</span></b><div>${[[1, "Beginner", "ጀማሪ"], [2, "Intermediate", "መካከለኛ"], [3, "Advanced", "ከፍተኛ"]].map(([n, e, a]) =>
+      `<button data-glv="${n}" class="${sl === n ? "on" : ""}">${e}<small>${a}</small></button>`).join("")}</div>
+      <p class="gsmall">${sl >= 2 ? "Games use idioms and hard words, not basic vocabulary. · <span class=\"am\">ጨዋታዎቹ ፈሊጦችና ከባድ ቃላት ይጠቀማሉ።</span>" : "Start easy, then games get harder as you play. · <span class=\"am\">በቀላሉ ይጀምሩ፤ እየተጫወቱ ይከብዳል።</span>"}</p></div>
     <div class="ghub">${GAMES.map(g => { const b = gameBest(g.id);
       return `<button class="gcard" data-game="${g.id}"><span class="gci">${g.ic}</span><span class="gct"><b>${g.en}</b><span class="am">${g.am}</span>
         <small>${g.d} · <span class="am">${g.dam}</span></small></span><span class="gcs"><span class="gskill">${g.skill}<br><span class="am">${g.skillAm}</span></span>${b ? `<small>🏆 ${b}</small>` : ""}</span></button>`; }).join("")}</div>
     <p class="foot">Every game uses words from your lessons. Play every day! · <span class="am">ሁሉም ጨዋታዎች ከትምህርቶችዎ ቃላት ይጠቀማሉ። በየቀኑ ይጫወቱ!</span></p>`;
+  $("#v-game").querySelectorAll("[data-glv]").forEach(b => b.onclick = () => { if (!store.games) store.games = {}; store.games.lv = +b.dataset.glv; saveStore(); openGames(); });
   $("#v-game").querySelectorAll("[data-game]").forEach(b => b.onclick = () => (({ village:renderGameStart, run:runIntro, tower:towerIntro, spell:spellIntro, balloon:balloonIntro })[b.dataset.game] || GAME_START[b.dataset.game])());
   show("game");
 }
@@ -3263,15 +3341,18 @@ const PICS = { Dog:"🐶", Cat:"🐱", Cow:"🐄", Goat:"🐐", Sheep:"🐑", Ch
   Plane:"✈️", Bicycle:"🚲", Shirt:"👕", Dress:"👗", Shoes:"👟", Hat:"👒", Socks:"🧦", Jacket:"🧥", Scarf:"🧣", Red:"🔴", Blue:"🔵", Green:"🟢", Yellow:"🟡" };
 const OPPOSITES = [["hot","cold"],["big","small"],["happy","sad"],["cheap","expensive"],["early","late"],["open","closed"],["full","empty"],["fast","slow"],
   ["old","new"],["strong","weak"],["easy","difficult"],["rich","poor"],["clean","dirty"],["tall","short"],["borrow","lend"],["buy","sell"],["remember","forget"],["arrive","leave"]];
+const HARD_OPP = [["generous","stingy"],["optimistic","pessimistic"],["temporary","permanent"],["accept","reject"],["ancient","modern"],["expand","shrink"],
+  ["victory","defeat"],["guilty","innocent"],["include","exclude"],["profit","loss"],["artificial","natural"],["voluntary","compulsory"],["frequent","rare"],["reliable","unreliable"],
+  ["confident","insecure"],["increase","decrease"],["arrogant","humble"],["complex","simple"]];
 const MATCH_LV = [null,
   { n:4, en:"Pictures", am:"ስዕሎች", make:() => shuffle(Object.keys(PICS).filter(k => WORDMAP[k])).slice(0, 4).map(k => [k, PICS[k], true]) },
   { n:6, en:"English ↔ Amharic", am:"እንግሊዝኛ ↔ አማርኛ", make:() => shuffle(gameWords(1, w => w[0].length <= 12 && w[1].length <= 12)).slice(0, 6).map(w => [w[0], w[1]]) },
-  { n:6, en:"Opposites", am:"ተቃራኒዎች", make:() => shuffle(OPPOSITES).slice(0, 6).map(p => [p[0], p[1], false, true]) },
+  { n:6, en:"Opposites", am:"ተቃራኒዎች", make:() => shuffle(gameStartLv() >= 2 ? HARD_OPP : OPPOSITES).slice(0, 6).map(p => [p[0], p[1], false, true]) },
   { n:8, en:"Harder words", am:"ከበድ ያሉ ቃላት", make:() => shuffle(gameWords(3, w => w[0].length <= 14 && w[1].length <= 14)).slice(0, 8).map(w => [w[0], w[1]]) }];
 function matchIntro(){ gameIntro("match", [
   ["🧠 Flip two cards. Find the pairs that match.", "ሁለት ካርዶች ይገልብጡ። የሚዛመዱትን ጥንዶች ያግኙ።"],
   ["🖼️ Level 1 pictures → 2 Amharic → 3 opposites → 4 harder words.", "ደረጃ 1 ስዕሎች → 2 አማርኛ → 3 ተቃራኒዎች → 4 ከበድ ያሉ ቃላት።"],
-  ["⏱️ Fewer tries and less time = more stars!", "ባነሰ ሙከራና ጊዜ = ብዙ ኮከቦች!"]], () => matchPlay(1, 0)); }
+  ["⏱️ Fewer tries and less time = more stars!", "ባነሰ ሙከራና ጊዜ = ብዙ ኮከቦች!"]], () => matchPlay(Math.min(3, gameStartLv()), 0)); }
 function matchPlay(lv, total){
   const run = ++GRUN, cfg = MATCH_LV[lv], pairs = cfg.make();
   const cards = shuffle(pairs.flatMap((p, i) => [{ id:i, t:p[0], en:true }, { id:i, t:p[1], pic:p[2], am:!p[2] && !p[3] }]));
@@ -3354,7 +3435,7 @@ function raceIntro(){ gameIntro("race", [
   ["⏱️ Be quick! Time gets shorter as you go.", "ይፍጠኑ! ጊዜው እየቀነሰ ይሄዳል።"],
   ["💡 Wrong? You'll see a short reason. Learn and keep running!", "ከተሳሳቱ አጭር ማብራሪያ ያያሉ። ተምረው ይቀጥሉ!"]], racePlay); }
 function racePlay(){
-  const run = ++GRUN, R = { i:0, score:0, hearts:3, streak:0, missed:new Map(), list:[1, 2, 3].flatMap(l => shuffle(RACE.filter(r => r[0] === l))), t:0, max:15, lock:false };
+  const run = ++GRUN, R = { i:0, score:0, hearts:3, streak:0, missed:new Map(), list:[1, 2, 3].filter(l => l >= Math.min(3, gameStartLv())).flatMap(l => shuffle(RACE.filter(r => r[0] === l))), t:0, max:15, lock:false };
   $("#v-game").innerHTML = gameHudHTML([`<span id="raLife">${lives(3)}</span>`, `<span>⭐ <b id="raScore">0</b></span>`, `<span class="glvl" id="raLvl">Easy</span>`]) +
     `<div class="ttime"><i id="raBar"></i></div><div id="raArea"></div>`;
   show("game"); wireSnd();
@@ -3565,7 +3646,12 @@ const CLUES = [
   [2, "umbrella", "You open it when it rains."], [2, "clock", "It tells you the time."], [2, "market", "A place where people buy and sell things."], [2, "airport", "You go here to take a plane."],
   [2, "birthday", "The day you were born. People give you gifts."], [2, "breakfast", "The first meal of the day."], [2, "tomorrow", "The day after today."], [2, "yesterday", "The day before today."],
   [2, "hospital", "Sick people go here to get better."], [3, "library", "A place where you can borrow books for free."], [3, "salary", "Money you get every month for your work."],
-  [3, "passport", "You need it to travel to another country."], [3, "receipt", "A paper that shows what you paid."], [3, "discount", "When the price is lower than usual."], [3, "password", "A secret word you type to open your phone or account."]];
+  [3, "passport", "You need it to travel to another country."], [3, "receipt", "A paper that shows what you paid."], [3, "discount", "When the price is lower than usual."], [3, "password", "A secret word you type to open your phone or account."],
+  [3, "deadline", "The last day or time to finish something."], [3, "opportunity", "A chance to do something good."], [3, "generous", "Happy to give money, time or help to others."],
+  [3, "reluctant", "Not wanting to do something."], [3, "inevitable", "Certain to happen; you cannot avoid it."], [3, "ambiguous", "It has more than one meaning, so it is unclear."],
+  [3, "resilient", "Able to recover quickly from problems."], [3, "unprecedented", "Never happened before."], [3, "meticulous", "Very careful about every small detail."],
+  [3, "consensus", "General agreement in a group."], [3, "controversial", "Causing a lot of disagreement."], [3, "eloquent", "Able to speak well and persuasively."],
+  [3, "vulnerable", "Easy to hurt or attack."], [3, "diligent", "Working hard and carefully."], [3, "ubiquitous", "Found everywhere."], [3, "anxious", "Worried and nervous."]];
 function misspell(w){
   const out = new Set(), vow = "aeiou", L = w.length;
   for (let k = 0; k < 40 && out.size < 3; k++){
@@ -3589,14 +3675,14 @@ function qSpell(L){ const pool = gameWords(Math.min(3, L), w => new RegExp(`^[A-
 function qComplete(L){ const pool = gameWords(Math.min(3, L), w => /^[A-Za-z]{4,11}$/.test(w[0]), 6), w = pickOne(pool), word = w[0];
   const hide = new Set(shuffle([...Array(word.length).keys()].slice(1)).slice(0, Math.max(1, Math.round(word.length * (L >= 3 ? .5 : .35)))));
   const masked = [...word].map((c, i) => hide.has(i) ? "_" : c).join(" ");
-  const same = shuffle(pool.filter(x => x[0] !== word && Math.abs(x[0].length - word.length) <= 1)).slice(0, 3).map(x => x[0]);
+  const same = [...new Set(shuffle(pool.filter(x => x[0] !== word && Math.abs(x[0].length - word.length) <= 1)).map(x => x[0]))].slice(0, 3);
   const opts = shuffle([word, ...(same.length >= 3 ? same : misspell(word))].slice(0, 4));
   return { kind:"complete", ask:`Complete the word · ${w[1]}`, askAm:"ቃሉን ያሟሉ", p:masked, mono:true, opts, a:word, say:word, w }; }
-function qClue(L){ const list = CLUES.filter(c => c[0] <= Math.max(1, Math.min(3, L))), c = pickOne(list);
+function qClue(L){ const E = effLv(L), list = CLUES.filter(c => E >= 3 ? c[0] >= 3 : E === 2 ? c[0] >= 2 : c[0] <= 1), c = pickOne(list);
   const others = shuffle(CLUES.filter(x => x[1] !== c[1])).slice(0, 3).map(x => x[1]);
   return { kind:"clue", ask:"What is it?", askAm:"ምንድን ነው?", p:c[2], opts:shuffle([c[1], ...others]), a:c[1], say:c[1] }; }
 function qGrammar(L){
-  const lv = Math.max(1, Math.min(3, L));
+  const lv = Math.max(1, Math.min(3, effLv(L)));
   if (Math.random() < .5){ const r = pickOne(RACE.filter(x => x[0] === lv));
     return { kind:"fix", ask:"Fix the mistake:", askAm:"ስህተቱን ያርሙ", p:"❌ " + r[1], opts:shuffle([r[2], ...r[3]]), a:r[2], why:r[4], say:r[2] }; }
   const gl = LESSONS.filter(l => l.grammar && monthOf(l) === lv);
@@ -3607,7 +3693,7 @@ function qGrammar(L){
   }
   return qVocab(L);
 }
-function qIdiom(){ const q = qMeaning(4); q.ask = "What does this expression mean?"; q.askAm = "ይህ አገላለጽ ምን ማለት ነው?"; return q; }
+function qIdiom(){ const q = qMeaning(9); q.ask = "What does this expression mean?"; q.askAm = "ይህ አገላለጽ ምን ማለት ነው?"; return q; }
 const Q_MAKERS = { vocab:qVocab, meaning:qMeaning, spell:qSpell, complete:qComplete, clue:qClue, grammar:qGrammar, idiom:qIdiom };
 function makeQ(kinds, L){ const k = pickOne(kinds); return Q_MAKERS[k](L); }
 // Draws a question into el; calls done(ok) once. Shows the right answer and a short reason when wrong.
