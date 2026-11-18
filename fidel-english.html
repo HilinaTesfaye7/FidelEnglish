@@ -358,6 +358,51 @@ html.playing #say,html.playing #slow,html.playing #qsay,html.playing #qslow{anim
 .suword{text-align:center;font-size:28px;font-weight:700;margin:6px 0 2px}
 .suzone{margin:12px 0}
 .suwords span{font-weight:700;padding:1px 3px;border-radius:4px}.suwords .ok{color:var(--good)}.suwords .no{color:var(--bad);background:var(--bad-soft)}
+
+/* games 13-19 */
+.qask{font-weight:700;margin:6px 0}.qask .am{font-weight:500;color:var(--muted)}
+.qp{font-size:21px;font-weight:700;padding:12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);text-align:center}
+.qp.mono{letter-spacing:2px;font-family:ui-monospace,Menlo,monospace}
+.qsub{text-align:center;margin:6px 0 0;color:var(--muted)}
+.gchoices.two{grid-template-columns:1fr 1fr}.gchoices.two button{text-align:center}
+.hpbar{position:relative;height:16px;border-radius:99px;background:var(--line);overflow:hidden;min-width:120px}
+.hpbar i{position:absolute;inset:0 auto 0 0;background:var(--good);transition:width .3s}.hpbar.red i{background:#d9534a}.hpbar.blue i{background:#3a8fd9}
+.hpbar span{position:relative;display:block;text-align:center;font-size:11px;font-weight:700;line-height:16px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.arena{position:relative;display:grid;gap:10px;padding:14px;border-radius:18px;background:linear-gradient(#2b1d3f,#4a2d4f);color:#fff}
+.boss{display:grid;justify-items:center;gap:2px;text-align:center}.boss .am{font-size:13px;opacity:.85}
+.bossic{font-size:64px;line-height:1.1;animation:bfloat 2s ease-in-out infinite}
+@keyframes bfloat{50%{transform:translateY(-6px)}}
+.boss.hit .bossic{animation:bhit .4s}@keyframes bhit{30%{transform:scale(.85) rotate(-8deg);filter:brightness(2)}}
+.hero{display:flex;align-items:center;gap:10px}.hero .hpbar{flex:1}
+.reward{display:grid;justify-items:center;gap:2px;padding:12px;border-radius:14px;background:var(--gold-soft);margin:8px 0}.reward>span:first-child{font-size:44px}
+.agent{padding:2px 0}.aghead{font-weight:700;font-size:16px}.aghead .am{display:block;color:var(--gold);font-size:13px}.aghead small{color:var(--muted);font-weight:500}
+.agcard{margin:10px 0;padding:14px;border-radius:14px;background:#1d2430;color:#d8f3dc;font-family:ui-monospace,Menlo,monospace;font-size:15px;line-height:1.5}
+.agcard b{color:#ffd166;font-family:var(--font-en)}
+.agfiles{display:grid;gap:4px}.agfiles span,.agfile{font-size:13px;padding:6px 10px;border-radius:10px;background:var(--gold-soft)}
+.stbox{position:relative;padding:16px 16px 30px;border-radius:16px;background:#fbf6ea;color:#2b2112;border:1px solid #e8dcc0;font-size:17px;line-height:1.55}
+.stbox p{margin:0}.stbox .qsay{position:absolute;right:8px;bottom:6px}
+.stnote{font-size:14px;padding:6px 10px;border-radius:10px;background:var(--accent-soft);margin:0 0 10px}
+.stend{padding:18px;border-radius:16px;background:var(--gold-soft);font-size:16px;line-height:1.5}.stend b{font-size:20px}
+.dscore{display:flex;justify-content:space-between;align-items:center;padding:10px 4px;font-size:16px;font-weight:600}.dscore b{font-size:26px;margin:0 6px}
+.dq2{margin:8px 0}.dmsg{text-align:center;min-height:22px;margin-top:6px;font-weight:600}
+.dpad{display:grid;grid-template-columns:1fr 1fr;gap:8px}.dpad.top{transform:rotate(180deg);margin-bottom:8px}
+.dqmini{grid-column:1/-1;text-align:center;font-weight:700;font-size:17px;padding:6px;border-radius:10px;background:var(--gold-soft)}
+.dpad button{min-height:52px;padding:8px;border-radius:14px;background:var(--surface);border:2px solid var(--line);font-weight:600;font-size:15px;line-height:1.25}
+.dpad button.ok{border-color:var(--good);background:var(--good-soft)}.dpad button.bad{border-color:var(--bad);background:var(--bad-soft)}
+.alsky{position:relative;height:190px;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 70% 20%,#3a2f7a,#0b0d2a 70%)}
+.alship{position:absolute;left:50%;top:8%;transform:translateX(-50%);font-size:44px;transition:top .6s}
+.alien{position:absolute;left:14%;bottom:30px;font-size:40px;transition:transform .3s}.alien.happy{transform:translateY(-10px) scale(1.15)}
+.albub{position:absolute;left:46px;top:-8px;white-space:nowrap;font-size:13px;font-weight:700;background:#fff;color:#222;padding:4px 8px;border-radius:12px}
+.alearth{position:absolute;right:-20px;bottom:-40px;font-size:110px;opacity:.95}
+.zhall{display:grid;grid-template-columns:repeat(8,1fr);align-items:center;padding:14px 6px 6px;border-radius:16px;background:linear-gradient(#2a2f2a,#141714);color:#9aa59a;font-size:26px;text-align:center}
+.zhall span.z{animation:zwalk .6s ease-in-out infinite alternate}@keyframes zwalk{to{transform:translateY(-3px) rotate(4deg)}}
+.zgap{grid-column:1/-1;font-size:13px;color:#ffd0c7;margin:6px 0 0}
+.bomb{position:relative;display:grid;justify-items:center;gap:10px;padding:16px;border-radius:18px;background:linear-gradient(#3b3b3b,#1d1d1d)}
+.botime{font-family:ui-monospace,Menlo,monospace;font-size:40px;font-weight:700;color:#7CFC00;background:#000;padding:2px 18px;border-radius:10px;letter-spacing:3px}
+.botime.low{color:#ff4b3a;animation:blink .5s infinite}@keyframes blink{50%{opacity:.4}}
+.wires{display:flex;gap:10px}.wires span{width:46px;height:14px;border-radius:7px;background:var(--c);display:grid;place-items:center;font-size:12px}
+.wires span.cut{background:repeating-linear-gradient(90deg,var(--c) 0 16px,transparent 16px 30px)}
+.boom{font-size:90px;animation:bpop2 .6s}@keyframes bpop2{from{transform:scale(.2)}}
 </style>
 
 <div class="app">
@@ -1501,7 +1546,7 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
-const APP_VERSION = "2026.11.18-d";
+const APP_VERSION = "2026.11.18-e";
 const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);
 function audioBase(){ return null; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
@@ -1890,7 +1935,7 @@ function renderHome(){
   let acts = "";
   if (!store.placed) acts += `<button class="action gold" id="aPlace"><span class="ic">${ICON_TARGET}</span><span style="flex:1;min-width:0"><b>Find your level</b><span class="s am">ደረጃዎን ይወቁ · 3-minute test</span></span></button>`;
   if (nextL) acts += `<button class="action" data-open="${nextL.id}"><span class="ic">${ICON_PLAY}</span><span style="flex:1;min-width:0"><b>Next lesson: ${esc(nextL.en)}</b><span class="s am">ቀጣይ ትምህርት፡ ${esc(nextL.am)}</span></span></button>`;
-  { const gb = (store.game || {}).bestNight; acts += `<button class="action gold" id="aGame"><span class="ic" style="font-size:22px">🎮</span><span style="flex:1;min-width:0"><b>Games: play and learn</b><span class="s"><span class="am">ጨዋታዎች፡ ይጫወቱና ይማሩ!</span> · 12 games${gb ? ` · 🐺 night ${gb}` : ""}</span></span></button>`; }
+  { const gb = (store.game || {}).bestNight; acts += `<button class="action gold" id="aGame"><span class="ic" style="font-size:22px">🎮</span><span style="flex:1;min-width:0"><b>Games: play and learn</b><span class="s"><span class="am">ጨዋታዎች፡ ይጫወቱና ይማሩ!</span> · 19 games${gb ? ` · 🐺 night ${gb}` : ""}</span></span></button>`; }
   if (wrongN && canUse("lessons")) acts += `<button class="action" id="aReview"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Review your mistakes (${wrongN})</b><span class="s am">ስህተቶችዎን ይከልሱ</span></span></button>`;
   if (capsReady){
     acts += sampleFn
@@ -3255,6 +3300,438 @@ function suOnState(state){
     mic.target = null;
   }
   suRender();
+}
+
+// ---------- 7 more games: Boss Battle, Secret Agent, Story Choices, English Duel, Alien Invasion, Zombie Escape, Word Bomb ----------
+GAMES.push(
+  { id:"boss", ic:"⚔️", en:"Grammar Boss Battle", am:"የሰዋሰው አለቃ ፍልሚያ", skill:"Grammar", skillAm:"ሰዋሰው", d:"Beat 5 bosses with English answers", dam:"5 አለቆችን በእንግሊዝኛ መልሶች ያሸንፉ" },
+  { id:"agent", ic:"🕶️", en:"Secret Agent English", am:"ሚስጥራዊ ሰላይ", skill:"Reading", skillAm:"ንባብ", d:"Decode messages and finish missions", dam:"መልዕክቶችን ፈተው ተልዕኮዎችን ይጨርሱ" },
+  { id:"story", ic:"📖", en:"Story Choices", am:"የታሪክ ምርጫ", skill:"Decisions", skillAm:"ውሳኔ", d:"Your choices change the story. Find 5 endings", dam:"ምርጫዎ ታሪኩን ይቀይራል። 5 መጨረሻዎችን ያግኙ" },
+  { id:"duel", ic:"🥊", en:"English Duel", am:"የእንግሊዝኛ ግጥሚያ", skill:"Competition", skillAm:"ውድድር", d:"Beat the computer or a friend", dam:"ኮምፒውተሩን ወይም ጓደኛዎን ያሸንፉ" },
+  { id:"alien", ic:"👽", en:"Alien Invasion", am:"የባዕድ ወረራ", skill:"Meanings", skillAm:"ትርጉም", d:"Teach the aliens English and save Earth", dam:"ባዕዳኑን እንግሊዝኛ አስተምረው ምድርን ያድኑ" },
+  { id:"zombie", ic:"🧟", en:"Zombie Escape", am:"ከዞምቢዎች ማምለጥ", skill:"Puzzles", skillAm:"እንቆቅልሽ", d:"Solve puzzles to open 10 doors", dam:"10 በሮችን ለመክፈት እንቆቅልሾችን ይፍቱ" },
+  { id:"bomb", ic:"💣", en:"Word Bomb", am:"የቃል ቦምብ", skill:"Quick words", skillAm:"ፈጣን ቃላት", d:"Cut the wires before the bomb explodes", dam:"ቦምቡ ሳይፈነዳ ሽቦዎቹን ይቁረጡ" });
+Object.assign(GAME_START, { boss:() => bossIntro(), agent:() => agentIntro(), story:() => storyIntro(), duel:() => duelIntro(), alien:() => alienIntro(), zombie:() => zombieIntro(), bomb:() => bombIntro() });
+
+// ---- shared question engine (uses lesson words, grammar lessons, Sentence Race and word clues) ----
+const CLUES = [
+  [1, "water", "You drink it when you are thirsty."], [1, "bread", "You buy it at a bakery. You eat it with tea."], [1, "coffee", "Ethiopians drink it at a ceremony. It is black and hot."],
+  [1, "doctor", "This person helps you when you are sick."], [1, "teacher", "This person helps students learn at school."], [1, "key", "You use it to open a door."],
+  [1, "bed", "You sleep on it at night."], [1, "shoes", "You wear them on your feet."], [1, "hat", "You wear it on your head."], [1, "sun", "It is hot and bright in the sky in the day."],
+  [1, "moon", "You see it in the sky at night."], [1, "lion", "The king of the animals."], [1, "bus", "A big car that carries many people."], [1, "kitchen", "The room where you cook food."],
+  [2, "umbrella", "You open it when it rains."], [2, "clock", "It tells you the time."], [2, "market", "A place where people buy and sell things."], [2, "airport", "You go here to take a plane."],
+  [2, "birthday", "The day you were born. People give you gifts."], [2, "breakfast", "The first meal of the day."], [2, "tomorrow", "The day after today."], [2, "yesterday", "The day before today."],
+  [2, "hospital", "Sick people go here to get better."], [3, "library", "A place where you can borrow books for free."], [3, "salary", "Money you get every month for your work."],
+  [3, "passport", "You need it to travel to another country."], [3, "receipt", "A paper that shows what you paid."], [3, "discount", "When the price is lower than usual."], [3, "password", "A secret word you type to open your phone or account."]];
+function misspell(w){
+  const out = new Set(), vow = "aeiou", L = w.length;
+  for (let k = 0; k < 40 && out.size < 3; k++){
+    let s = w, r = Math.random(), i = 1 + Math.floor(Math.random() * (L - 2));
+    if (r < .3 && L > 3) s = w.slice(0, i) + w[i + 1] + w[i] + w.slice(i + 2);
+    else if (r < .55) s = w.slice(0, i) + w[i] + w.slice(i);
+    else if (r < .8 && vow.includes(w[i].toLowerCase())) s = w.slice(0, i) + pickOne([...vow].filter(v => v !== w[i].toLowerCase())) + w.slice(i + 1);
+    else if (L > 4) s = w.slice(0, i) + w.slice(i + 1);
+    if (s !== w && s.toLowerCase() !== w.toLowerCase()) out.add(s);
+  }
+  return [...out];
+}
+function qVocab(L){ const pool = gameWords(L, w => w[0].length <= 26 && w[1].length <= 30), w = pickOne(pool);
+  return { kind:"vocab", ask:"What is this in English?", askAm:"በእንግሊዝኛ ምንድን ነው?", p:w[1], pAm:true, opts:gameOpts(w, pool), a:w[0], say:w[0], w }; }
+function qMeaning(L){ const pool = gameWords(L, w => w[0].length <= 44 && w[1].length <= 34), w = pickOne(pool);
+  const others = shuffle(pool.filter(x => x[1] !== w[1])).slice(0, 3).map(x => x[1]);
+  return { kind:"meaning", ask:"What does it mean?", askAm:"ትርጉሙ ምንድን ነው?", p:w[0], opts:shuffle([w[1], ...others]), a:w[1], optsAm:true, say:w[0], w }; }
+function qSpell(L){ const pool = gameWords(Math.min(3, L), w => new RegExp(`^[A-Za-z]{${L >= 3 ? 6 : 4},12}$`).test(w[0]), 6), w = pickOne(pool), bad = misspell(w[0]);
+  if (bad.length < 2) return qVocab(L);
+  return { kind:"spell", ask:"Which spelling is correct?", askAm:"ትክክለኛው አጻጻፍ የትኛው ነው?", p:w[1], pAm:true, opts:shuffle([w[0], ...bad]), a:w[0], say:w[0], w }; }
+function qComplete(L){ const pool = gameWords(Math.min(3, L), w => /^[A-Za-z]{4,11}$/.test(w[0]), 6), w = pickOne(pool), word = w[0];
+  const hide = new Set(shuffle([...Array(word.length).keys()].slice(1)).slice(0, Math.max(1, Math.round(word.length * (L >= 3 ? .5 : .35)))));
+  const masked = [...word].map((c, i) => hide.has(i) ? "_" : c).join(" ");
+  const same = shuffle(pool.filter(x => x[0] !== word && Math.abs(x[0].length - word.length) <= 1)).slice(0, 3).map(x => x[0]);
+  const opts = shuffle([word, ...(same.length >= 3 ? same : misspell(word))].slice(0, 4));
+  return { kind:"complete", ask:`Complete the word · ${w[1]}`, askAm:"ቃሉን ያሟሉ", p:masked, mono:true, opts, a:word, say:word, w }; }
+function qClue(L){ const list = CLUES.filter(c => c[0] <= Math.max(1, Math.min(3, L))), c = pickOne(list);
+  const others = shuffle(CLUES.filter(x => x[1] !== c[1])).slice(0, 3).map(x => x[1]);
+  return { kind:"clue", ask:"What is it?", askAm:"ምንድን ነው?", p:c[2], opts:shuffle([c[1], ...others]), a:c[1], say:c[1] }; }
+function qGrammar(L){
+  const lv = Math.max(1, Math.min(3, L));
+  if (Math.random() < .5){ const r = pickOne(RACE.filter(x => x[0] === lv));
+    return { kind:"fix", ask:"Fix the mistake:", askAm:"ስህተቱን ያርሙ", p:"❌ " + r[1], opts:shuffle([r[2], ...r[3]]), a:r[2], why:r[4], say:r[2] }; }
+  const gl = LESSONS.filter(l => l.grammar && monthOf(l) === lv);
+  for (let k = 0; k < 10; k++){
+    const l = pickOne(gl), w = pickOne(l.words); if (!isSentence(w)) continue;
+    const g = gapQuestion(w, l); if (!g) continue;
+    return { kind:"gap", ask:"Fill the gap:", askAm:"ክፍተቱን ይሙሉ", p:g.gap, sub:w[1], opts:g.options, a:g.correctOpt, why:l.tip && l.tip[0], say:w[0] };
+  }
+  return qVocab(L);
+}
+function qIdiom(){ const q = qMeaning(4); q.ask = "What does this expression mean?"; q.askAm = "ይህ አገላለጽ ምን ማለት ነው?"; return q; }
+const Q_MAKERS = { vocab:qVocab, meaning:qMeaning, spell:qSpell, complete:qComplete, clue:qClue, grammar:qGrammar, idiom:qIdiom };
+function makeQ(kinds, L){ const k = pickOne(kinds); return Q_MAKERS[k](L); }
+// Draws a question into el; calls done(ok) once. Shows the right answer and a short reason when wrong.
+function askQ(el, q, done, opt){
+  opt = opt || {};
+  el.innerHTML = `<p class="qask">${esc(q.ask)} <span class="am">· ${esc(q.askAm)}</span></p>
+    <div class="qp ${q.pAm ? "am" : ""} ${q.mono ? "mono" : ""}">${esc(q.p)}</div>${q.sub ? `<p class="am qsub">${esc(q.sub)}</p>` : ""}
+    <div class="gchoices ${q.opts.some(o => o.length > 16) ? "long" : "two"} ${q.optsAm ? "am" : ""}">${q.opts.map((o, i) => `<button data-c="${i}">${esc(o)}</button>`).join("")}</div><div class="qfb"></div>`;
+  let used = false;
+  el.querySelector(".gchoices").onclick = e => {
+    const b = e.target.closest("[data-c]"); if (!b || used || b.disabled) return; used = true;
+    const ok = q.opts[+b.dataset.c] === q.a;
+    el.querySelectorAll("[data-c]").forEach((x, i) => { x.disabled = true; if (q.opts[i] === q.a) x.classList.add("ok"); });
+    if (!ok) b.classList.add("bad");
+    if (q.w) (ok ? markRight : markWrong)(q.w[0]);
+    if (ok && q.say) sayIfOn(q.say);
+    const fb = el.querySelector(".qfb");
+    if (!ok && !opt.quiet) fb.innerHTML = `<div class="gwhy"><b>✔ ${esc(q.a)}</b>${q.why ? `<p>💡 ${esc(q.why)}</p>` : ""}</div>`;
+    done(ok, q);
+  };
+}
+const qMiss = (m, q) => { const en = q.w ? q.w[0] : q.say || q.a, am = q.w ? q.w[1] : q.p.replace(/^❌ /, ""); m.set(en, [en, am]); };
+const wait = ms => new Promise(r => setTimeout(r, ms));
+function hpBar(n, max, cls){ return `<div class="hpbar ${cls || ""}"><i style="width:${Math.max(0, n / max * 100)}%"></i><span>${n}/${max}</span></div>`; }
+
+// ===== 1. Grammar Boss Battle =====
+const BOSSES = [
+  { ic:"🐉", en:"Word Dragon", am:"የቃላት ዘንዶ", kinds:["vocab"], hp:5, L:1, reward:["🗡️", "Word Sword", "የቃላት ሰይፍ"] },
+  { ic:"🦂", en:"Spelling Scorpion", am:"የአጻጻፍ ጊንጥ", kinds:["spell", "complete"], hp:6, L:2, reward:["🛡️", "Spelling Shield", "የአጻጻፍ ጋሻ"] },
+  { ic:"👹", en:"Grammar Giant", am:"የሰዋሰው ግዙፍ", kinds:["grammar"], hp:6, L:1, reward:["🏹", "Grammar Bow", "የሰዋሰው ቀስት"] },
+  { ic:"🧌", en:"Tense Troll", am:"የጊዜ አውሬ", kinds:["grammar", "spell"], hp:7, L:3, reward:["🪄", "Tense Wand", "የጊዜ በትር"] },
+  { ic:"🐲", en:"Idiom Emperor", am:"የፈሊጥ ንጉሠ ነገሥት", kinds:["idiom", "grammar", "vocab"], hp:8, L:4, reward:["👑", "English Crown", "የእንግሊዝኛ ዘውድ"] }];
+function bossRewards(){ if (!store.games) store.games = {}; return store.games.rewards || (store.games.rewards = {}); }
+function bossIntro(){
+  const R = bossRewards();
+  gameIntro("boss", [
+    ["⚔️ Each right answer hits the boss. Each wrong answer costs ⚡ energy.", "እያንዳንዱ ትክክለኛ መልስ አለቃውን ይመታል። ስህተት ⚡ ጉልበት ያሳጣል።"],
+    ["🐉 5 bosses: words, spelling, grammar, tenses, and the Idiom Emperor.", "5 አለቆች፦ ቃላት፣ አጻጻፍ፣ ሰዋሰው፣ ጊዜያትና የፈሊጥ ንጉሠ ነገሥት።"],
+    [`🎁 Win rewards: ${BOSSES.map(b => R[b.en] ? b.reward[0] : "🔒").join(" ")}`, "ሽልማቶችን ያግኙ!"]], () => bossPlay(0, 5, 0));
+}
+function bossPlay(bi, energy, score){
+  const run = ++GRUN, B = BOSSES[bi], S = { hp:B.hp, en:energy, score, missed:new Map() };
+  $("#v-game").innerHTML = gameHudHTML([`<span class="glvl">Boss ${bi + 1}/5</span>`, `<span>⭐ <b id="bsScore">${score}</b></span>`]) +
+    `<div class="arena"><div class="boss" id="bsBoss"><span class="bossic">${B.ic}</span><b>${esc(B.en)}</b><span class="am">${esc(B.am)}</span><div id="bsHp">${hpBar(S.hp, B.hp, "red")}</div></div>
+     <div class="hero"><span>🦁 You</span><div id="bsEn">${hpBar(S.en, 5, "blue")}</div></div><div class="gmsg" id="gMsg"></div></div><div id="bsQ"></div>`;
+  show("game"); wireSnd();
+  gameMsgIn(`${B.ic} ${B.en} appears!`, B.am + " መጣ!", 1500);
+  const next = () => {
+    if (GRUN !== run) return;
+    askQ($("#bsQ"), makeQ(B.kinds, B.L), async (ok, q) => {
+      if (ok){ S.hp--; S.score += 10 + bi * 5; $("#bsBoss").classList.add("hit"); SFX.hit(); setTimeout(() => $("#bsBoss") && $("#bsBoss").classList.remove("hit"), 400); }
+      else { S.en--; qMiss(S.missed, q); SFX.bite(); $(".hero").classList.add("shake"); setTimeout(() => $(".hero") && $(".hero").classList.remove("shake"), 400); }
+      $("#bsHp").innerHTML = hpBar(S.hp, B.hp, "red"); $("#bsEn").innerHTML = hpBar(S.en, 5, "blue"); $("#bsScore").textContent = S.score;
+      await wait(ok ? 700 : 1800); if (GRUN !== run) return;
+      if (S.hp <= 0){
+        const R = bossRewards(), isNew = !R[B.en]; R[B.en] = 1; saveStore(); SFX.win(); party();
+        const last = bi + 1 >= BOSSES.length;
+        $("#bsQ").innerHTML = `<div class="gshop"><p class="gtitle">🏆 You beat the ${esc(B.en)}! · <span class="am">አሸነፉ!</span></p>
+          <div class="reward"><span>${B.reward[0]}</span><b>${isNew ? "New reward: " : "Reward: "}${esc(B.reward[1])}</b><span class="am">${esc(B.reward[2])}</span></div>
+          <p class="gsmall">⚡ +2 energy for the next fight</p>
+          <div class="grow"><button class="btn gold" id="bsNext">${last ? "Finish 🏆" : "Next boss: " + BOSSES[bi + 1].ic + " " + esc(BOSSES[bi + 1].en)}</button></div></div>`;
+        $("#bsNext").onclick = () => last ? gameOverPanel($("#bsQ"), "boss", S.score + 100, "👑 You beat every boss! English champion! · <span class=\"am\">ሁሉንም አሸነፉ!</span>", S.missed, () => bossPlay(0, 5, 0)) : bossPlay(bi + 1, Math.min(5, S.en + 2), S.score);
+      } else if (S.en <= 0) gameOverPanel($("#bsQ"), "boss", S.score, `⚡ Out of energy! The ${esc(B.en)} wins this time. · <span class="am">ጉልበትዎ አለቀ!</span>`, S.missed, () => bossPlay(0, 5, 0));
+      else next();
+    });
+  };
+  next();
+}
+
+// ===== 2. Secret Agent English =====
+const MISSIONS = [
+  { code:"Operation Coffee", am:"ኦፕሬሽን ቡና", file:"📁 File A: The enemy's favourite drink is macchiato.", tasks:[
+    ["🔐 Decode", "This message is written backwards:\n\"kraP lartneC ta teeM\"", "What does it say?", ["Meet at Central Park", "Meet at the airport", "Park the car in the centre"]],
+    ["🕵️ Find the suspect", "The suspect is tall, wears glasses and carries a black bag.", "Which person is the suspect?", ["A tall man with glasses and a black bag", "A short man with a hat and a red bag", "A tall woman with a blue bag"]],
+    ["🧭 Follow orders", "Agent, take the second street on the right, then wait next to the yellow taxi.", "Where do you wait?", ["Next to the yellow taxi", "Inside the yellow taxi", "On the first street on the left"]]] },
+  { code:"Operation Sunrise", am:"ኦፕሬሽን ጎህ", file:"📁 File B: The enemy boss is afraid of cats. 🐱", tasks:[
+    ["🔑 Unlock the file", "Password clue: \"It's the moment when the sun comes up in the morning.\"", "What is the password?", ["SUNRISE", "SUNSET", "MIDNIGHT"]],
+    ["🔐 Decode", "Read only the FIRST letter of each word:\n\"Good Old Lions Dance\"", "What is the secret word?", ["GOLD", "GOOD", "LION"]],
+    ["🕵️ Find the suspect", "A witness says: \"She wasn't wearing a hat, but she had a scarf and long hair.\"", "Who is the suspect?", ["A woman with long hair and a scarf, no hat", "A woman with a hat and a scarf", "A man with long hair and a scarf"]]] },
+  { code:"Operation Double Agent", am:"ኦፕሬሽን ሁለት ፊት", file:"📁 File C: Agent K works for the enemy. Don't trust him!", tasks:[
+    ["🕵️ Find the liar", "Agent K: \"At 9, I was having breakfast with Agent M.\"\nAgent M: \"At 9, I ate breakfast alone at home.\"", "What do we know?", ["One of them is lying", "They had breakfast together", "Agent M was at the office"]],
+    ["🧭 Follow orders", "\"Unless the red light is on, enter through the back door. If it is on, wait until it turns off.\" The red light is ON.", "What should you do?", ["Wait until the light turns off", "Enter through the back door now", "Turn on the red light"]],
+    ["🔐 Decode", "HQ says: \"Our friend in Paris has been let go.\"", "What happened to the friend?", ["He lost his job", "He went on holiday", "He escaped from prison"]]] },
+  { code:"Final Mission: Operation Lion", am:"የመጨረሻ ተልዕኮ፦ ኦፕሬሽን አንበሳ", file:"🏅 Mission complete! You are Agent 007 of Fidel English.", tasks:[
+    ["🔐 Decode", "Take the first letter of each word:\n\"Look In Our Notebook\"", "What is the code word?", ["LION", "LOOK", "NOTE"]],
+    ["💣 Stop the bomb", "\"Cut the wire that is not red, not blue, and not the longest.\" The wires are red, blue, green and yellow. The green wire is the longest.", "Which wire do you cut?", ["Yellow", "Green", "Red"]],
+    ["📨 Last message", "HQ: \"Mission accomplished. Take a well-deserved break, agent.\"", "What does HQ want you to do?", ["Rest, because you did very well", "Break the computer", "Start a new mission right now"]]] }];
+function agentIntro(){ gameIntro("agent", [
+  ["🕶️ You are a secret agent. Read each English message very carefully.", "እርስዎ ሚስጥራዊ ሰላይ ነዎት። እያንዳንዱን የእንግሊዝኛ መልዕክት በጥንቃቄ ያንብቡ።"],
+  ["🔐 Decode messages, find suspects, follow orders and unlock secret files.", "መልዕክቶችን ይፍቱ፣ ተጠርጣሪዎችን ያግኙ፣ ትዕዛዞችን ይከተሉ፣ ሚስጥራዊ ፋይሎችን ይክፈቱ።"],
+  ["❤️ 3 mistakes and your cover is blown!", "3 ስህተት ከሰሩ ማንነትዎ ይጋለጣል!"]], agentPlay); }
+function agentPlay(){
+  const run = ++GRUN, A = { m:0, t:0, score:0, hearts:3, files:[], missed:new Map() };
+  $("#v-game").innerHTML = gameHudHTML([`<span id="agLife">${lives(3)}</span>`, `<span>⭐ <b id="agScore">0</b></span>`, `<span class="glvl" id="agM">1/${MISSIONS.length}</span>`]) + `<div id="agArea"></div>`;
+  show("game"); wireSnd();
+  const render = () => {
+    if (GRUN !== run) return;
+    const M = MISSIONS[A.m], T = M.tasks[A.t], opts = shuffle(T[3].slice());
+    $("#agM").textContent = `${A.m + 1}/${MISSIONS.length}`;
+    $("#agArea").innerHTML = `<div class="agent"><div class="aghead">🕶️ ${esc(M.code)} <span class="am">${esc(M.am)}</span><small>Task ${A.t + 1}/3</small></div>
+      <div class="agcard"><b>${T[0]}</b><p>${esc(T[1]).replace(/\n/g, "<br>")}</p></div>
+      ${A.files.length ? `<div class="agfiles">${A.files.map(f => `<span>${esc(f)}</span>`).join("")}</div>` : ""}
+      <p class="dq">${esc(T[2])}</p>${choiceButtons(opts, "long")}<div id="agWhy"></div></div>`;
+    $("#agArea").querySelector(".gchoices").onclick = e => {
+      const b = e.target.closest("[data-c]"); if (!b || b.disabled) return;
+      if (opts[+b.dataset.c] === T[3][0]){
+        $("#agArea").querySelectorAll("[data-c]").forEach(x => x.disabled = true); b.classList.add("ok");
+        A.score += 15 + A.m * 5; $("#agScore").textContent = A.score; SFX.win();
+        const endM = A.t + 1 >= M.tasks.length;
+        if (endM) A.files.push(M.file);
+        $("#agWhy").innerHTML = `<div class="gwhy ok"><b>✅ ${endM ? "Mission complete! Secret file unlocked 🔓" : "Correct, agent."} · <span class="am">${esc(pickOne(CHEER_RIGHT)[0])}</span></b>
+          ${endM ? `<p class="agfile">${esc(M.file)}</p>` : ""}<button class="btn gold" id="agNext">${endM ? (A.m + 1 >= MISSIONS.length ? "Finish 🏅" : "Next mission →") : "Next task →"}</button></div>`;
+        $("#agNext").onclick = () => {
+          if (!endM){ A.t++; render(); return; }
+          if (A.m + 1 >= MISSIONS.length){ party(); gameOverPanel($("#agArea"), "agent", A.score + A.hearts * 10, "🏅 All missions complete, Agent! · <span class=\"am\">ሁሉንም ተልዕኮዎች ጨረሱ!</span>", A.missed, agentPlay); return; }
+          A.m++; A.t = 0; render();
+        };
+      } else {
+        b.classList.add("bad"); b.disabled = true; A.hearts--; SFX.bite(); $("#agLife").textContent = lives(A.hearts); A.missed.set(T[2], [T[3][0], M.am]);
+        if (A.hearts <= 0) setTimeout(() => gameOverPanel($("#agArea"), "agent", A.score, "🚨 Your cover is blown! · <span class=\"am\">ማንነትዎ ተጋለጠ!</span>", A.missed, agentPlay), 800);
+        else $("#agWhy").innerHTML = `<div class="gwhy"><b>❌ Careful, agent! Read it again. · <span class="am">በጥንቃቄ እንደገና ያንብቡ</span></b></div>`;
+      }
+    };
+  };
+  render();
+}
+
+// ===== 3. Story Choices (one story, 5 endings) =====
+const STORY = {
+  start:{ s:"✈️ You land at Heathrow Airport in London. It's your first time abroad! The officer at passport control looks at you: \"Purpose of your visit?\"", c:[
+    ["I'm here to study at a university.", "bag", "✅ Clear and polite."], ["Purpose? I like purple.", "confused", "😅 'Purpose' means WHY you came."], ["Why do you want to know?", "rude", "😬 That sounds rude to an officer."]] },
+  confused:{ s:"The officer smiles. \"Purpose means WHY you came here.\" You try again.", c:[["Oh, sorry! I'm here to study.", "bag", "✅ Good recovery!"]] },
+  rude:{ s:"The officer frowns and takes you to a small room for more questions. Two hours later, you are finally free. You're tired and hungry.", c:[["Continue · ቀጥል", "bag", ""]] },
+  bag:{ s:"🧳 You get your bag. Now you need to go to your hotel in the city. A sign says: \"Taxi → Exit A. Train to the city (cheaper) → Exit C.\"", c:[
+    ["Take a taxi from Exit A.", "taxi", "🚕 Fast but expensive."], ["Take the train from Exit C.", "train", "🚆 Cheaper. Good reading!"]] },
+  taxi:{ s:"🚕 The driver asks: \"Where to?\"", c:[["The Park Hotel, please.", "hotel", "✅ Short and polite."], ["I go hotel. Drive.", "lostTaxi", "😬 The driver doesn't know which hotel!"]] },
+  lostTaxi:{ s:"The driver says \"Which hotel?\" You don't understand. He drives around London for an hour…", c:[["Show him the hotel address on your phone.", "END_broke", ""]] },
+  train:{ s:"🚆 On the train, a young woman asks: \"Excuse me, is this seat taken?\"", c:[["No, it's free. Please sit down.", "friend", "✅ Friendly and correct!"], ["Yes, I am seat.", "alone", "😅 She looks confused and walks away."]] },
+  friend:{ s:"She sits down. \"I'm Emma. Is this your first time in London?\"", c:[["Yes, it is! I'm a bit nervous.", "emma", "✅ Natural English, and honest!", "friend"], ["No.", "alone", "😐 Too short. The talk ends."]] },
+  emma:{ s:"Emma laughs. \"Don't worry, London is fun! Here's my number. I can show you the city on Saturday.\" 📱", c:[["That's so kind of you. Thank you!", "hotel", "✅ Lovely reply.", "friend"]] },
+  alone:{ s:"You sit alone and look out of the window. Soon you arrive in the city and walk to your hotel.", c:[["Go into the hotel.", "hotel", ""]] },
+  hotel:{ s:"🏨 At the hotel reception: \"Good evening! Do you have a booking?\"", c:[["Yes, it's under the name Hana.", "uni", "✅ Perfect hotel English."], ["I want room. Give me.", "END_noroom", "😬 Very rude!"]] },
+  uni:{ s:"🎓 Next morning: your first day at university. The campus is huge and you're lost! You see a student.", c:[
+    ["Excuse me, could you tell me where the library is?", "END_good", "✅ Polite question!"], ["Hey! Library where?", "END_late", "😬 Not polite, and not correct English."]] },
+  END_good:{ end:"🌟 Happy ending", s:"The student smiles and walks with you to the library. You are on time, and you make a new friend. Your English opens doors! 🌟" },
+  END_star:{ end:"⭐ London Star (best ending)", s:"You arrive on time, make new friends, and on Saturday Emma shows you Big Ben and the River Thames. Polite English made your first week amazing! ⭐" },
+  END_late:{ end:"😅 Late for class", s:"The student looks confused and walks away. You are one hour late for your first class. Lesson learned: polite English helps!" },
+  END_noroom:{ end:"🛏️ No room", s:"The receptionist says: \"Sorry, we have no rooms for you.\" You spend the night at the airport. Next time, try 'I'd like a room, please.'" },
+  END_broke:{ end:"💸 No money left", s:"The taxi finally arrives, but the trip costs 120 pounds! You have no money left for dinner. Clear English could have saved you money." } };
+const STORY_ENDS = ["END_star", "END_good", "END_late", "END_noroom", "END_broke"];
+function storyFound(){ if (!store.games) store.games = {}; return store.games.endings || (store.games.endings = []); }
+function storyIntro(){ const f = storyFound(); gameIntro("story", [
+  ["📖 You travel to London for the first time. YOU decide what to say.", "ለመጀመሪያ ጊዜ ወደ ለንደን ይጓዛሉ። ምን እንደሚሉ እርስዎ ይወስናሉ።"],
+  ["🔀 Every choice changes what happens next.", "እያንዳንዱ ምርጫ ቀጣዩን ይቀይራል።"],
+  [`🏁 Find all 5 endings! Found: ${f.length}/5 ${STORY_ENDS.map(e => f.includes(e) ? STORY[e].end.split(" ")[0] : "❔").join(" ")}`, "5ቱንም መጨረሻዎች ያግኙ!"]], storyPlay); }
+function storyPlay(){
+  const run = ++GRUN, flags = new Set(); let node = "start", note = "", steps = 0;
+  $("#v-game").innerHTML = gameHudHTML([`<span class="glvl">📖 London</span>`, `<span>🏁 <b id="stF">${storyFound().length}</b>/5</span>`]) + `<div id="stArea"></div>`;
+  show("game"); wireSnd();
+  const render = () => {
+    if (GRUN !== run) return;
+    if (node === "END_good" && flags.has("friend")) node = "END_star";
+    const N = STORY[node];
+    if (N.end){
+      const f = storyFound(), isNew = !f.includes(node); if (isNew){ f.push(node); saveStore(); }
+      if (node === "END_star" || node === "END_good"){ party(); SFX.win(); } else SFX.bite();
+      $("#stArea").innerHTML = `${note ? `<p class="stnote">${esc(note)}</p>` : ""}<div class="stend"><b>${esc(N.end)}</b><p>${esc(N.s)}</p></div>
+        <p class="gsmall">${isNew ? "🆕 New ending found!" : "You found this ending before."} · Endings: ${f.length}/5 ${STORY_ENDS.map(e => f.includes(e) ? STORY[e].end.split(" ")[0] : "❔").join(" ")}</p>
+        <div class="grow"><button class="btn gold" id="stAgain">Try another path · ሌላ መንገድ 🔀</button><button class="btn" id="stAll">All games · ሁሉም ጨዋታዎች</button></div>`;
+      setBest("story", f.length * 20); $("#stF").textContent = f.length;
+      $("#stAgain").onclick = storyPlay; $("#stAll").onclick = openGames; return;
+    }
+    const opts = N.c.length > 1 ? shuffle(N.c.slice()) : N.c;
+    $("#stArea").innerHTML = `${note ? `<p class="stnote">${esc(note)}</p>` : ""}<div class="stbox"><p>${esc(N.s)}</p><button class="qsay" data-sayw="${esc(N.s.replace(/[^\x20-\x7E]/g, ""))}" aria-label="Listen">🔊</button></div>
+      <p class="gsmall">What do you do or say? · <span class="am">ምን ያደርጋሉ ወይም ይላሉ?</span></p>${choiceButtons(opts.map(c => c[0]), "long")}`;
+    $("#stArea").querySelector(".gchoices").onclick = e => {
+      const b = e.target.closest("[data-c]"); if (!b) return;
+      const c = opts[+b.dataset.c]; if (c[3]) flags.add(c[3]); note = c[2]; node = c[1]; steps++;
+      if (!/Continue|Show him|Go into/.test(c[0])) sayIfOn(c[0]);
+      render(); scrollTo(0, 0);
+    };
+  };
+  render();
+}
+
+// ===== 4. English Duel (vs computer or 2 players on one phone) =====
+function duelIntro(){
+  GRUN++; stopSound();
+  $("#v-game").innerHTML = `<div class="gstart"><div class="gbadge">🥊</div><h1>English Duel</h1><p class="am gsub">የእንግሊዝኛ ግጥሚያ</p>
+    <p>Fast rounds of words, grammar and spelling. <b>First to 7 points wins!</b></p><p class="am">ፈጣን ዙሮች፦ ቃላት፣ ሰዋሰውና አጻጻፍ። መጀመሪያ 7 ነጥብ ያገኘ ያሸንፋል!</p>
+    ${gameBest("duel") ? `<p class="grec">🏆 Wins: ${gameBest("duel")}</p>` : ""}
+    <div class="grow"><button class="btn gold" data-cpu="1">🤖 vs Computer · Easy</button><button class="btn gold" data-cpu="2">🤖 vs Computer · Normal</button><button class="btn gold" data-cpu="3">🤖 vs Computer · Hard</button>
+    <button class="btn" data-cpu="0">👥 2 players on one phone · 2 ተጫዋቾች</button><button class="btn" id="gBack">All games · ሁሉም ጨዋታዎች</button></div></div>`;
+  $("#gBack").onclick = openGames;
+  $("#v-game").querySelectorAll("[data-cpu]").forEach(b => b.onclick = () => duelPlay(+b.dataset.cpu));
+  show("game");
+}
+function duelPlay(cpu){
+  const run = ++GRUN, D = { p:0, o:0, round:0, lock:false, timer:null }, WIN = 7;
+  const kinds = ["vocab", "grammar", "spell", "vocab", "complete", "clue"];
+  const oName = cpu ? "🤖 Computer" : "🧑 Player 2";
+  $("#v-game").innerHTML = `<div class="dscore"><span>🧑 ${cpu ? "You" : "Player 1"} <b id="duP">0</b></span><span class="gq">vs</span><span><b id="duO">0</b> ${oName}</span></div>
+    ${cpu ? "" : `<div class="dpad top" id="duPad2"></div>`}<div class="dq2" id="duQ"></div><div class="dpad" id="duPad1"></div><div id="duEnd"></div>`;
+  show("game");
+  const pads = () => cpu ? [$("#duPad1")] : [$("#duPad1"), $("#duPad2")];
+  const round = () => {
+    if (GRUN !== run) return;
+    D.round++; D.lock = false; D.out = new Set();
+    const L = Math.min(4, 1 + Math.floor((D.p + D.o) / 4));
+    const q = makeQ(kinds, L); D.q = q;
+    $("#duQ").innerHTML = `<p class="qask">Round ${D.round} · ${esc(q.ask)}</p><div class="qp ${q.pAm ? "am" : ""} ${q.mono ? "mono" : ""}">${esc(q.p)}</div><div id="duMsg" class="dmsg"></div>`;
+    pads().forEach((pad, pi) => { pad.innerHTML = (pi === 1 ? `<div class="dqmini ${q.pAm ? "am" : ""}">${esc(q.p)}</div>` : "") + q.opts.map((o, i) => `<button data-c="${i}" class="${q.optsAm ? "am" : ""}">${esc(o)}</button>`).join("");
+      pad.onclick = e => { const b = e.target.closest("[data-c]"); if (b && !b.disabled) answer(pi === 0 ? "p" : "o", q.opts[+b.dataset.c] === q.a, b); }; });
+    if (cpu){ const think = [0, [3200, 6200], [2300, 4600], [1500, 3100]][cpu]; clearTimeout(D.timer);
+      D.timer = setTimeout(() => { if (GRUN === run && !D.lock) answer("o", Math.random() < [0, .6, .75, .88][cpu], null); }, think[0] + Math.random() * (think[1] - think[0])); }
+  };
+  const answer = (who, ok, b) => {
+    if (D.lock || D.out.has(who)) return;
+    if (b) b.classList.add(ok ? "ok" : "bad");
+    if (ok){
+      D.lock = true; clearTimeout(D.timer); D[who]++; $("#duP").textContent = D.p; $("#duO").textContent = D.o;
+      who === "p" ? SFX.win() : SFX.bite();
+      $("#duMsg").innerHTML = `${who === "p" ? (cpu ? "🧑 You got it!" : "🧑 Player 1 scores!") : cpu ? "🤖 Computer was faster!" : "🧑 Player 2 scores!"} · <b>${esc(D.q.a)}</b>`;
+      pads().forEach(p => p.querySelectorAll("[data-c]").forEach((x, i) => { x.disabled = true; if (D.q.opts[i] === D.q.a) x.classList.add("ok"); }));
+      setTimeout(() => { if (GRUN !== run) return; if (D.p >= WIN || D.o >= WIN) finish(); else round(); }, 1500);
+    } else {
+      D.out.add(who); if (who === "p" && D.q.w) markWrong(D.q.w[0]);
+      $("#duMsg").textContent = who === "p" ? (cpu ? "❌ Wrong! Wait…" : "❌ Player 1 is out this round") : cpu ? "🤖 Computer made a mistake!" : "❌ Player 2 is out this round";
+      const pad = who === "p" ? $("#duPad1") : $("#duPad2"); if (pad) pad.querySelectorAll("[data-c]").forEach(x => x.disabled = true);
+      if (!cpu && D.out.size >= 2 || cpu && D.out.size >= 2){ D.lock = true; clearTimeout(D.timer); $("#duMsg").innerHTML = `Nobody scores. Answer: <b>${esc(D.q.a)}</b>`; setTimeout(round, 1700); }
+    }
+  };
+  const finish = () => {
+    const pw = D.p >= WIN;
+    if (cpu && pw){ if (!store.games) store.games = {}; store.games.duel = (store.games.duel || 0) + 1; saveStore(); party(); }
+    $("#duPad1").innerHTML = ""; if ($("#duPad2")) $("#duPad2").innerHTML = "";
+    $("#duQ").innerHTML = `<div class="gshop"><p class="gtitle">${pw ? (cpu ? "🏆 You win! · አሸነፉ!" : "🏆 Player 1 wins!") : cpu ? "🤖 The computer wins this time · በሚቀጥለው ያሸንፋሉ!" : "🏆 Player 2 wins!"}</p>
+      <p class="gbig">${D.p} – ${D.o}</p><div class="grow"><button class="btn gold" id="duAgain">Rematch · እንደገና 🥊</button><button class="btn" id="duAll">All games · ሁሉም ጨዋታዎች</button></div></div>`;
+    $("#duAgain").onclick = () => duelPlay(cpu); $("#duAll").onclick = openGames;
+  };
+  round();
+}
+
+// ===== 5. Alien Language Invasion =====
+const HUMAN_TALK = [["Someone sneezes. Humans say…", "Bless you!"], ["You meet someone for the first time.", "Nice to meet you."], ["Someone gives you a gift.", "Thank you so much!"],
+  ["You step on someone's foot.", "Oh, I'm so sorry!"], ["Your friend has an exam tomorrow.", "Good luck!"], ["You didn't hear what someone said.", "Sorry, could you repeat that?"],
+  ["Someone says 'Thank you'.", "You're welcome."], ["You leave a friend's house at night.", "Good night! See you soon."], ["Your friend is sad.", "Don't worry, it will be OK."],
+  ["It's your friend's birthday.", "Happy birthday!"], ["You need to pass someone in a crowded bus.", "Excuse me."], ["Your friend is going on a trip.", "Have a safe trip!"]];
+function qHuman(){ const h = pickOne(HUMAN_TALK), others = shuffle(HUMAN_TALK.filter(x => x !== h)).slice(0, 3).map(x => x[1]);
+  return { kind:"human", ask:"Teach the alien: what do humans say?", askAm:"ሰዎች ምን ይላሉ?", p:h[0], opts:shuffle([h[1], ...others]), a:h[1], say:h[1] }; }
+function alienIntro(){ gameIntro("alien", [
+  ["👽 Aliens have landed! They don't understand Earth English.", "ባዕዳን ምድር ላይ አረፉ! የምድርን እንግሊዝኛ አይረዱም።"],
+  ["🛸 Teach them: words, expressions, and how humans talk.", "ያስተምሯቸው፦ ቃላት፣ አገላለጾችና ሰዎች እንዴት እንደሚነጋገሩ።"],
+  ["🌍 Each wrong answer brings the invasion closer. Teach 15 aliens to save Earth!", "እያንዳንዱ ስህተት ወረራውን ያቀርባል። ምድርን ለማዳን 15 ባዕዳንን ያስተምሩ!"]], alienPlay); }
+function alienPlay(){
+  const run = ++GRUN, A = { taught:0, danger:0, score:0, missed:new Map() }, GOAL = 15, MAXD = 4;
+  const ALIENS = ["👽", "👾", "🤖", "🛸"];
+  $("#v-game").innerHTML = gameHudHTML([`<span>👽 <b id="alT">0</b>/${GOAL}</span>`, `<span>⭐ <b id="alS">0</b></span>`, `<span class="glvl" id="gLvl">${lvlChip(1)}</span>`]) +
+    `<div class="alsky" id="alSky"><div class="alship" id="alShip">🛸</div><div class="alien" id="alAlien">👽<span class="albub" id="alBub">Zorp?</span></div><div class="alearth">🌍</div><div class="gmsg" id="gMsg"></div></div>
+    <div id="alDanger"></div><div id="alQ"></div>`;
+  show("game"); wireSnd();
+  let lastL = 1;
+  const draw = () => {
+    $("#alDanger").innerHTML = `<p class="gsmall">Invasion danger · <span class="am">የወረራ አደጋ</span></p>${hpBar(A.danger, MAXD, "red")}`;
+    $("#alShip").style.top = (8 + A.danger * 13) + "%";
+  };
+  const next = () => {
+    if (GRUN !== run) return;
+    const L = A.taught < 4 ? 1 : A.taught < 8 ? 2 : A.taught < 12 ? 3 : 4;
+    if (L !== lastL){ lastL = L; levelUp(L); }
+    const q = L === 1 ? qMeaning(1) : L === 2 ? (Math.random() < .5 ? qMeaning(2) : qHuman()) : L === 3 ? (Math.random() < .5 ? qHuman() : qMeaning(3)) : qIdiom();
+    if (q.kind !== "human"){ q.ask = "The alien asks: \"What does this mean?\""; q.askAm = "ባዕዱ ይጠይቃል፦ ምን ማለት ነው?"; }
+    $("#alAlien").firstChild.textContent = pickOne(ALIENS);
+    $("#alBub").textContent = q.kind === "human" ? "Humans… what say?" : `"${q.p.length > 22 ? q.p.slice(0, 20) + "…" : q.p}"?`;
+    askQ($("#alQ"), q, async ok => {
+      if (ok){ A.taught++; A.score += 10 + L * 3; $("#alAlien").classList.add("happy"); gameBeep(800, 1400, .15, "sine", .08); }
+      else { A.danger++; qMiss(A.missed, q); SFX.bite(); $("#alSky").classList.add("shake"); }
+      $("#alT").textContent = A.taught; $("#alS").textContent = A.score; draw();
+      await wait(ok ? 900 : 2000); if (GRUN !== run) return;
+      $("#alAlien").classList.remove("happy"); $("#alSky").classList.remove("shake");
+      if (A.taught >= GOAL){ party(); gameOverPanel($("#alQ"), "alien", A.score + 50, "🌍 You saved Earth! The aliens now speak English! · <span class=\"am\">ምድርን አዳኑ!</span>", A.missed, alienPlay); }
+      else if (A.danger >= MAXD) gameOverPanel($("#alQ"), "alien", A.score, "🛸 The aliens took over! · <span class=\"am\">ባዕዳኑ ወረሩ!</span>", A.missed, alienPlay);
+      else next();
+    });
+  };
+  draw(); next();
+}
+
+// ===== 6. Zombie English Escape =====
+function zombieIntro(){ gameIntro("zombie", [
+  ["🧟 Zombies are chasing you! 10 locked doors stand between you and freedom.", "ዞምቢዎች እያባረሩዎት ነው! ከእርስዎና ከነፃነት መካከል 10 የተዘጉ በሮች አሉ።"],
+  ["🔓 Fix sentences, solve riddles and choose the right words to open each door.", "እያንዳንዱን በር ለመክፈት ዓረፍተ ነገሮችን ያርሙ፣ እንቆቅልሾችን ይፍቱ፣ ትክክለኛ ቃላትን ይምረጡ።"],
+  ["⚠️ Wrong answers AND slow answers bring the zombies closer!", "ስህተትም ሆነ መዘግየት ዞምቢዎቹን ያቀርባል!"]], zombiePlay); }
+function zombiePlay(){
+  const run = ++GRUN, Z = { door:0, gap:5, score:0, missed:new Map(), t:0, busy:false }, DOORS = 10, STEP = 14;
+  $("#v-game").innerHTML = gameHudHTML([`<span>🚪 <b id="zD">1</b>/${DOORS}</span>`, `<span>⭐ <b id="zS">0</b></span>`]) +
+    `<div class="zhall" id="zHall"></div><div class="ttime"><i id="zBar"></i></div><div id="zQ"></div>`;
+  show("game"); wireSnd();
+  const hall = () => {
+    const cells = Array(8).fill("·"); cells[7] = "🚪"; cells[6] = "🏃"; cells[Math.max(0, 6 - Z.gap)] = "🧟";
+    if (6 - Z.gap - 1 >= 0) cells[6 - Z.gap - 1] = "🧟";
+    $("#zHall").innerHTML = cells.map((c, i) => `<span class="${c === "🧟" ? "z" : ""}">${c}</span>`).join("") + `<p class="zgap">${Z.gap <= 1 ? "😱 They're right behind you!" : Z.gap <= 2 ? "⚠️ They're getting close!" : "Zombies are " + Z.gap + " steps away"}</p>`; };
+  const closer = msg => { Z.gap--; SFX.bite(); $("#zHall").classList.add("shake"); setTimeout(() => $("#zHall") && $("#zHall").classList.remove("shake"), 400); hall();
+    if (Z.gap <= 0){ Z.busy = true; gameOverPanel($("#zQ"), "zombie", Z.score, `🧟 The zombies caught you at door ${Z.door + 1}! · <span class="am">ዞምቢዎቹ ያዙዎት!</span>`, Z.missed, zombiePlay); return true; } return false; };
+  const next = () => {
+    if (GRUN !== run) return;
+    Z.t = STEP - Math.min(6, Z.door * .6); Z.max = Z.t; Z.busy = false;
+    const L = Z.door < 3 ? 1 : Z.door < 6 ? 2 : Z.door < 9 ? 3 : 4;
+    const q = makeQ(L >= 3 ? ["grammar", "clue", "spell", "idiom"] : ["grammar", "clue", "complete", "vocab"], L);
+    $("#zD").textContent = Z.door + 1; hall();
+    askQ($("#zQ"), q, async ok => {
+      Z.busy = true;
+      if (ok){ Z.score += 10 + Z.door * 3 + Math.round(Z.t); Z.gap = Math.min(5, Z.gap + 1); SFX.win(); $("#zS").textContent = Z.score;
+        $("#zQ").querySelector(".qfb").innerHTML = `<div class="gwhy ok"><b>🔓 The door opens! Run! 🏃</b></div>`; hall(); }
+      else { qMiss(Z.missed, q); if (closer()) return; }
+      await wait(ok ? 1000 : 2200); if (GRUN !== run || Z.gap <= 0) return;
+      if (ok){ Z.door++; if (Z.door >= DOORS){ party(); gameOverPanel($("#zQ"), "zombie", Z.score + 50, "🌅 You escaped! You're free! · <span class=\"am\">አመለጡ! ነፃ ወጡ!</span>", Z.missed, zombiePlay); return; } }
+      next();
+    });
+  };
+  const tick = setInterval(() => {
+    if (GRUN !== run || !$("#zBar")){ clearInterval(tick); return; }
+    if (Z.busy) return;
+    Z.t -= .1; $("#zBar").style.width = Math.max(0, Z.t / Z.max * 100) + "%"; $("#zBar").className = Z.t < 4 ? "low" : "";
+    if (Z.t <= 0){ Z.t = Z.max; if (closer()) clearInterval(tick); }
+  }, 100);
+  next();
+}
+
+// ===== 7. Word Bomb =====
+function bombIntro(){ gameIntro("bomb", [
+  ["💣 A bomb is ticking! Answer 4 challenges to cut its 4 wires.", "ቦምብ እየቆጠረ ነው! 4 ሽቦዎቹን ለመቁረጥ 4 ጥያቄዎችን ይመልሱ።"],
+  ["✂️ Complete words, choose spellings, solve clues and sentence puzzles.", "ቃላትን ያሟሉ፣ አጻጻፍ ይምረጡ፣ ፍንጮችንና የዓረፍተ ነገር እንቆቅልሾችን ይፍቱ።"],
+  ["⏱️ A wrong answer costs 4 seconds. Each new bomb is faster!", "ስህተት 4 ሰከንድ ያሳጣል። እያንዳንዱ አዲስ ቦምብ ይፈጥናል!"]], bombPlay); }
+function bombPlay(){
+  const run = ++GRUN, B = { bomb:1, cut:0, t:0, max:0, score:0, missed:new Map(), busy:false }, WIRES = ["#e2574c", "#3a8fd9", "#f2b134", "#3fae6a"];
+  $("#v-game").innerHTML = gameHudHTML([`<span>💣 <b id="boN">1</b></span>`, `<span>⭐ <b id="boS">0</b></span>`, `<span class="glvl" id="gLvl">${lvlChip(1)}</span>`]) +
+    `<div class="bomb" id="boBomb"><div class="botime" id="boT">30</div><div class="wires" id="boW"></div><div class="gmsg" id="gMsg"></div></div><div id="boQ"></div>`;
+  show("game"); wireSnd();
+  let lastL = 1;
+  const wires = () => { $("#boW").innerHTML = WIRES.map((c, i) => `<span class="${i < B.cut ? "cut" : ""}" style="--c:${c}">${i < B.cut ? "✂️" : ""}</span>`).join(""); };
+  const newBomb = () => { B.cut = 0; B.max = Math.max(14, 32 - (B.bomb - 1) * 3); B.t = B.max; $("#boN").textContent = B.bomb; wires(); };
+  const next = () => {
+    if (GRUN !== run) return; B.busy = false;
+    const L = Math.min(4, 1 + Math.floor((B.bomb - 1) / 1.5));
+    if (L !== lastL){ lastL = L; levelUp(L); }
+    askQ($("#boQ"), makeQ(["complete", "spell", "clue", "grammar"], L), async (ok, q) => {
+      B.busy = true;
+      if (ok){ B.cut++; B.score += 10 + B.bomb * 2; $("#boS").textContent = B.score; wires(); gameBeep(1200, 300, .1, "square", .06); }
+      else { B.t = Math.max(.5, B.t - 4); qMiss(B.missed, q); SFX.bite(); $("#boBomb").classList.add("shake"); setTimeout(() => $("#boBomb") && $("#boBomb").classList.remove("shake"), 400); }
+      await wait(ok ? 600 : 1800); if (GRUN !== run || B.dead) return;
+      if (B.cut >= WIRES.length){
+        B.score += Math.round(B.t) * 2; $("#boS").textContent = B.score; SFX.win();
+        gameMsgIn(`✅ Bomb ${B.bomb} defused! +${Math.round(B.t) * 2} time bonus`, "ቦምቡ ከሸፈ! ጀግና!", 1600);
+        B.bomb++; await wait(1300); if (GRUN !== run) return; newBomb();
+      }
+      next();
+    }, { quiet:false });
+  };
+  const tick = setInterval(() => {
+    if (GRUN !== run || !$("#boT")){ clearInterval(tick); return; }
+    B.t -= .1; $("#boT").textContent = Math.max(0, Math.ceil(B.t)); $("#boT").classList.toggle("low", B.t < 6);
+    if (B.t < 6 && Math.round(B.t * 10) % 10 === 0) gameBeep(900, 900, .05, "square", .04);
+    if (B.t <= 0){ clearInterval(tick); B.dead = true; SFX.bite(); $("#boBomb").innerHTML = `<div class="boom">💥</div>`;
+      setTimeout(() => gameOverPanel($("#boQ"), "bomb", B.score, `💥 BOOM! You defused ${B.bomb - 1} bomb${B.bomb === 2 ? "" : "s"}. · <span class="am">ቦምቡ ፈነዳ!</span>`, B.missed, bombPlay), 700); }
+  }, 100);
+  newBomb(); next();
 }
 
 // ---------- tip box (grammar / pronunciation) ----------

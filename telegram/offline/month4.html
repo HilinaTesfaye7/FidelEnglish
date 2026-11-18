@@ -364,6 +364,51 @@ html.playing #say,html.playing #slow,html.playing #qsay,html.playing #qslow{anim
 .suword{text-align:center;font-size:28px;font-weight:700;margin:6px 0 2px}
 .suzone{margin:12px 0}
 .suwords span{font-weight:700;padding:1px 3px;border-radius:4px}.suwords .ok{color:var(--good)}.suwords .no{color:var(--bad);background:var(--bad-soft)}
+
+/* games 13-19 */
+.qask{font-weight:700;margin:6px 0}.qask .am{font-weight:500;color:var(--muted)}
+.qp{font-size:21px;font-weight:700;padding:12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);text-align:center}
+.qp.mono{letter-spacing:2px;font-family:ui-monospace,Menlo,monospace}
+.qsub{text-align:center;margin:6px 0 0;color:var(--muted)}
+.gchoices.two{grid-template-columns:1fr 1fr}.gchoices.two button{text-align:center}
+.hpbar{position:relative;height:16px;border-radius:99px;background:var(--line);overflow:hidden;min-width:120px}
+.hpbar i{position:absolute;inset:0 auto 0 0;background:var(--good);transition:width .3s}.hpbar.red i{background:#d9534a}.hpbar.blue i{background:#3a8fd9}
+.hpbar span{position:relative;display:block;text-align:center;font-size:11px;font-weight:700;line-height:16px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.arena{position:relative;display:grid;gap:10px;padding:14px;border-radius:18px;background:linear-gradient(#2b1d3f,#4a2d4f);color:#fff}
+.boss{display:grid;justify-items:center;gap:2px;text-align:center}.boss .am{font-size:13px;opacity:.85}
+.bossic{font-size:64px;line-height:1.1;animation:bfloat 2s ease-in-out infinite}
+@keyframes bfloat{50%{transform:translateY(-6px)}}
+.boss.hit .bossic{animation:bhit .4s}@keyframes bhit{30%{transform:scale(.85) rotate(-8deg);filter:brightness(2)}}
+.hero{display:flex;align-items:center;gap:10px}.hero .hpbar{flex:1}
+.reward{display:grid;justify-items:center;gap:2px;padding:12px;border-radius:14px;background:var(--gold-soft);margin:8px 0}.reward>span:first-child{font-size:44px}
+.agent{padding:2px 0}.aghead{font-weight:700;font-size:16px}.aghead .am{display:block;color:var(--gold);font-size:13px}.aghead small{color:var(--muted);font-weight:500}
+.agcard{margin:10px 0;padding:14px;border-radius:14px;background:#1d2430;color:#d8f3dc;font-family:ui-monospace,Menlo,monospace;font-size:15px;line-height:1.5}
+.agcard b{color:#ffd166;font-family:var(--font-en)}
+.agfiles{display:grid;gap:4px}.agfiles span,.agfile{font-size:13px;padding:6px 10px;border-radius:10px;background:var(--gold-soft)}
+.stbox{position:relative;padding:16px 16px 30px;border-radius:16px;background:#fbf6ea;color:#2b2112;border:1px solid #e8dcc0;font-size:17px;line-height:1.55}
+.stbox p{margin:0}.stbox .qsay{position:absolute;right:8px;bottom:6px}
+.stnote{font-size:14px;padding:6px 10px;border-radius:10px;background:var(--accent-soft);margin:0 0 10px}
+.stend{padding:18px;border-radius:16px;background:var(--gold-soft);font-size:16px;line-height:1.5}.stend b{font-size:20px}
+.dscore{display:flex;justify-content:space-between;align-items:center;padding:10px 4px;font-size:16px;font-weight:600}.dscore b{font-size:26px;margin:0 6px}
+.dq2{margin:8px 0}.dmsg{text-align:center;min-height:22px;margin-top:6px;font-weight:600}
+.dpad{display:grid;grid-template-columns:1fr 1fr;gap:8px}.dpad.top{transform:rotate(180deg);margin-bottom:8px}
+.dqmini{grid-column:1/-1;text-align:center;font-weight:700;font-size:17px;padding:6px;border-radius:10px;background:var(--gold-soft)}
+.dpad button{min-height:52px;padding:8px;border-radius:14px;background:var(--surface);border:2px solid var(--line);font-weight:600;font-size:15px;line-height:1.25}
+.dpad button.ok{border-color:var(--good);background:var(--good-soft)}.dpad button.bad{border-color:var(--bad);background:var(--bad-soft)}
+.alsky{position:relative;height:190px;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 70% 20%,#3a2f7a,#0b0d2a 70%)}
+.alship{position:absolute;left:50%;top:8%;transform:translateX(-50%);font-size:44px;transition:top .6s}
+.alien{position:absolute;left:14%;bottom:30px;font-size:40px;transition:transform .3s}.alien.happy{transform:translateY(-10px) scale(1.15)}
+.albub{position:absolute;left:46px;top:-8px;white-space:nowrap;font-size:13px;font-weight:700;background:#fff;color:#222;padding:4px 8px;border-radius:12px}
+.alearth{position:absolute;right:-20px;bottom:-40px;font-size:110px;opacity:.95}
+.zhall{display:grid;grid-template-columns:repeat(8,1fr);align-items:center;padding:14px 6px 6px;border-radius:16px;background:linear-gradient(#2a2f2a,#141714);color:#9aa59a;font-size:26px;text-align:center}
+.zhall span.z{animation:zwalk .6s ease-in-out infinite alternate}@keyframes zwalk{to{transform:translateY(-3px) rotate(4deg)}}
+.zgap{grid-column:1/-1;font-size:13px;color:#ffd0c7;margin:6px 0 0}
+.bomb{position:relative;display:grid;justify-items:center;gap:10px;padding:16px;border-radius:18px;background:linear-gradient(#3b3b3b,#1d1d1d)}
+.botime{font-family:ui-monospace,Menlo,monospace;font-size:40px;font-weight:700;color:#7CFC00;background:#000;padding:2px 18px;border-radius:10px;letter-spacing:3px}
+.botime.low{color:#ff4b3a;animation:blink .5s infinite}@keyframes blink{50%{opacity:.4}}
+.wires{display:flex;gap:10px}.wires span{width:46px;height:14px;border-radius:7px;background:var(--c);display:grid;place-items:center;font-size:12px}
+.wires span.cut{background:repeating-linear-gradient(90deg,var(--c) 0 16px,transparent 16px 30px)}
+.boom{font-size:90px;animation:bpop2 .6s}@keyframes bpop2{from{transform:scale(.2)}}
 </style>
 
 <div class="app">
@@ -462,7 +507,7 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
-const APP_VERSION = "2026.11.18-d";
+const APP_VERSION = "2026.11.18-e";
 const AUDIO_IDS = new Set(["001aa45e","00229816","00313120","004809b3","00531c42","0060bba9","00b17b58","00bb20cc","0116feb8","01175480","011ca01f","011decbc","0121c990","014bb08e","01661479","0174f6af","019f21f3","01ce8728","01f995fd","02122b3b","02371ecc","0262d633","027455bb","02b8b9cf","02c35e3c","02d2b8aa","02e055cf","0307af34","03274595","03428138","0361fd41","039d6770","040590cc","04256cd1","044982a2","0452238f","04a81e5a","04ec0b2a","054fe78b","056b5fba","05de33a5","060cb524","0657247b","069fb2d0","06c27067","0701759e","070f18e4","07146dc0","07183376","0721c830","07565163","075f0f94","077115ad","0790016c","07a554f5","07cc25f4","07cc2b2a","07ce0d89","07dbaf6b","07e3b5dd","07e6a4fe","07f017af","080fb65e","081b47a4","081be9c5","08360eef","08ba6661","08bc5a3a","08bffd58","08d7872e","0927c745","094ef704","098dafb5","09b2721f","09de3d9e","09f2b225","09f3c039","0a0a25b5","0a0d7e4e","0a208b03","0a254f84","0a88697a","0aa5ced9","0ab739f0","0ac95089","0ae8097f","0af734af","0b2656e5","0b376c09","0b44452a","0b47d229","0b5280b3","0b98be81","0b9c3383","0bc646c6","0bd22ebf","0bd3a98b","0bd501c0","0bf7cb59","0c18c3b3","0c285a89","0c4afe69","0c4ef1e8","0c7e90f9","0c9f97f0","0ca82ddb","0cc20db7","0cc8d20b","0cfb5881","0d3c12c9","0d3c646e","0d4e8f61","0d596aa2","0d5f9984","0d78f280","0d7af261","0dad409a","0db32874","0db34df4","0dc48142","0dd0750d","0dd2c64f","0dd54251","0ddb0669","0e06f700","0e272d7a","0e6265f5","0e68b936","0eae8aa9","0eeb8757","0efc4468","0f8eb76e","0f9b4d48","0fa9f6a8","0fe06c21","0fe22ec8","0fe4afd2","0feb5e16","1007e86c","1040f89e","1061af9b","1063e625","10aac3bd","10bc2abf","10c42080","10c74ca5","10f3af30","1110f9cc","1115ed52","116b77dc","11a04478","11c84232","11d259d2","1230b6de","124e56b5","127e5c5e","12a3e4da","132fe372","134db098","134e2841","1353559f","13823e37","139d855c","13b97d3a","13d187eb","13fc4157","1400f6b3","1404d0d4","1414f107","1433f56a","14b80f80","14d104e2","14ed354d","14ee4527","1518d9ef","1537f0dd","1540d3b7","15439498","155ee43c","15743f91","15a33b8c","15b485b8","15baedb2","15f98900","1646200a","164c35a9","165985e3","1672ee98","168c7dc9","16c6e8a9","16ef9629","17000a25","173dbdc4","1742c156","17592add","17a54a0d","17b183e0","17c7fdaf","17d7deb6","17f3409f","17f839fe","181b48b3","183e60ec","184b0014","1905cf90","191f7330","196dd594","196e5c83","1978793c","19a29498","19d729d1","19eeddb7","1a07c0c0","1a0b0354","1a0fd7b6","1a17dda5","1a237819","1a30bf3b","1a452681","1a602b9f","1a83051b","1a836c35","1a956a35","1ac2693d","1b04a4c3","1b2b0b1e","1b5207f0","1b66c321","1b7baa1e","1bd670a0","1be6cd2f","1be86211","1bef9f40","1bf0e961","1c0d3d23","1c87d9a3","1c8c5837","1c9093b8","1c9cca0c","1cb1b18f","1cd87048","1ce14551","1cfc9074","1d0dfb0a","1d185ca2","1d21c060","1d247ee2","1d30d80c","1d39cf90","1d3bbea0","1d4de4e0","1d4f1469","1d9ff9f4","1dca6395","1e24c260","1eabbee7","1f093395","1f54f16f","1f6a832c","1f73ce42","1f8c8bf4","1f951fd4","1faee677","1fb7c676","1fc07d60","1fd2f9a8","1fe06cf1","1fe5a340","2006ed89","2017e1e6","205a563c","2063714f","20643100","20af1fc9","20d361a6","20e0811b","21358031","21372bcf","2171c5da","21b13f70","21fb97c8","223d9db8","2244f7e0","22693293","22752b57","228181c3","22acd0ad","22ccd730","23176214","232a6ebc","2335af1d","2347d87d","23516d83","23517043","235feaef","23859893","239467b4","239f0d8e","239fa7bb","23bc2281","23e3d71a","24025d6c","240f01ff","242faa23","24317835","243188cb","246a7583","246f4e95","24a2cde6","24e2ae28","24f3f68a","24ff37fb","2524e8b5","252b11f0","25821327","25ba10d0","25c308db","25d4a652","25debcd6","25f414d7","261da41a","263ad982","264281a5","2648cd55","265d0297","265d7687","26c22d7e","26d56b5d","26da614c","26dbff41","26f69869","2797237c","27a2b5ef","27a78440","27b7cdd5","280c6c10","2869bdb7","286cb0f0","28742cc9","28a319bc","28bc2bff","28e3585c","291280c5","291e31e6","293260af","294fc75c","2950761f","2973d788","29906857","299e768d","29ab6f83","29b4046f","29cce235","29e3a4e5","2a301713","2a407de3","2a40dc9c","2a5dcfa1","2a7b7485","2a99a29a","2a9ff1bb","2aba10bb","2ac90cd4","2af5720f","2b043744","2b121731","2b297221","2b2c583b","2b403c2f","2b6ce2a9","2b87fa67","2ba736ba","2beb8578","2c01df8d","2c0ca3d4","2c29856f","2c9351c8","2cacaa39","2cb1aef8","2cb41ebc","2cbc324b","2cc2068c","2cf26c9c","2d3beec8","2d505a99","2d5ed194","2d702e13","2d791be4","2da3613d","2db405c6","2db6483e","2dbc1605","2dc82a62","2dfff789","2e0364aa","2e430863","2e5ca582","2e7fbf8c","2e87dc8c","2eb54d5b","2eb62896","2ec3739b","2ecca61d","2ee08fb5","2ef713a1","2eff9a0d","2f249d0d","2f54deed","2f9de90c","2fa62ca8","2fa6e08a","2fd0545d","2fd9d583","2fdf6b56","2ff2eaa1","2ff4499c","2ffdb77e","3017562e","30217ad3","3075329f","3075fc4d","309b1b82","30b121a2","30cb3740","30e00be0","314777f7","31613029","31aa3d1d","31b23887","31c1b2ac","31c49222","31d5538c","31ddaa1e","31f6520f","32173416","323648be","32620045","326cf81e","328cd342","32bb9f7d","32bdf8c6","32ffac7b","332fec60","33626b90","336f28b6","33a0804f","33ef80e4","33f3ac2b","3418ab25","341dd0c9","34502ca7","34769025","348f1364","34bd63a5","34d03e9c","34d9523b","34e3c24e","34fd36bc","3503f115","350dc134","3583acfe","35a2e5c3","35a9622a","35bc1205","35cd9910","35d9793b","35f6236b","3602bd7b","3627d9a0","36310b2f","36404793","364b5f18","365f6d83","3661654a","36924d39","36f3ac13","37376d68","377270ef","37c9467d","37cc676a","37f704fe","37fb4826","37fd327a","3843f056","384b762a","3850f70c","385a8fe2","3869ad2c","3871a3fa","3880ceaf","389a9cd2","38a568e0","38ed5bd5","38f641f2","394eb590","3956576f","39593645","397e44fc","39b8fb7e","39baa088","39cb0075","39cedf65","39d9e68a","3a34f236","3a56e759","3a6124b7","3a785bf0","3a7f06b2","3aaa1373","3acb3769","3adfdd4b","3aef6fca","3b1787cc","3b48a5d4","3b6e6c8f","3b7cfa9f","3b952e97","3b9e12f2","3ba5d214","3ba788b0","3ba7e226","3bd67d3e","3bdad172","3be30a69","3c11eacf","3c18a06a","3c4b82b5","3c558683","3c5b3889","3c694558","3cb95a1d","3cbaaa4b","3d06cfac","3d471761","3d5073c9","3d6e01f6","3d95f0a4","3daaa5b6","3dab3383","3df32aad","3dff2e51","3e0553f6","3e88ae8f","3ea53a3f","3ea6e68e","3eb1ccb7","3f0b7924","3f20356b","3f32c75d","3f5dd2d4","3f9737ff","3fa824d3","3fb02e28","3fbf6ca0","3fc026e3","3fc48776","3fcc4d24","3fce41f1","3fd0afc7","3fe76807","3fee2bfa","3ff21de3","3ff50c63","3ff93e24","3ffbf1a2","4044a22d","40696bf5","40c3d08c","40c8a856","40cc9489","411fbcf6","412ac7fe","41375928","4167453d","416a0d4a","41796b9e","4187b494","418d17e8","41bda2f1","41d0c56b","41d4a0bb","41e63010","420372be","421236fc","423c56a1","424bf2ef","4253fae3","425a12c1","42720baf","428a1095","429867bb","4299e5a2","429bb099","42c0d21b","42c3bd2c","42d9307c","432a2145","433047e6","43352167","433e54d0","437e797a","43bfecef","43c18e91","43cc19a0","43e60e25","44071e65","4434cfb0","444fb0dd","449d3223","44cf5580","44d616fb","44e67b40","453ce36a","45508061","45754c79","45939473","45b1c069","45b7a90d","45c62597","45e7f9cf","45ea80f4","45ec6270","45f35ca1","4620047c","4623bed9","46364e8e","4639a1fd","463d6f1e","4660d711","4662bd5a","466387c8","4681fa0b","468ed253","4695ae9c","46abebc4","46c737bf","46ff9c40","47056cad","470c4cb2","471a1a63","47260334","47338311","47388410","473c0cb5","4785af1d","483b48c7","4875c5dc","4880662c","48924daa","48a743a7","48c905cd","490a9476","4914d1b5","49150acc","4930944f","494372ec","4968666d","4990fac7","49928756","49bc73fc","49bd309f","49cb36a8","49cbe0a2","49cd2e3f","49d82b55","49e40ec1","49e62bf4","49e685b7","49ef4c1c","49f57491","4a0420f2","4a5908cf","4a5c9ae0","4a7181df","4a7239e5","4a902517","4a97bc20","4a9c9bdf","4ac6ffe2","4ada6b9d","4b0b8a4d","4b3e1071","4b3f475d","4b5fee59","4b7d2d24","4b7f3b3f","4bc1bd9b","4bc7bc46","4bfc13e1","4c1c9962","4c1d7d7e","4c63a939","4c8c324f","4cab6d45","4d37e3a3","4d56d846","4d62bdfa","4d653c43","4d66e82d","4d7ab99b","4db211e5","4dc43303","4dd58d63","4dec6320","4e15ba2b","4e262630","4e3fd5f8","4e624c06","4e750a0e","4ea8000f","4eaf15b9","4ec3604a","4ecbf102","4f0156e0","4f0befe5","4f292a60","4f2dea57","4f3c1fe0","4f7aba56","4f9cd7b3","4fc94586","4fdf4739","4ff3719b","5016e995","505b97a5","5067929a","506dff3e","50ae46ec","50b8d09c","50bb0cae","50e1667d","51157d8f","5136dd21","5145be59","515cb682","516fb2f9","517fedc2","518fd7f6","51abcf83","51ae487f","51c0af55","51e4d0ac","52156c10","521886c5","521d0429","523fd00d","52651235","5269d14d","526f8abd","527dae8a","5286d285","52a93014","52b2fb61","52ca7b78","52e0efbd","537138d7","537d3b2a","538b10e9","53cacdb9","53ea038b","53ee19d9","54155c3c","5473c0c0","54cb0ef9","54e455d9","54f0dbc0","5505928f","55231493","55288252","5553661e","5584392f","558d7bd9","55b76ae1","55c54c11","55f2e27d","5616d48b","56358de9","5650fff9","56584a12","566cacba","567bf772","568f4ba4","569c2adf","56e823b0","56e941c9","56eb14c4","570ae59c","57274862","572cccae","5755d438","57610944","57829278","578a2160","578e5fc9","579612b7","57addc3b","57bdc22a","57be9a42","57c2f1bb","57c9729f","57cfdaf1","5835969b","58756da0","588a5993","58a52996","592318c4","592bf24c","59329985","5934a3eb","59a2fa4c","59cceb38","59eb05af","5a45cc6a","5a4e7e46","5a51fa8f","5a5a77e6","5a663556","5a6d4b62","5a7cc269","5ab75106","5acad8be","5ae9aa74","5b290b82","5bb421a2","5bd5639c","5bf36d0c","5cb7530d","5cb9c0bc","5cbf8a02","5ce25eaf","5d50cdb1","5d9a1a42","5dc96e78","5ddb609c","5de96032","5df5f0a4","5e532346","5e560689","5e68dcc8","5e8a5a16","5ea410bd","5eda7294","5f027dd8","5f23ed79","5f3ac6ce","5f54c8a6","5f66c2da","5f7782c6","5f7fac49","5fb91e8c","5fbf9d42","5fcc4ca4","5fd56df9","5fdddd75","60225e02","6031d3a6","603e9a11","603eb799","60592dd7","606eeb1f","60a47fa5","60ba4e8f","60cae230","60ce0ffa","60d582fc","60f36d2b","611003d0","6111abc2","61159eab","6124b429","6149bb25","614e3f74","61726fb6","618b149e","619bfa9b","61ad4f33","61d843b4","61e6be1a","6261fbe7","626b3de3","62ced114","62f1812e","62f4ea2d","62f55e3e","634f5f81","63533de0","63780eb9","6386aa28","63884386","63884a9a","639045b3","639aacf1","63a7b05b","63b75f31","63d94e31","63f1336c","64105202","6460a6a4","647fc411","648591b8","6499cfbf","65023a2e","6508ea2b","6509819e","6529a43d","652f2c70","6586ccd8","65addf86","65b9a7eb","65be6234","65d5776b","65e07215","65f77d83","66284255","662dcc9e","665c79fc","6663127c","67194a41","672531c6","6728c250","6744660e","6744c9d1","67616713","67718091","67864094","67ddadbd","67eb44ba","67f8be31","6803cec6","6815c86c","68348a7e","6840fb8f","68491a20","6849d686","686e39f4","687ad92a","688089d5","688c380e","68c63ff8","68f26dc6","69045bfe","694b8994","695617da","697299ee","697554ff","69f9493e","6a00e7ab","6a0ec46c","6a2fc0f5","6a40feb5","6a4c7597","6a5bc848","6a72bc2f","6a786eb0","6a8e170f","6ad5d9e0","6ae080ff","6ae27b6a","6b0fd141","6b1d3b6c","6b560ded","6b579971","6b6930df","6b791396","6b81ce15","6b98ed8f","6c0fe2e8","6c152232","6c33113b","6c467fdb","6c4a85a0","6c6e2525","6c94b6b3","6c9c0573","6cab33b5","6ceb2d06","6d072a8d","6d20ec64","6d33c266","6d3a0633","6d3c3230","6d3dfe1f","6d5a5b82","6d5ee2e9","6d8b34d5","6d9542b8","6d9f9964","6da98727","6dde8d93","6de87ae9","6e247dcf","6e2cf523","6e7a23ca","6e82d356","6e89ccea","6ea6834f","6ee2f34e","6f079545","6f169df3","6f2b75fe","6f2bddff","6f3cacb8","6f410694","6f4b93f0","6f6a7549","6f76a1e8","6fc016c9","6fc11327","6fc186c4","6fc48979","6feb13ef","6ff800fa","70039e64","7007efad","70395506","7039e728","70507c68","709a9cd7","70b773a8","70bb9e41","7114cd16","7119e196","71224fd9","7128a711","71430585","714c5d9d","715d036e","717ac4c1","71befcc6","71cd882f","720769dc","720c3fd5","7223876d","722a15f5","724ac642","726d795e","727b390b","7299430b","729d01bd","72aa19b1","72b59f93","72bc8ba4","72bf1629","72ea8bed","732fd909","73a148fa","73b95561","73e2257c","742581dc","742fae85","7442b7db","7459af7b","745b0184","7463108e","74a3af95","74abfaef","74ac1742","74b6650e","74c37c29","74da67bf","7511aade","7539802b","7546bcf7","75493323","756ddb47","75cfb98d","75ec7915","76043e40","762b5203","7665043e","769aad03","76ad8705","76c55440","76c74cb5","77173e83","773611af","77588aab","77688e8b","776bba29","77800af0","77a740bf","77cab028","77d5dd87","77ea5ec8","78308d9a","7845e323","78556c69","78788714","788a906e","789b5da3","789bf05e","789d1b0a","789e98a1","78a7d9c2","78b57bc1","78bbfc97","78c7c40f","78cc3d4d","791fcdf6","7929175f","79359b2f","7958ea0a","79d72e21","79d90ec3","79ee2bf0","7a240c9f","7a36eb68","7a41004d","7a710d0b","7a78762f","7a8c7df8","7aa0b009","7ac1715d","7b06a524","7b0a3953","7b5c9de1","7b7a7318","7bc4afa4","7c1146d8","7c38b8cf","7c475ba6","7c53e7e7","7cb4dcd0","7cc7ca5b","7cd4964e","7d0a67b4","7d516f09","7d6f0881","7d814bc3","7d8c66dd","7dbcf168","7dc04b1c","7dc56d18","7ddd8a37","7e47596b","7e4bab8d","7e99683a","7ed6ea03","7f12a7e1","7f1f8c7b","7f28cea3","7f752a8d","7f94ae62","7f9856a2","7f9bc9f9","7fa5ff5c","7fdbc9e4","800446b2","800a802f","802aa78e","802b2b09","80595b9e","808d4b38","80bf0e94","8115391e","811fd016","812d107e","81351db9","8137f66b","8153dc69","816e7941","816f30ca","8175abb9","81aaa096","81ac3ac8","81c5d856","81fa6638","823a751f","82fbf5cd","83337a05","8353e068","8353e8bc","83563d1c","838e72c3","8390060e","84431c26","845572c0","84647087","846a8782","847c50e3","848317f2","84874d36","84b0c203","84b4e968","84fe9c47","850b0ba7","853ab7cf","8570ac7e","8580a1d0","85b34bce","8639eaf6","86596a8b","86cdcfd7","8728787f","876fffdd","8793ae11","87de7a96","8818b3c2","881defa1","885230e7","888603c3","888e7aa2","8894a815","88ab4733","88ba4b47","88befbdc","88cba592","88d54e49","890b1c1e","891cfe4f","8952b0d0","8954da9e","89a3b5d3","89ba8972","89c58dde","89eabb08","8a524c53","8a54de97","8a7324ef","8a9cb671","8aef8fca","8af8ee12","8afbf69a","8b030cb8","8b05cb63","8b14992a","8b242db1","8b3dc597","8b6b382b","8b878281","8bb8038d","8c141b56","8c249c9f","8c6d7308","8c837212","8c856de1","8c9a1101","8cdbd876","8d461b27","8d4dbc73","8d57e66a","8d7d2e85","8d858f87","8d9eaf64","8da02093","8dd57a29","8dd5fafd","8df57242","8e2c7aa1","8e37eca1","8e4139ed","8e48ff3d","8e66bf0e","8e751b64","8e9dbaf3","8ec274c9","8f0bfe7c","8f240a75","8f5653f4","8f7f7669","8f9aa8b4","8fadd4d6","8ff0a3b7","8ff53680","9039b5ff","903cb32b","905255c5","9065459e","906ad500","906b3662","90ab5b95","90afcf6f","90be958c","90c96b12","90d66739","90fbb0eb","91052cc9","910df2a4","911a6fea","9124c041","91639729","917807f0","91bf1295","91c5cb32","91dd7983","91e2af23","91f27549","921dbe85","923df2af","92604968","9266c24f","926b5821","926fe8f8","9280b53d","9280b647","92a4b5ed","92acce65","92b18d26","92b91df5","92b96d8f","92d0caf8","92dfe029","931e8091","9322deaa","93307ca7","935c7b1c","936e53b2","93ae68c7","93c2a834","93d0250d","93d18d9d","93d394b6","93d839dc","94108933","94122cfc","94271132","943220f8","94a998a4","94cec525","962530d2","9625faa2","963335ee","96385f0f","9652bb75","965c92e2","966464cd","9687c651","969dcb5b","96b2f361","971b5145","9731a285","97b3cff3","97bb3b45","97be55f9","97ecc182","98218ed6","9852363a","9868eebd","9875a2ff","9879153e","989a92eb","98d3be69","98dbac97","99038d3b","992a04a8","99380614","994c2d1c","99828abe","99863551","99b3eedb","99eb4fd7","9a80639d","9a99eae3","9ae8cbff","9afa1011","9afb5255","9afb96a3","9b14a4fe","9b1b9086","9b47cc32","9b7fbf00","9b80f214","9bb4b855","9bef9616","9c0bc01e","9c0f4226","9c15cd96","9c3dd718","9c7f8847","9caca44d","9cb764d0","9cd96b85","9d2cfb7d","9d5aab4a","9d74b89c","9d83c35e","9d9d3f3d","9dc3714b","9dd3b0d6","9dd4f7f1","9dd95ad6","9dddcf20","9df80468","9df8353d","9e3b124f","9e4811b2","9e85caee","9e8bdf86","9e9c281a","9ec0c37f","9eeaa244","9f29eeb2","9f3a514a","9f4aa2c6","9f4e603b","9f519cc9","9f582d0d","9f5c2a13","9f8b2731","9fd30889","a00b5c52","a024744d","a037cd15","a07f6ef3","a0910439","a09a37ba","a0baa9f7","a0de2c7a","a0e8b370","a1053e23","a1121c17","a11e56c2","a14ab27e","a170360a","a1845b2b","a19ec17f","a1a40c3c","a1c25de3","a1f3723f","a1f580d7","a21bff97","a21eeee5","a234df25","a2567906","a25e0f12","a274872f","a274c5b7","a2780a89","a2825d2f","a294f13b","a296bdc8","a2987fe4","a2c4f48c","a2fd7d0c","a30a44b2","a30b70bf","a3106dd7","a316e024","a321c468","a33d83d4","a343524e","a346e251","a3475eab","a3536b91","a375c122","a37f187c","a3c94395","a3ce328d","a3ce4d61","a3d72107","a41dde14","a42b0849","a4326f1a","a4495584","a44dcebd","a451d95a","a4546d58","a4b37d52","a4cbd71d","a4dbeec3","a4e05858","a4fa3da7","a502b123","a50d5560","a5a22c23","a5a2f9cc","a5af70a3","a5b0274e","a63d48d3","a63d9e18","a6437233","a64bb8e7","a678481f","a6ad95e2","a6bbaca9","a6d2eb91","a6f50710","a77dbecf","a7f9c52a","a7fbff74","a847e0a9","a8532270","a8761ba5","a87f8823","a88f5386","a8971b25","a8f7fa72","a942e91a","a953c75c","a989e1bf","a9b2bec2","a9d2b7a6","aa200fde","aa3365ee","aa55ea31","aa8eba31","aaabe991","aadbbddb","ab3e0bff","ab858838","ab9dbba7","abbfa767","abcf525f","abd338c1","abe9e67c","abefd65f","abf25dce","ac08b9c5","ac0b80a0","ac0e65a9","ac247217","ac3c2a26","ac54fe77","ac56f17f","ac5851c6","ac70aad4","ac92ea89","ac93d31e","accea5f8","acee3473","ad27ee58","ad2b5cca","ad2d0842","ad4cb0f7","ad7ca6b9","adab074a","add3e6ea","add52add","ade176a3","ae0bbdb5","ae11b050","ae92f8e6","aea0985f","aeb44395","aed72c13","aee47c2c","aee9c3f0","aeedaa22","aef9a146","af29706f","af33e36f","af410285","af58f9f5","af7bc702","af9641c5","afa391b8","afad8963","afc5a651","afc72a55","afe2fb36","b025d597","b0273523","b067944a","b0696849","b0cebd65","b0f8458c","b0fee263","b106156c","b1091b9b","b10ab399","b1514998","b1db7b28","b1dd2116","b1ea6248","b1f6e350","b20295f9","b2103b0a","b27143a8","b273c6a5","b27956b8","b2947d9b","b2972ae3","b29f7c8f","b2d60a87","b2ed1d5a","b2f18316","b2f7573a","b2fd7693","b301669b","b33572bd","b338c84b","b33d2ce0","b349ff23","b34b4bef","b397b1d8","b3a43630","b3d0821a","b3d39637","b3dc8f5f","b3e79cb2","b3ea317c","b401e629","b40eb21c","b458eda7","b47cd771","b4862855","b4d30cb3","b520746a","b532b2fb","b5976f14","b59f7dd2","b5a63c47","b5b3478c","b5dc7b3e","b628025d","b6779c5f","b682ba1f","b695ccbe","b6e00083","b71c52e2","b7665894","b799a941","b7ba8535","b7f7e9f6","b80c6ede","b8297e9a","b82be7c3","b8516454","b86fe016","b88522ba","b89df01a","b8a2998c","b8d16159","b8e0ac61","b8e12858","b8e13c0f","b8ebd55d","b9201a3e","b926f28c","b93bfeba","b945e5f7","b9522c08","b96a80a9","b96d8ad8","b978dbba","b97ada4e","b985d4c4","b9cf1d1c","b9d577e0","b9f7a551","ba3866bc","ba872bcf","bae03dbe","bae239b9","baedbfaa","bb08850f","bb1fc4f8","bb357f55","bb411722","bb4ecf1c","bb50feb6","bb52e301","bb5f80fd","bb761199","bb8e8bcb","bbd6188c","bbeaffa9","bc09cf52","bc1c8771","bc24cb70","bc3cb75b","bc466e34","bc5387d6","bc5e79a5","bc710b2b","bc74811b","bc7a115e","bc8d2561","bca48773","bcba4153","bcf81bb6","bd012361","bd022a20","bd0aeeb0","bd47467b","bd4c18bb","bd659388","bd93ede1","bda7e060","bdeaa8d7","bdeb87dc","be248829","be2f5538","be43a526","be5d4dbf","be6eb534","be785a9b","be821266","be851041","bead6a94","bed2118c","bef086ed","bef3f4e4","bf12767e","bf1f2dac","bf32b60b","bf4a5b12","bf64d9cc","bf776d3b","bfbd1178","bfdde556","bfe3de32","bfe7af96","bfe92fa7","c002ac03","c021d8e3","c02c5b9f","c0300286","c03c7c1f","c06d00da","c0846390","c0854917","c095b883","c0c47303","c0fa8b09","c0fedcdb","c10f81fb","c10f9996","c11fd08f","c1267b0e","c12b2e58","c1630315","c19246c6","c1948a38","c1bf0f5c","c1d73291","c1f3d1f0","c2076af7","c212b600","c22df50f","c23526ef","c242f5b7","c2431b24","c26f2442","c2954bc2","c2a38951","c2cd959e","c2d71942","c2e71bdb","c2ec8866","c33f3df6","c34fd708","c3aeaceb","c3c62acc","c3ce710c","c3dc8aa0","c3f2fc37","c406332a","c417f1e5","c46f8f49","c472db65","c490b43e","c4b27e90","c4da6e99","c5022712","c51c6fb0","c51f5d7a","c52bb172","c530aed7","c53b9cf3","c556a208","c5710a04","c5a24dbd","c5bc5b18","c5c23c2a","c5c76498","c60b9999","c6235b06","c62e682c","c630015f","c63af9b1","c63b1e20","c660dfa1","c6e3dc70","c7247576","c747960f","c767a47b","c80f0af4","c83137cf","c83cc1ed","c8647fe5","c86d4239","c87d8df5","c8887d35","c8ac5e94","c8adc170","c8d632fc","c8da2303","c8e88d9d","c8f069e0","c8f728fa","c9011403","c944ea21","c94abe25","c9b13248","c9bbc70b","c9bbf5d3","c9bc0450","c9d648d8","c9d9572a","c9dcf817","c9dfafd6","ca192f6d","ca3b5c4d","ca455f40","ca4f3ddf","ca5938d9","ca5f71e6","ca9e274e","cada780b","caee0aef","cafec03c","cb18332c","cb373bb3","cb532ae5","cb731c53","cb7a9702","cb96ba79","cba09f8d","cba3574f","cbc1aeeb","cbcb897f","cbcf766d","cbf7ea73","cbfd3c67","cc056b54","cc1019b5","cc20cfdc","cc25a532","cc2fa082","cc58f6f3","cc628958","cc799e8d","cccb0055","ccd9dbd0","ccff7e48","cd18e6cd","cd1ac90c","cd2b8f36","cd3724bc","cd506d36","cd598b24","cd5c038f","cd684270","cd689cae","cd778e55","cd8117d1","cd84ee3f","cd86acc3","cdbba678","cdbc383d","cdc4b940","cddb04a2","cdfef8ec","ce14165c","ce1ad479","ce1bae35","ce22db7c","ce334aca","ce71d770","ce86a573","ce918837","ceae2708","ced71285","cedfa3c5","cee3fbcd","cef2bc99","cef90b6c","cf1ed96f","cf4d8d0b","cf516428","cf5efb33","cfa1ba29","cfe3bdee","cfe5e0f9","d01fc26d","d0485366","d053c0a0","d0789e16","d09a49cb","d0a6278f","d0d1a6f0","d0ec74bd","d0f065f9","d0f37504","d13b2f71","d141e303","d1571f8e","d15caf72","d16022ed","d16579e9","d17325c5","d18d3a0b","d1a382b8","d1a81eb8","d1df8006","d218e28d","d25ae1a2","d290e8b6","d2fe4989","d3045648","d308e2b3","d32f14bb","d33a6f32","d35ec4c9","d3a73602","d3a7f696","d40b04e2","d410bbef","d43ff4c1","d45d10db","d4639c84","d46ad4e0","d4c4579c","d4c90084","d4ee4008","d5275710","d52792d1","d52b52ff","d52cee3e","d52dda65","d535b815","d5515b6d","d55b1b98","d55f6f1e","d592eec6","d5b60ff3","d5c6965d","d5d24505","d5e9b25b","d5f657bd","d60f9fc8","d6209ac8","d63556b0","d65d1a25","d6697678","d677fb5e","d67a0605","d6af75ae","d6cb8065","d6d20bf7","d70b1c04","d70ceb7f","d7278604","d7352afc","d763417c","d76345b8","d76a9191","d7854567","d7a4ab9e","d8134330","d816831d","d822d4ff","d8610b70","d865781f","d8ab04cb","d8db91e5","d8e5a40e","d91550eb","d941ac7f","d951b2e9","d965114a","d968cc3f","d9889f50","d98a03cf","d9945c72","d9cdec69","d9fa987b","da16c367","da2bd281","da7296d5","daab1377","daef9304","db180147","db22a733","db31978c","db3f1e9e","db603a30","db935ed0","db96e234","db97597d","dba4f4f8","dbb32f18","dbc51e80","dbdf2a1f","dc12b039","dc55535f","dc97fe62","dcb746fb","dcf6fb48","dcff22d3","dd1a9c54","dd640d16","dd6a8f50","dd836727","dd85598a","dd892310","dda96e99","ddb6df6e","ddb80126","ddd42fdc","ddeaa26d","de0a9e80","de38baa3","de435b38","de5c1a77","de805769","de897825","deaf55e0","dec57f60","df2ceb42","df3654b6","df5e6b26","df6209ba","df807192","dfa2efb1","e0302a4d","e042111b","e0776c6b","e0955764","e0dd1db4","e11bc48d","e14b6990","e15b8e88","e1bcacaa","e1d08197","e1d572a0","e2331d98","e2c03087","e2c119fb","e2c6e907","e2d93690","e2e9eb75","e30dd47e","e3284971","e3637a44","e3ca5dec","e40fe6a9","e4147dba","e422e7e3","e443b019","e44f21fd","e45d3143","e48027e9","e4b958bc","e4e2be4c","e4e6f467","e4fba21c","e5185c1a","e522e976","e540bba9","e5419b0d","e57379fd","e57e05eb","e5ac9c2d","e5d211ae","e5dec38e","e5ffc3cb","e62eab56","e63776b3","e66176f9","e684353a","e698de9f","e6b3ffba","e6ef5696","e6fb31ad","e70e6b3d","e73a16c6","e76ec231","e78631fd","e790a2f2","e7a7fe9a","e7c0775e","e7c10fec","e7d5bc53","e7d9a49f","e7df7fe9","e812f405","e818b76d","e819bb9a","e81fffc8","e8239b77","e83015ac","e858fcbd","e85afaf2","e8750e6f","e8769f71","e88950be","e91c79ce","e920f785","e9237dd1","e924af87","e9271806","e9461a30","e956ef47","e9680605","e96898d5","e9941862","e9c7abe9","e9cdbfc2","e9dd1fed","e9e6eb7b","e9f2a935","ea5a62ea","ea683c1b","ea7d3eb5","ea81eea2","ea8aea2b","eae6b243","eb0d45da","eb1a2c14","eb45b784","eb4e51f2","eb5d7f84","eb6739a2","eb6dbd38","eb811517","ebaa2fd8","ebb76fff","ec07635b","ec18301d","ec1d3b5b","ec266ec8","ec38aa26","ec39ae3b","ec4a028a","ec5181de","ec576872","ec5df34f","ec829ff8","eca9d228","ecaff58c","eccc3179","ecce6ab4","ecddd828","ecf21807","ed28de2a","ed2b0a20","ed354321","ed5511e1","eda17c15","edc18ed8","eddf29e0","ede11b23","edf9006c","ee3d49e1","ee4a05ee","ee5a9959","ee7b9448","ee84fad8","eea0df3c","eea93889","eebcffdb","eecc3dd0","eee08ef0","eee83268","ef314fe6","ef3e2929","ef46fe0d","ef6fa4c2","efb2c5bd","efbd9dd2","efe07a6a","efeb5a2c","f00b7c66","f03af0ca","f03e2abc","f040127e","f047e94b","f04c9e45","f0748851","f085438e","f0adedba","f0b1c980","f0f208e4","f134e99e","f1776509","f184ae40","f196cd54","f1c00784","f1c6ff15","f1ccfd64","f1d186e0","f1e04bf4","f203a92b","f20c212f","f2115ec2","f21e1b5a","f2791e01","f28ddab5","f2e6e702","f30bf1f8","f35d757e","f37665d9","f3890727","f3ac9ae3","f4743fb1","f47af1d7","f486b7fd","f492f093","f498a1e0","f502c124","f50b5838","f50f4766","f525fc23","f539574c","f55050a6","f55c314b","f5682bb7","f585727a","f590e1e5","f5936606","f597272f","f59fbfb8","f5a11076","f5ce03fb","f5d7dd55","f5dd1c77","f604a411","f616ed43","f64adb1a","f65b9a03","f6960d57","f69b55f3","f6bd0d7d","f6bd3104","f6e80baa","f72d3849","f7372cda","f73d2622","f7458ab4","f75d891b","f77afa9a","f787ab43","f79d3664","f7a1b142","f7a644dc","f7df2f66","f7f62b49","f85880f2","f86235e1","f87bcf25","f894568e","f8a56cde","f8aa942a","f8be90ab","f9337fdd","f934d7ce","f959ddc6","f9ab647a","f9efa80a","fa0d9e73","fa0f4bed","fa41edf8","fa47c7de","fa4f375b","fa56340f","fa6031d8","fac5e378","fae33ac0","fb03f5e1","fb073c54","fb368a8e","fb419151","fb43b370","fb49307b","fb54ce6f","fb769281","fb96d671","fbaf0d9d","fbd984bf","fbdcb91d","fc2e40d3","fc46ec12","fc5d25e9","fc9d0077","fca77633","fcc8ddcd","fced1ad4","fd41bb73","fd6a0c8e","fd6f774a","fdba13cf","fdcf4e1f","fdd2b0cb","fde44fbc","fdf9d899","fe18fbb0","fe691321","fe7131cd","fe744dc9","fe827d2b","fe840217","febac799","fed8c598","fefc5031","ff5179c9","ff5ded4d","ff79b33c","ff7cd839"]);
 function audioBase(){ return (LICENSE && LICENSE.web) ? LICENSE.web.replace(/\/$/, "") + "/audio/" : null; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
@@ -858,7 +903,7 @@ function renderHome(){
   let acts = "";
   if (!store.placed) acts += `<button class="action gold" id="aPlace"><span class="ic">${ICON_TARGET}</span><span style="flex:1;min-width:0"><b>Find your level</b><span class="s am">ደረጃዎን ይወቁ · 3-minute test</span></span></button>`;
   if (nextL) acts += `<button class="action" data-open="${nextL.id}"><span class="ic">${ICON_PLAY}</span><span style="flex:1;min-width:0"><b>Next lesson: ${esc(nextL.en)}</b><span class="s am">ቀጣይ ትምህርት፡ ${esc(nextL.am)}</span></span></button>`;
-  { const gb = (store.game || {}).bestNight; acts += `<button class="action gold" id="aGame"><span class="ic" style="font-size:22px">🎮</span><span style="flex:1;min-width:0"><b>Games: play and learn</b><span class="s"><span class="am">ጨዋታዎች፡ ይጫወቱና ይማሩ!</span> · 12 games${gb ? ` · 🐺 night ${gb}` : ""}</span></span></button>`; }
+  { const gb = (store.game || {}).bestNight; acts += `<button class="action gold" id="aGame"><span class="ic" style="font-size:22px">🎮</span><span style="flex:1;min-width:0"><b>Games: play and learn</b><span class="s"><span class="am">ጨዋታዎች፡ ይጫወቱና ይማሩ!</span> · 19 games${gb ? ` · 🐺 night ${gb}` : ""}</span></span></button>`; }
   if (wrongN && canUse("lessons")) acts += `<button class="action" id="aReview"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Review your mistakes (${wrongN})</b><span class="s am">ስህተቶችዎን ይከልሱ</span></span></button>`;
   if (capsReady){
     acts += sampleFn
@@ -2223,6 +2268,438 @@ function suOnState(state){
     mic.target = null;
   }
   suRender();
+}
+
+// ---------- 7 more games: Boss Battle, Secret Agent, Story Choices, English Duel, Alien Invasion, Zombie Escape, Word Bomb ----------
+GAMES.push(
+  { id:"boss", ic:"⚔️", en:"Grammar Boss Battle", am:"የሰዋሰው አለቃ ፍልሚያ", skill:"Grammar", skillAm:"ሰዋሰው", d:"Beat 5 bosses with English answers", dam:"5 አለቆችን በእንግሊዝኛ መልሶች ያሸንፉ" },
+  { id:"agent", ic:"🕶️", en:"Secret Agent English", am:"ሚስጥራዊ ሰላይ", skill:"Reading", skillAm:"ንባብ", d:"Decode messages and finish missions", dam:"መልዕክቶችን ፈተው ተልዕኮዎችን ይጨርሱ" },
+  { id:"story", ic:"📖", en:"Story Choices", am:"የታሪክ ምርጫ", skill:"Decisions", skillAm:"ውሳኔ", d:"Your choices change the story. Find 5 endings", dam:"ምርጫዎ ታሪኩን ይቀይራል። 5 መጨረሻዎችን ያግኙ" },
+  { id:"duel", ic:"🥊", en:"English Duel", am:"የእንግሊዝኛ ግጥሚያ", skill:"Competition", skillAm:"ውድድር", d:"Beat the computer or a friend", dam:"ኮምፒውተሩን ወይም ጓደኛዎን ያሸንፉ" },
+  { id:"alien", ic:"👽", en:"Alien Invasion", am:"የባዕድ ወረራ", skill:"Meanings", skillAm:"ትርጉም", d:"Teach the aliens English and save Earth", dam:"ባዕዳኑን እንግሊዝኛ አስተምረው ምድርን ያድኑ" },
+  { id:"zombie", ic:"🧟", en:"Zombie Escape", am:"ከዞምቢዎች ማምለጥ", skill:"Puzzles", skillAm:"እንቆቅልሽ", d:"Solve puzzles to open 10 doors", dam:"10 በሮችን ለመክፈት እንቆቅልሾችን ይፍቱ" },
+  { id:"bomb", ic:"💣", en:"Word Bomb", am:"የቃል ቦምብ", skill:"Quick words", skillAm:"ፈጣን ቃላት", d:"Cut the wires before the bomb explodes", dam:"ቦምቡ ሳይፈነዳ ሽቦዎቹን ይቁረጡ" });
+Object.assign(GAME_START, { boss:() => bossIntro(), agent:() => agentIntro(), story:() => storyIntro(), duel:() => duelIntro(), alien:() => alienIntro(), zombie:() => zombieIntro(), bomb:() => bombIntro() });
+
+// ---- shared question engine (uses lesson words, grammar lessons, Sentence Race and word clues) ----
+const CLUES = [
+  [1, "water", "You drink it when you are thirsty."], [1, "bread", "You buy it at a bakery. You eat it with tea."], [1, "coffee", "Ethiopians drink it at a ceremony. It is black and hot."],
+  [1, "doctor", "This person helps you when you are sick."], [1, "teacher", "This person helps students learn at school."], [1, "key", "You use it to open a door."],
+  [1, "bed", "You sleep on it at night."], [1, "shoes", "You wear them on your feet."], [1, "hat", "You wear it on your head."], [1, "sun", "It is hot and bright in the sky in the day."],
+  [1, "moon", "You see it in the sky at night."], [1, "lion", "The king of the animals."], [1, "bus", "A big car that carries many people."], [1, "kitchen", "The room where you cook food."],
+  [2, "umbrella", "You open it when it rains."], [2, "clock", "It tells you the time."], [2, "market", "A place where people buy and sell things."], [2, "airport", "You go here to take a plane."],
+  [2, "birthday", "The day you were born. People give you gifts."], [2, "breakfast", "The first meal of the day."], [2, "tomorrow", "The day after today."], [2, "yesterday", "The day before today."],
+  [2, "hospital", "Sick people go here to get better."], [3, "library", "A place where you can borrow books for free."], [3, "salary", "Money you get every month for your work."],
+  [3, "passport", "You need it to travel to another country."], [3, "receipt", "A paper that shows what you paid."], [3, "discount", "When the price is lower than usual."], [3, "password", "A secret word you type to open your phone or account."]];
+function misspell(w){
+  const out = new Set(), vow = "aeiou", L = w.length;
+  for (let k = 0; k < 40 && out.size < 3; k++){
+    let s = w, r = Math.random(), i = 1 + Math.floor(Math.random() * (L - 2));
+    if (r < .3 && L > 3) s = w.slice(0, i) + w[i + 1] + w[i] + w.slice(i + 2);
+    else if (r < .55) s = w.slice(0, i) + w[i] + w.slice(i);
+    else if (r < .8 && vow.includes(w[i].toLowerCase())) s = w.slice(0, i) + pickOne([...vow].filter(v => v !== w[i].toLowerCase())) + w.slice(i + 1);
+    else if (L > 4) s = w.slice(0, i) + w.slice(i + 1);
+    if (s !== w && s.toLowerCase() !== w.toLowerCase()) out.add(s);
+  }
+  return [...out];
+}
+function qVocab(L){ const pool = gameWords(L, w => w[0].length <= 26 && w[1].length <= 30), w = pickOne(pool);
+  return { kind:"vocab", ask:"What is this in English?", askAm:"በእንግሊዝኛ ምንድን ነው?", p:w[1], pAm:true, opts:gameOpts(w, pool), a:w[0], say:w[0], w }; }
+function qMeaning(L){ const pool = gameWords(L, w => w[0].length <= 44 && w[1].length <= 34), w = pickOne(pool);
+  const others = shuffle(pool.filter(x => x[1] !== w[1])).slice(0, 3).map(x => x[1]);
+  return { kind:"meaning", ask:"What does it mean?", askAm:"ትርጉሙ ምንድን ነው?", p:w[0], opts:shuffle([w[1], ...others]), a:w[1], optsAm:true, say:w[0], w }; }
+function qSpell(L){ const pool = gameWords(Math.min(3, L), w => new RegExp(`^[A-Za-z]{${L >= 3 ? 6 : 4},12}$`).test(w[0]), 6), w = pickOne(pool), bad = misspell(w[0]);
+  if (bad.length < 2) return qVocab(L);
+  return { kind:"spell", ask:"Which spelling is correct?", askAm:"ትክክለኛው አጻጻፍ የትኛው ነው?", p:w[1], pAm:true, opts:shuffle([w[0], ...bad]), a:w[0], say:w[0], w }; }
+function qComplete(L){ const pool = gameWords(Math.min(3, L), w => /^[A-Za-z]{4,11}$/.test(w[0]), 6), w = pickOne(pool), word = w[0];
+  const hide = new Set(shuffle([...Array(word.length).keys()].slice(1)).slice(0, Math.max(1, Math.round(word.length * (L >= 3 ? .5 : .35)))));
+  const masked = [...word].map((c, i) => hide.has(i) ? "_" : c).join(" ");
+  const same = shuffle(pool.filter(x => x[0] !== word && Math.abs(x[0].length - word.length) <= 1)).slice(0, 3).map(x => x[0]);
+  const opts = shuffle([word, ...(same.length >= 3 ? same : misspell(word))].slice(0, 4));
+  return { kind:"complete", ask:`Complete the word · ${w[1]}`, askAm:"ቃሉን ያሟሉ", p:masked, mono:true, opts, a:word, say:word, w }; }
+function qClue(L){ const list = CLUES.filter(c => c[0] <= Math.max(1, Math.min(3, L))), c = pickOne(list);
+  const others = shuffle(CLUES.filter(x => x[1] !== c[1])).slice(0, 3).map(x => x[1]);
+  return { kind:"clue", ask:"What is it?", askAm:"ምንድን ነው?", p:c[2], opts:shuffle([c[1], ...others]), a:c[1], say:c[1] }; }
+function qGrammar(L){
+  const lv = Math.max(1, Math.min(3, L));
+  if (Math.random() < .5){ const r = pickOne(RACE.filter(x => x[0] === lv));
+    return { kind:"fix", ask:"Fix the mistake:", askAm:"ስህተቱን ያርሙ", p:"❌ " + r[1], opts:shuffle([r[2], ...r[3]]), a:r[2], why:r[4], say:r[2] }; }
+  const gl = LESSONS.filter(l => l.grammar && monthOf(l) === lv);
+  for (let k = 0; k < 10; k++){
+    const l = pickOne(gl), w = pickOne(l.words); if (!isSentence(w)) continue;
+    const g = gapQuestion(w, l); if (!g) continue;
+    return { kind:"gap", ask:"Fill the gap:", askAm:"ክፍተቱን ይሙሉ", p:g.gap, sub:w[1], opts:g.options, a:g.correctOpt, why:l.tip && l.tip[0], say:w[0] };
+  }
+  return qVocab(L);
+}
+function qIdiom(){ const q = qMeaning(4); q.ask = "What does this expression mean?"; q.askAm = "ይህ አገላለጽ ምን ማለት ነው?"; return q; }
+const Q_MAKERS = { vocab:qVocab, meaning:qMeaning, spell:qSpell, complete:qComplete, clue:qClue, grammar:qGrammar, idiom:qIdiom };
+function makeQ(kinds, L){ const k = pickOne(kinds); return Q_MAKERS[k](L); }
+// Draws a question into el; calls done(ok) once. Shows the right answer and a short reason when wrong.
+function askQ(el, q, done, opt){
+  opt = opt || {};
+  el.innerHTML = `<p class="qask">${esc(q.ask)} <span class="am">· ${esc(q.askAm)}</span></p>
+    <div class="qp ${q.pAm ? "am" : ""} ${q.mono ? "mono" : ""}">${esc(q.p)}</div>${q.sub ? `<p class="am qsub">${esc(q.sub)}</p>` : ""}
+    <div class="gchoices ${q.opts.some(o => o.length > 16) ? "long" : "two"} ${q.optsAm ? "am" : ""}">${q.opts.map((o, i) => `<button data-c="${i}">${esc(o)}</button>`).join("")}</div><div class="qfb"></div>`;
+  let used = false;
+  el.querySelector(".gchoices").onclick = e => {
+    const b = e.target.closest("[data-c]"); if (!b || used || b.disabled) return; used = true;
+    const ok = q.opts[+b.dataset.c] === q.a;
+    el.querySelectorAll("[data-c]").forEach((x, i) => { x.disabled = true; if (q.opts[i] === q.a) x.classList.add("ok"); });
+    if (!ok) b.classList.add("bad");
+    if (q.w) (ok ? markRight : markWrong)(q.w[0]);
+    if (ok && q.say) sayIfOn(q.say);
+    const fb = el.querySelector(".qfb");
+    if (!ok && !opt.quiet) fb.innerHTML = `<div class="gwhy"><b>✔ ${esc(q.a)}</b>${q.why ? `<p>💡 ${esc(q.why)}</p>` : ""}</div>`;
+    done(ok, q);
+  };
+}
+const qMiss = (m, q) => { const en = q.w ? q.w[0] : q.say || q.a, am = q.w ? q.w[1] : q.p.replace(/^❌ /, ""); m.set(en, [en, am]); };
+const wait = ms => new Promise(r => setTimeout(r, ms));
+function hpBar(n, max, cls){ return `<div class="hpbar ${cls || ""}"><i style="width:${Math.max(0, n / max * 100)}%"></i><span>${n}/${max}</span></div>`; }
+
+// ===== 1. Grammar Boss Battle =====
+const BOSSES = [
+  { ic:"🐉", en:"Word Dragon", am:"የቃላት ዘንዶ", kinds:["vocab"], hp:5, L:1, reward:["🗡️", "Word Sword", "የቃላት ሰይፍ"] },
+  { ic:"🦂", en:"Spelling Scorpion", am:"የአጻጻፍ ጊንጥ", kinds:["spell", "complete"], hp:6, L:2, reward:["🛡️", "Spelling Shield", "የአጻጻፍ ጋሻ"] },
+  { ic:"👹", en:"Grammar Giant", am:"የሰዋሰው ግዙፍ", kinds:["grammar"], hp:6, L:1, reward:["🏹", "Grammar Bow", "የሰዋሰው ቀስት"] },
+  { ic:"🧌", en:"Tense Troll", am:"የጊዜ አውሬ", kinds:["grammar", "spell"], hp:7, L:3, reward:["🪄", "Tense Wand", "የጊዜ በትር"] },
+  { ic:"🐲", en:"Idiom Emperor", am:"የፈሊጥ ንጉሠ ነገሥት", kinds:["idiom", "grammar", "vocab"], hp:8, L:4, reward:["👑", "English Crown", "የእንግሊዝኛ ዘውድ"] }];
+function bossRewards(){ if (!store.games) store.games = {}; return store.games.rewards || (store.games.rewards = {}); }
+function bossIntro(){
+  const R = bossRewards();
+  gameIntro("boss", [
+    ["⚔️ Each right answer hits the boss. Each wrong answer costs ⚡ energy.", "እያንዳንዱ ትክክለኛ መልስ አለቃውን ይመታል። ስህተት ⚡ ጉልበት ያሳጣል።"],
+    ["🐉 5 bosses: words, spelling, grammar, tenses, and the Idiom Emperor.", "5 አለቆች፦ ቃላት፣ አጻጻፍ፣ ሰዋሰው፣ ጊዜያትና የፈሊጥ ንጉሠ ነገሥት።"],
+    [`🎁 Win rewards: ${BOSSES.map(b => R[b.en] ? b.reward[0] : "🔒").join(" ")}`, "ሽልማቶችን ያግኙ!"]], () => bossPlay(0, 5, 0));
+}
+function bossPlay(bi, energy, score){
+  const run = ++GRUN, B = BOSSES[bi], S = { hp:B.hp, en:energy, score, missed:new Map() };
+  $("#v-game").innerHTML = gameHudHTML([`<span class="glvl">Boss ${bi + 1}/5</span>`, `<span>⭐ <b id="bsScore">${score}</b></span>`]) +
+    `<div class="arena"><div class="boss" id="bsBoss"><span class="bossic">${B.ic}</span><b>${esc(B.en)}</b><span class="am">${esc(B.am)}</span><div id="bsHp">${hpBar(S.hp, B.hp, "red")}</div></div>
+     <div class="hero"><span>🦁 You</span><div id="bsEn">${hpBar(S.en, 5, "blue")}</div></div><div class="gmsg" id="gMsg"></div></div><div id="bsQ"></div>`;
+  show("game"); wireSnd();
+  gameMsgIn(`${B.ic} ${B.en} appears!`, B.am + " መጣ!", 1500);
+  const next = () => {
+    if (GRUN !== run) return;
+    askQ($("#bsQ"), makeQ(B.kinds, B.L), async (ok, q) => {
+      if (ok){ S.hp--; S.score += 10 + bi * 5; $("#bsBoss").classList.add("hit"); SFX.hit(); setTimeout(() => $("#bsBoss") && $("#bsBoss").classList.remove("hit"), 400); }
+      else { S.en--; qMiss(S.missed, q); SFX.bite(); $(".hero").classList.add("shake"); setTimeout(() => $(".hero") && $(".hero").classList.remove("shake"), 400); }
+      $("#bsHp").innerHTML = hpBar(S.hp, B.hp, "red"); $("#bsEn").innerHTML = hpBar(S.en, 5, "blue"); $("#bsScore").textContent = S.score;
+      await wait(ok ? 700 : 1800); if (GRUN !== run) return;
+      if (S.hp <= 0){
+        const R = bossRewards(), isNew = !R[B.en]; R[B.en] = 1; saveStore(); SFX.win(); party();
+        const last = bi + 1 >= BOSSES.length;
+        $("#bsQ").innerHTML = `<div class="gshop"><p class="gtitle">🏆 You beat the ${esc(B.en)}! · <span class="am">አሸነፉ!</span></p>
+          <div class="reward"><span>${B.reward[0]}</span><b>${isNew ? "New reward: " : "Reward: "}${esc(B.reward[1])}</b><span class="am">${esc(B.reward[2])}</span></div>
+          <p class="gsmall">⚡ +2 energy for the next fight</p>
+          <div class="grow"><button class="btn gold" id="bsNext">${last ? "Finish 🏆" : "Next boss: " + BOSSES[bi + 1].ic + " " + esc(BOSSES[bi + 1].en)}</button></div></div>`;
+        $("#bsNext").onclick = () => last ? gameOverPanel($("#bsQ"), "boss", S.score + 100, "👑 You beat every boss! English champion! · <span class=\"am\">ሁሉንም አሸነፉ!</span>", S.missed, () => bossPlay(0, 5, 0)) : bossPlay(bi + 1, Math.min(5, S.en + 2), S.score);
+      } else if (S.en <= 0) gameOverPanel($("#bsQ"), "boss", S.score, `⚡ Out of energy! The ${esc(B.en)} wins this time. · <span class="am">ጉልበትዎ አለቀ!</span>`, S.missed, () => bossPlay(0, 5, 0));
+      else next();
+    });
+  };
+  next();
+}
+
+// ===== 2. Secret Agent English =====
+const MISSIONS = [
+  { code:"Operation Coffee", am:"ኦፕሬሽን ቡና", file:"📁 File A: The enemy's favourite drink is macchiato.", tasks:[
+    ["🔐 Decode", "This message is written backwards:\n\"kraP lartneC ta teeM\"", "What does it say?", ["Meet at Central Park", "Meet at the airport", "Park the car in the centre"]],
+    ["🕵️ Find the suspect", "The suspect is tall, wears glasses and carries a black bag.", "Which person is the suspect?", ["A tall man with glasses and a black bag", "A short man with a hat and a red bag", "A tall woman with a blue bag"]],
+    ["🧭 Follow orders", "Agent, take the second street on the right, then wait next to the yellow taxi.", "Where do you wait?", ["Next to the yellow taxi", "Inside the yellow taxi", "On the first street on the left"]]] },
+  { code:"Operation Sunrise", am:"ኦፕሬሽን ጎህ", file:"📁 File B: The enemy boss is afraid of cats. 🐱", tasks:[
+    ["🔑 Unlock the file", "Password clue: \"It's the moment when the sun comes up in the morning.\"", "What is the password?", ["SUNRISE", "SUNSET", "MIDNIGHT"]],
+    ["🔐 Decode", "Read only the FIRST letter of each word:\n\"Good Old Lions Dance\"", "What is the secret word?", ["GOLD", "GOOD", "LION"]],
+    ["🕵️ Find the suspect", "A witness says: \"She wasn't wearing a hat, but she had a scarf and long hair.\"", "Who is the suspect?", ["A woman with long hair and a scarf, no hat", "A woman with a hat and a scarf", "A man with long hair and a scarf"]]] },
+  { code:"Operation Double Agent", am:"ኦፕሬሽን ሁለት ፊት", file:"📁 File C: Agent K works for the enemy. Don't trust him!", tasks:[
+    ["🕵️ Find the liar", "Agent K: \"At 9, I was having breakfast with Agent M.\"\nAgent M: \"At 9, I ate breakfast alone at home.\"", "What do we know?", ["One of them is lying", "They had breakfast together", "Agent M was at the office"]],
+    ["🧭 Follow orders", "\"Unless the red light is on, enter through the back door. If it is on, wait until it turns off.\" The red light is ON.", "What should you do?", ["Wait until the light turns off", "Enter through the back door now", "Turn on the red light"]],
+    ["🔐 Decode", "HQ says: \"Our friend in Paris has been let go.\"", "What happened to the friend?", ["He lost his job", "He went on holiday", "He escaped from prison"]]] },
+  { code:"Final Mission: Operation Lion", am:"የመጨረሻ ተልዕኮ፦ ኦፕሬሽን አንበሳ", file:"🏅 Mission complete! You are Agent 007 of Fidel English.", tasks:[
+    ["🔐 Decode", "Take the first letter of each word:\n\"Look In Our Notebook\"", "What is the code word?", ["LION", "LOOK", "NOTE"]],
+    ["💣 Stop the bomb", "\"Cut the wire that is not red, not blue, and not the longest.\" The wires are red, blue, green and yellow. The green wire is the longest.", "Which wire do you cut?", ["Yellow", "Green", "Red"]],
+    ["📨 Last message", "HQ: \"Mission accomplished. Take a well-deserved break, agent.\"", "What does HQ want you to do?", ["Rest, because you did very well", "Break the computer", "Start a new mission right now"]]] }];
+function agentIntro(){ gameIntro("agent", [
+  ["🕶️ You are a secret agent. Read each English message very carefully.", "እርስዎ ሚስጥራዊ ሰላይ ነዎት። እያንዳንዱን የእንግሊዝኛ መልዕክት በጥንቃቄ ያንብቡ።"],
+  ["🔐 Decode messages, find suspects, follow orders and unlock secret files.", "መልዕክቶችን ይፍቱ፣ ተጠርጣሪዎችን ያግኙ፣ ትዕዛዞችን ይከተሉ፣ ሚስጥራዊ ፋይሎችን ይክፈቱ።"],
+  ["❤️ 3 mistakes and your cover is blown!", "3 ስህተት ከሰሩ ማንነትዎ ይጋለጣል!"]], agentPlay); }
+function agentPlay(){
+  const run = ++GRUN, A = { m:0, t:0, score:0, hearts:3, files:[], missed:new Map() };
+  $("#v-game").innerHTML = gameHudHTML([`<span id="agLife">${lives(3)}</span>`, `<span>⭐ <b id="agScore">0</b></span>`, `<span class="glvl" id="agM">1/${MISSIONS.length}</span>`]) + `<div id="agArea"></div>`;
+  show("game"); wireSnd();
+  const render = () => {
+    if (GRUN !== run) return;
+    const M = MISSIONS[A.m], T = M.tasks[A.t], opts = shuffle(T[3].slice());
+    $("#agM").textContent = `${A.m + 1}/${MISSIONS.length}`;
+    $("#agArea").innerHTML = `<div class="agent"><div class="aghead">🕶️ ${esc(M.code)} <span class="am">${esc(M.am)}</span><small>Task ${A.t + 1}/3</small></div>
+      <div class="agcard"><b>${T[0]}</b><p>${esc(T[1]).replace(/\n/g, "<br>")}</p></div>
+      ${A.files.length ? `<div class="agfiles">${A.files.map(f => `<span>${esc(f)}</span>`).join("")}</div>` : ""}
+      <p class="dq">${esc(T[2])}</p>${choiceButtons(opts, "long")}<div id="agWhy"></div></div>`;
+    $("#agArea").querySelector(".gchoices").onclick = e => {
+      const b = e.target.closest("[data-c]"); if (!b || b.disabled) return;
+      if (opts[+b.dataset.c] === T[3][0]){
+        $("#agArea").querySelectorAll("[data-c]").forEach(x => x.disabled = true); b.classList.add("ok");
+        A.score += 15 + A.m * 5; $("#agScore").textContent = A.score; SFX.win();
+        const endM = A.t + 1 >= M.tasks.length;
+        if (endM) A.files.push(M.file);
+        $("#agWhy").innerHTML = `<div class="gwhy ok"><b>✅ ${endM ? "Mission complete! Secret file unlocked 🔓" : "Correct, agent."} · <span class="am">${esc(pickOne(CHEER_RIGHT)[0])}</span></b>
+          ${endM ? `<p class="agfile">${esc(M.file)}</p>` : ""}<button class="btn gold" id="agNext">${endM ? (A.m + 1 >= MISSIONS.length ? "Finish 🏅" : "Next mission →") : "Next task →"}</button></div>`;
+        $("#agNext").onclick = () => {
+          if (!endM){ A.t++; render(); return; }
+          if (A.m + 1 >= MISSIONS.length){ party(); gameOverPanel($("#agArea"), "agent", A.score + A.hearts * 10, "🏅 All missions complete, Agent! · <span class=\"am\">ሁሉንም ተልዕኮዎች ጨረሱ!</span>", A.missed, agentPlay); return; }
+          A.m++; A.t = 0; render();
+        };
+      } else {
+        b.classList.add("bad"); b.disabled = true; A.hearts--; SFX.bite(); $("#agLife").textContent = lives(A.hearts); A.missed.set(T[2], [T[3][0], M.am]);
+        if (A.hearts <= 0) setTimeout(() => gameOverPanel($("#agArea"), "agent", A.score, "🚨 Your cover is blown! · <span class=\"am\">ማንነትዎ ተጋለጠ!</span>", A.missed, agentPlay), 800);
+        else $("#agWhy").innerHTML = `<div class="gwhy"><b>❌ Careful, agent! Read it again. · <span class="am">በጥንቃቄ እንደገና ያንብቡ</span></b></div>`;
+      }
+    };
+  };
+  render();
+}
+
+// ===== 3. Story Choices (one story, 5 endings) =====
+const STORY = {
+  start:{ s:"✈️ You land at Heathrow Airport in London. It's your first time abroad! The officer at passport control looks at you: \"Purpose of your visit?\"", c:[
+    ["I'm here to study at a university.", "bag", "✅ Clear and polite."], ["Purpose? I like purple.", "confused", "😅 'Purpose' means WHY you came."], ["Why do you want to know?", "rude", "😬 That sounds rude to an officer."]] },
+  confused:{ s:"The officer smiles. \"Purpose means WHY you came here.\" You try again.", c:[["Oh, sorry! I'm here to study.", "bag", "✅ Good recovery!"]] },
+  rude:{ s:"The officer frowns and takes you to a small room for more questions. Two hours later, you are finally free. You're tired and hungry.", c:[["Continue · ቀጥል", "bag", ""]] },
+  bag:{ s:"🧳 You get your bag. Now you need to go to your hotel in the city. A sign says: \"Taxi → Exit A. Train to the city (cheaper) → Exit C.\"", c:[
+    ["Take a taxi from Exit A.", "taxi", "🚕 Fast but expensive."], ["Take the train from Exit C.", "train", "🚆 Cheaper. Good reading!"]] },
+  taxi:{ s:"🚕 The driver asks: \"Where to?\"", c:[["The Park Hotel, please.", "hotel", "✅ Short and polite."], ["I go hotel. Drive.", "lostTaxi", "😬 The driver doesn't know which hotel!"]] },
+  lostTaxi:{ s:"The driver says \"Which hotel?\" You don't understand. He drives around London for an hour…", c:[["Show him the hotel address on your phone.", "END_broke", ""]] },
+  train:{ s:"🚆 On the train, a young woman asks: \"Excuse me, is this seat taken?\"", c:[["No, it's free. Please sit down.", "friend", "✅ Friendly and correct!"], ["Yes, I am seat.", "alone", "😅 She looks confused and walks away."]] },
+  friend:{ s:"She sits down. \"I'm Emma. Is this your first time in London?\"", c:[["Yes, it is! I'm a bit nervous.", "emma", "✅ Natural English, and honest!", "friend"], ["No.", "alone", "😐 Too short. The talk ends."]] },
+  emma:{ s:"Emma laughs. \"Don't worry, London is fun! Here's my number. I can show you the city on Saturday.\" 📱", c:[["That's so kind of you. Thank you!", "hotel", "✅ Lovely reply.", "friend"]] },
+  alone:{ s:"You sit alone and look out of the window. Soon you arrive in the city and walk to your hotel.", c:[["Go into the hotel.", "hotel", ""]] },
+  hotel:{ s:"🏨 At the hotel reception: \"Good evening! Do you have a booking?\"", c:[["Yes, it's under the name Hana.", "uni", "✅ Perfect hotel English."], ["I want room. Give me.", "END_noroom", "😬 Very rude!"]] },
+  uni:{ s:"🎓 Next morning: your first day at university. The campus is huge and you're lost! You see a student.", c:[
+    ["Excuse me, could you tell me where the library is?", "END_good", "✅ Polite question!"], ["Hey! Library where?", "END_late", "😬 Not polite, and not correct English."]] },
+  END_good:{ end:"🌟 Happy ending", s:"The student smiles and walks with you to the library. You are on time, and you make a new friend. Your English opens doors! 🌟" },
+  END_star:{ end:"⭐ London Star (best ending)", s:"You arrive on time, make new friends, and on Saturday Emma shows you Big Ben and the River Thames. Polite English made your first week amazing! ⭐" },
+  END_late:{ end:"😅 Late for class", s:"The student looks confused and walks away. You are one hour late for your first class. Lesson learned: polite English helps!" },
+  END_noroom:{ end:"🛏️ No room", s:"The receptionist says: \"Sorry, we have no rooms for you.\" You spend the night at the airport. Next time, try 'I'd like a room, please.'" },
+  END_broke:{ end:"💸 No money left", s:"The taxi finally arrives, but the trip costs 120 pounds! You have no money left for dinner. Clear English could have saved you money." } };
+const STORY_ENDS = ["END_star", "END_good", "END_late", "END_noroom", "END_broke"];
+function storyFound(){ if (!store.games) store.games = {}; return store.games.endings || (store.games.endings = []); }
+function storyIntro(){ const f = storyFound(); gameIntro("story", [
+  ["📖 You travel to London for the first time. YOU decide what to say.", "ለመጀመሪያ ጊዜ ወደ ለንደን ይጓዛሉ። ምን እንደሚሉ እርስዎ ይወስናሉ።"],
+  ["🔀 Every choice changes what happens next.", "እያንዳንዱ ምርጫ ቀጣዩን ይቀይራል።"],
+  [`🏁 Find all 5 endings! Found: ${f.length}/5 ${STORY_ENDS.map(e => f.includes(e) ? STORY[e].end.split(" ")[0] : "❔").join(" ")}`, "5ቱንም መጨረሻዎች ያግኙ!"]], storyPlay); }
+function storyPlay(){
+  const run = ++GRUN, flags = new Set(); let node = "start", note = "", steps = 0;
+  $("#v-game").innerHTML = gameHudHTML([`<span class="glvl">📖 London</span>`, `<span>🏁 <b id="stF">${storyFound().length}</b>/5</span>`]) + `<div id="stArea"></div>`;
+  show("game"); wireSnd();
+  const render = () => {
+    if (GRUN !== run) return;
+    if (node === "END_good" && flags.has("friend")) node = "END_star";
+    const N = STORY[node];
+    if (N.end){
+      const f = storyFound(), isNew = !f.includes(node); if (isNew){ f.push(node); saveStore(); }
+      if (node === "END_star" || node === "END_good"){ party(); SFX.win(); } else SFX.bite();
+      $("#stArea").innerHTML = `${note ? `<p class="stnote">${esc(note)}</p>` : ""}<div class="stend"><b>${esc(N.end)}</b><p>${esc(N.s)}</p></div>
+        <p class="gsmall">${isNew ? "🆕 New ending found!" : "You found this ending before."} · Endings: ${f.length}/5 ${STORY_ENDS.map(e => f.includes(e) ? STORY[e].end.split(" ")[0] : "❔").join(" ")}</p>
+        <div class="grow"><button class="btn gold" id="stAgain">Try another path · ሌላ መንገድ 🔀</button><button class="btn" id="stAll">All games · ሁሉም ጨዋታዎች</button></div>`;
+      setBest("story", f.length * 20); $("#stF").textContent = f.length;
+      $("#stAgain").onclick = storyPlay; $("#stAll").onclick = openGames; return;
+    }
+    const opts = N.c.length > 1 ? shuffle(N.c.slice()) : N.c;
+    $("#stArea").innerHTML = `${note ? `<p class="stnote">${esc(note)}</p>` : ""}<div class="stbox"><p>${esc(N.s)}</p><button class="qsay" data-sayw="${esc(N.s.replace(/[^\x20-\x7E]/g, ""))}" aria-label="Listen">🔊</button></div>
+      <p class="gsmall">What do you do or say? · <span class="am">ምን ያደርጋሉ ወይም ይላሉ?</span></p>${choiceButtons(opts.map(c => c[0]), "long")}`;
+    $("#stArea").querySelector(".gchoices").onclick = e => {
+      const b = e.target.closest("[data-c]"); if (!b) return;
+      const c = opts[+b.dataset.c]; if (c[3]) flags.add(c[3]); note = c[2]; node = c[1]; steps++;
+      if (!/Continue|Show him|Go into/.test(c[0])) sayIfOn(c[0]);
+      render(); scrollTo(0, 0);
+    };
+  };
+  render();
+}
+
+// ===== 4. English Duel (vs computer or 2 players on one phone) =====
+function duelIntro(){
+  GRUN++; stopSound();
+  $("#v-game").innerHTML = `<div class="gstart"><div class="gbadge">🥊</div><h1>English Duel</h1><p class="am gsub">የእንግሊዝኛ ግጥሚያ</p>
+    <p>Fast rounds of words, grammar and spelling. <b>First to 7 points wins!</b></p><p class="am">ፈጣን ዙሮች፦ ቃላት፣ ሰዋሰውና አጻጻፍ። መጀመሪያ 7 ነጥብ ያገኘ ያሸንፋል!</p>
+    ${gameBest("duel") ? `<p class="grec">🏆 Wins: ${gameBest("duel")}</p>` : ""}
+    <div class="grow"><button class="btn gold" data-cpu="1">🤖 vs Computer · Easy</button><button class="btn gold" data-cpu="2">🤖 vs Computer · Normal</button><button class="btn gold" data-cpu="3">🤖 vs Computer · Hard</button>
+    <button class="btn" data-cpu="0">👥 2 players on one phone · 2 ተጫዋቾች</button><button class="btn" id="gBack">All games · ሁሉም ጨዋታዎች</button></div></div>`;
+  $("#gBack").onclick = openGames;
+  $("#v-game").querySelectorAll("[data-cpu]").forEach(b => b.onclick = () => duelPlay(+b.dataset.cpu));
+  show("game");
+}
+function duelPlay(cpu){
+  const run = ++GRUN, D = { p:0, o:0, round:0, lock:false, timer:null }, WIN = 7;
+  const kinds = ["vocab", "grammar", "spell", "vocab", "complete", "clue"];
+  const oName = cpu ? "🤖 Computer" : "🧑 Player 2";
+  $("#v-game").innerHTML = `<div class="dscore"><span>🧑 ${cpu ? "You" : "Player 1"} <b id="duP">0</b></span><span class="gq">vs</span><span><b id="duO">0</b> ${oName}</span></div>
+    ${cpu ? "" : `<div class="dpad top" id="duPad2"></div>`}<div class="dq2" id="duQ"></div><div class="dpad" id="duPad1"></div><div id="duEnd"></div>`;
+  show("game");
+  const pads = () => cpu ? [$("#duPad1")] : [$("#duPad1"), $("#duPad2")];
+  const round = () => {
+    if (GRUN !== run) return;
+    D.round++; D.lock = false; D.out = new Set();
+    const L = Math.min(4, 1 + Math.floor((D.p + D.o) / 4));
+    const q = makeQ(kinds, L); D.q = q;
+    $("#duQ").innerHTML = `<p class="qask">Round ${D.round} · ${esc(q.ask)}</p><div class="qp ${q.pAm ? "am" : ""} ${q.mono ? "mono" : ""}">${esc(q.p)}</div><div id="duMsg" class="dmsg"></div>`;
+    pads().forEach((pad, pi) => { pad.innerHTML = (pi === 1 ? `<div class="dqmini ${q.pAm ? "am" : ""}">${esc(q.p)}</div>` : "") + q.opts.map((o, i) => `<button data-c="${i}" class="${q.optsAm ? "am" : ""}">${esc(o)}</button>`).join("");
+      pad.onclick = e => { const b = e.target.closest("[data-c]"); if (b && !b.disabled) answer(pi === 0 ? "p" : "o", q.opts[+b.dataset.c] === q.a, b); }; });
+    if (cpu){ const think = [0, [3200, 6200], [2300, 4600], [1500, 3100]][cpu]; clearTimeout(D.timer);
+      D.timer = setTimeout(() => { if (GRUN === run && !D.lock) answer("o", Math.random() < [0, .6, .75, .88][cpu], null); }, think[0] + Math.random() * (think[1] - think[0])); }
+  };
+  const answer = (who, ok, b) => {
+    if (D.lock || D.out.has(who)) return;
+    if (b) b.classList.add(ok ? "ok" : "bad");
+    if (ok){
+      D.lock = true; clearTimeout(D.timer); D[who]++; $("#duP").textContent = D.p; $("#duO").textContent = D.o;
+      who === "p" ? SFX.win() : SFX.bite();
+      $("#duMsg").innerHTML = `${who === "p" ? (cpu ? "🧑 You got it!" : "🧑 Player 1 scores!") : cpu ? "🤖 Computer was faster!" : "🧑 Player 2 scores!"} · <b>${esc(D.q.a)}</b>`;
+      pads().forEach(p => p.querySelectorAll("[data-c]").forEach((x, i) => { x.disabled = true; if (D.q.opts[i] === D.q.a) x.classList.add("ok"); }));
+      setTimeout(() => { if (GRUN !== run) return; if (D.p >= WIN || D.o >= WIN) finish(); else round(); }, 1500);
+    } else {
+      D.out.add(who); if (who === "p" && D.q.w) markWrong(D.q.w[0]);
+      $("#duMsg").textContent = who === "p" ? (cpu ? "❌ Wrong! Wait…" : "❌ Player 1 is out this round") : cpu ? "🤖 Computer made a mistake!" : "❌ Player 2 is out this round";
+      const pad = who === "p" ? $("#duPad1") : $("#duPad2"); if (pad) pad.querySelectorAll("[data-c]").forEach(x => x.disabled = true);
+      if (!cpu && D.out.size >= 2 || cpu && D.out.size >= 2){ D.lock = true; clearTimeout(D.timer); $("#duMsg").innerHTML = `Nobody scores. Answer: <b>${esc(D.q.a)}</b>`; setTimeout(round, 1700); }
+    }
+  };
+  const finish = () => {
+    const pw = D.p >= WIN;
+    if (cpu && pw){ if (!store.games) store.games = {}; store.games.duel = (store.games.duel || 0) + 1; saveStore(); party(); }
+    $("#duPad1").innerHTML = ""; if ($("#duPad2")) $("#duPad2").innerHTML = "";
+    $("#duQ").innerHTML = `<div class="gshop"><p class="gtitle">${pw ? (cpu ? "🏆 You win! · አሸነፉ!" : "🏆 Player 1 wins!") : cpu ? "🤖 The computer wins this time · በሚቀጥለው ያሸንፋሉ!" : "🏆 Player 2 wins!"}</p>
+      <p class="gbig">${D.p} – ${D.o}</p><div class="grow"><button class="btn gold" id="duAgain">Rematch · እንደገና 🥊</button><button class="btn" id="duAll">All games · ሁሉም ጨዋታዎች</button></div></div>`;
+    $("#duAgain").onclick = () => duelPlay(cpu); $("#duAll").onclick = openGames;
+  };
+  round();
+}
+
+// ===== 5. Alien Language Invasion =====
+const HUMAN_TALK = [["Someone sneezes. Humans say…", "Bless you!"], ["You meet someone for the first time.", "Nice to meet you."], ["Someone gives you a gift.", "Thank you so much!"],
+  ["You step on someone's foot.", "Oh, I'm so sorry!"], ["Your friend has an exam tomorrow.", "Good luck!"], ["You didn't hear what someone said.", "Sorry, could you repeat that?"],
+  ["Someone says 'Thank you'.", "You're welcome."], ["You leave a friend's house at night.", "Good night! See you soon."], ["Your friend is sad.", "Don't worry, it will be OK."],
+  ["It's your friend's birthday.", "Happy birthday!"], ["You need to pass someone in a crowded bus.", "Excuse me."], ["Your friend is going on a trip.", "Have a safe trip!"]];
+function qHuman(){ const h = pickOne(HUMAN_TALK), others = shuffle(HUMAN_TALK.filter(x => x !== h)).slice(0, 3).map(x => x[1]);
+  return { kind:"human", ask:"Teach the alien: what do humans say?", askAm:"ሰዎች ምን ይላሉ?", p:h[0], opts:shuffle([h[1], ...others]), a:h[1], say:h[1] }; }
+function alienIntro(){ gameIntro("alien", [
+  ["👽 Aliens have landed! They don't understand Earth English.", "ባዕዳን ምድር ላይ አረፉ! የምድርን እንግሊዝኛ አይረዱም።"],
+  ["🛸 Teach them: words, expressions, and how humans talk.", "ያስተምሯቸው፦ ቃላት፣ አገላለጾችና ሰዎች እንዴት እንደሚነጋገሩ።"],
+  ["🌍 Each wrong answer brings the invasion closer. Teach 15 aliens to save Earth!", "እያንዳንዱ ስህተት ወረራውን ያቀርባል። ምድርን ለማዳን 15 ባዕዳንን ያስተምሩ!"]], alienPlay); }
+function alienPlay(){
+  const run = ++GRUN, A = { taught:0, danger:0, score:0, missed:new Map() }, GOAL = 15, MAXD = 4;
+  const ALIENS = ["👽", "👾", "🤖", "🛸"];
+  $("#v-game").innerHTML = gameHudHTML([`<span>👽 <b id="alT">0</b>/${GOAL}</span>`, `<span>⭐ <b id="alS">0</b></span>`, `<span class="glvl" id="gLvl">${lvlChip(1)}</span>`]) +
+    `<div class="alsky" id="alSky"><div class="alship" id="alShip">🛸</div><div class="alien" id="alAlien">👽<span class="albub" id="alBub">Zorp?</span></div><div class="alearth">🌍</div><div class="gmsg" id="gMsg"></div></div>
+    <div id="alDanger"></div><div id="alQ"></div>`;
+  show("game"); wireSnd();
+  let lastL = 1;
+  const draw = () => {
+    $("#alDanger").innerHTML = `<p class="gsmall">Invasion danger · <span class="am">የወረራ አደጋ</span></p>${hpBar(A.danger, MAXD, "red")}`;
+    $("#alShip").style.top = (8 + A.danger * 13) + "%";
+  };
+  const next = () => {
+    if (GRUN !== run) return;
+    const L = A.taught < 4 ? 1 : A.taught < 8 ? 2 : A.taught < 12 ? 3 : 4;
+    if (L !== lastL){ lastL = L; levelUp(L); }
+    const q = L === 1 ? qMeaning(1) : L === 2 ? (Math.random() < .5 ? qMeaning(2) : qHuman()) : L === 3 ? (Math.random() < .5 ? qHuman() : qMeaning(3)) : qIdiom();
+    if (q.kind !== "human"){ q.ask = "The alien asks: \"What does this mean?\""; q.askAm = "ባዕዱ ይጠይቃል፦ ምን ማለት ነው?"; }
+    $("#alAlien").firstChild.textContent = pickOne(ALIENS);
+    $("#alBub").textContent = q.kind === "human" ? "Humans… what say?" : `"${q.p.length > 22 ? q.p.slice(0, 20) + "…" : q.p}"?`;
+    askQ($("#alQ"), q, async ok => {
+      if (ok){ A.taught++; A.score += 10 + L * 3; $("#alAlien").classList.add("happy"); gameBeep(800, 1400, .15, "sine", .08); }
+      else { A.danger++; qMiss(A.missed, q); SFX.bite(); $("#alSky").classList.add("shake"); }
+      $("#alT").textContent = A.taught; $("#alS").textContent = A.score; draw();
+      await wait(ok ? 900 : 2000); if (GRUN !== run) return;
+      $("#alAlien").classList.remove("happy"); $("#alSky").classList.remove("shake");
+      if (A.taught >= GOAL){ party(); gameOverPanel($("#alQ"), "alien", A.score + 50, "🌍 You saved Earth! The aliens now speak English! · <span class=\"am\">ምድርን አዳኑ!</span>", A.missed, alienPlay); }
+      else if (A.danger >= MAXD) gameOverPanel($("#alQ"), "alien", A.score, "🛸 The aliens took over! · <span class=\"am\">ባዕዳኑ ወረሩ!</span>", A.missed, alienPlay);
+      else next();
+    });
+  };
+  draw(); next();
+}
+
+// ===== 6. Zombie English Escape =====
+function zombieIntro(){ gameIntro("zombie", [
+  ["🧟 Zombies are chasing you! 10 locked doors stand between you and freedom.", "ዞምቢዎች እያባረሩዎት ነው! ከእርስዎና ከነፃነት መካከል 10 የተዘጉ በሮች አሉ።"],
+  ["🔓 Fix sentences, solve riddles and choose the right words to open each door.", "እያንዳንዱን በር ለመክፈት ዓረፍተ ነገሮችን ያርሙ፣ እንቆቅልሾችን ይፍቱ፣ ትክክለኛ ቃላትን ይምረጡ።"],
+  ["⚠️ Wrong answers AND slow answers bring the zombies closer!", "ስህተትም ሆነ መዘግየት ዞምቢዎቹን ያቀርባል!"]], zombiePlay); }
+function zombiePlay(){
+  const run = ++GRUN, Z = { door:0, gap:5, score:0, missed:new Map(), t:0, busy:false }, DOORS = 10, STEP = 14;
+  $("#v-game").innerHTML = gameHudHTML([`<span>🚪 <b id="zD">1</b>/${DOORS}</span>`, `<span>⭐ <b id="zS">0</b></span>`]) +
+    `<div class="zhall" id="zHall"></div><div class="ttime"><i id="zBar"></i></div><div id="zQ"></div>`;
+  show("game"); wireSnd();
+  const hall = () => {
+    const cells = Array(8).fill("·"); cells[7] = "🚪"; cells[6] = "🏃"; cells[Math.max(0, 6 - Z.gap)] = "🧟";
+    if (6 - Z.gap - 1 >= 0) cells[6 - Z.gap - 1] = "🧟";
+    $("#zHall").innerHTML = cells.map((c, i) => `<span class="${c === "🧟" ? "z" : ""}">${c}</span>`).join("") + `<p class="zgap">${Z.gap <= 1 ? "😱 They're right behind you!" : Z.gap <= 2 ? "⚠️ They're getting close!" : "Zombies are " + Z.gap + " steps away"}</p>`; };
+  const closer = msg => { Z.gap--; SFX.bite(); $("#zHall").classList.add("shake"); setTimeout(() => $("#zHall") && $("#zHall").classList.remove("shake"), 400); hall();
+    if (Z.gap <= 0){ Z.busy = true; gameOverPanel($("#zQ"), "zombie", Z.score, `🧟 The zombies caught you at door ${Z.door + 1}! · <span class="am">ዞምቢዎቹ ያዙዎት!</span>`, Z.missed, zombiePlay); return true; } return false; };
+  const next = () => {
+    if (GRUN !== run) return;
+    Z.t = STEP - Math.min(6, Z.door * .6); Z.max = Z.t; Z.busy = false;
+    const L = Z.door < 3 ? 1 : Z.door < 6 ? 2 : Z.door < 9 ? 3 : 4;
+    const q = makeQ(L >= 3 ? ["grammar", "clue", "spell", "idiom"] : ["grammar", "clue", "complete", "vocab"], L);
+    $("#zD").textContent = Z.door + 1; hall();
+    askQ($("#zQ"), q, async ok => {
+      Z.busy = true;
+      if (ok){ Z.score += 10 + Z.door * 3 + Math.round(Z.t); Z.gap = Math.min(5, Z.gap + 1); SFX.win(); $("#zS").textContent = Z.score;
+        $("#zQ").querySelector(".qfb").innerHTML = `<div class="gwhy ok"><b>🔓 The door opens! Run! 🏃</b></div>`; hall(); }
+      else { qMiss(Z.missed, q); if (closer()) return; }
+      await wait(ok ? 1000 : 2200); if (GRUN !== run || Z.gap <= 0) return;
+      if (ok){ Z.door++; if (Z.door >= DOORS){ party(); gameOverPanel($("#zQ"), "zombie", Z.score + 50, "🌅 You escaped! You're free! · <span class=\"am\">አመለጡ! ነፃ ወጡ!</span>", Z.missed, zombiePlay); return; } }
+      next();
+    });
+  };
+  const tick = setInterval(() => {
+    if (GRUN !== run || !$("#zBar")){ clearInterval(tick); return; }
+    if (Z.busy) return;
+    Z.t -= .1; $("#zBar").style.width = Math.max(0, Z.t / Z.max * 100) + "%"; $("#zBar").className = Z.t < 4 ? "low" : "";
+    if (Z.t <= 0){ Z.t = Z.max; if (closer()) clearInterval(tick); }
+  }, 100);
+  next();
+}
+
+// ===== 7. Word Bomb =====
+function bombIntro(){ gameIntro("bomb", [
+  ["💣 A bomb is ticking! Answer 4 challenges to cut its 4 wires.", "ቦምብ እየቆጠረ ነው! 4 ሽቦዎቹን ለመቁረጥ 4 ጥያቄዎችን ይመልሱ።"],
+  ["✂️ Complete words, choose spellings, solve clues and sentence puzzles.", "ቃላትን ያሟሉ፣ አጻጻፍ ይምረጡ፣ ፍንጮችንና የዓረፍተ ነገር እንቆቅልሾችን ይፍቱ።"],
+  ["⏱️ A wrong answer costs 4 seconds. Each new bomb is faster!", "ስህተት 4 ሰከንድ ያሳጣል። እያንዳንዱ አዲስ ቦምብ ይፈጥናል!"]], bombPlay); }
+function bombPlay(){
+  const run = ++GRUN, B = { bomb:1, cut:0, t:0, max:0, score:0, missed:new Map(), busy:false }, WIRES = ["#e2574c", "#3a8fd9", "#f2b134", "#3fae6a"];
+  $("#v-game").innerHTML = gameHudHTML([`<span>💣 <b id="boN">1</b></span>`, `<span>⭐ <b id="boS">0</b></span>`, `<span class="glvl" id="gLvl">${lvlChip(1)}</span>`]) +
+    `<div class="bomb" id="boBomb"><div class="botime" id="boT">30</div><div class="wires" id="boW"></div><div class="gmsg" id="gMsg"></div></div><div id="boQ"></div>`;
+  show("game"); wireSnd();
+  let lastL = 1;
+  const wires = () => { $("#boW").innerHTML = WIRES.map((c, i) => `<span class="${i < B.cut ? "cut" : ""}" style="--c:${c}">${i < B.cut ? "✂️" : ""}</span>`).join(""); };
+  const newBomb = () => { B.cut = 0; B.max = Math.max(14, 32 - (B.bomb - 1) * 3); B.t = B.max; $("#boN").textContent = B.bomb; wires(); };
+  const next = () => {
+    if (GRUN !== run) return; B.busy = false;
+    const L = Math.min(4, 1 + Math.floor((B.bomb - 1) / 1.5));
+    if (L !== lastL){ lastL = L; levelUp(L); }
+    askQ($("#boQ"), makeQ(["complete", "spell", "clue", "grammar"], L), async (ok, q) => {
+      B.busy = true;
+      if (ok){ B.cut++; B.score += 10 + B.bomb * 2; $("#boS").textContent = B.score; wires(); gameBeep(1200, 300, .1, "square", .06); }
+      else { B.t = Math.max(.5, B.t - 4); qMiss(B.missed, q); SFX.bite(); $("#boBomb").classList.add("shake"); setTimeout(() => $("#boBomb") && $("#boBomb").classList.remove("shake"), 400); }
+      await wait(ok ? 600 : 1800); if (GRUN !== run || B.dead) return;
+      if (B.cut >= WIRES.length){
+        B.score += Math.round(B.t) * 2; $("#boS").textContent = B.score; SFX.win();
+        gameMsgIn(`✅ Bomb ${B.bomb} defused! +${Math.round(B.t) * 2} time bonus`, "ቦምቡ ከሸፈ! ጀግና!", 1600);
+        B.bomb++; await wait(1300); if (GRUN !== run) return; newBomb();
+      }
+      next();
+    }, { quiet:false });
+  };
+  const tick = setInterval(() => {
+    if (GRUN !== run || !$("#boT")){ clearInterval(tick); return; }
+    B.t -= .1; $("#boT").textContent = Math.max(0, Math.ceil(B.t)); $("#boT").classList.toggle("low", B.t < 6);
+    if (B.t < 6 && Math.round(B.t * 10) % 10 === 0) gameBeep(900, 900, .05, "square", .04);
+    if (B.t <= 0){ clearInterval(tick); B.dead = true; SFX.bite(); $("#boBomb").innerHTML = `<div class="boom">💥</div>`;
+      setTimeout(() => gameOverPanel($("#boQ"), "bomb", B.score, `💥 BOOM! You defused ${B.bomb - 1} bomb${B.bomb === 2 ? "" : "s"}. · <span class="am">ቦምቡ ፈነዳ!</span>`, B.missed, bombPlay), 700); }
+  }, 100);
+  newBomb(); next();
 }
 
 // ---------- tip box (grammar / pronunciation) ----------
