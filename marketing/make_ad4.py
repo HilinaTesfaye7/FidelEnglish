@@ -23,7 +23,7 @@ def load(name):
     if len(loud): a = a[max(0, loud[0] - 800): loud[-1] + 2400]
     return a
 CLIPS = {n: load(n) for n in ["en_howareyou", "n1", "n2", "en_thankyou_teacher", "s1", "n3", "s2", "n4",
-                               "en_thankyou_student", "n5", "n6c", "ngames", "npet", "n7", "n8", "n8b", "n9"]}
+                               "en_thankyou_student", "n5", "n6c", "ngames", "npet", "n8", "n8b", "n9"]}
 LEN = {k: len(v) / SR for k, v in CLIPS.items()}
 
 VOICE, SFX, T = [], [], {}      # (time, clip), (time, effect), named times
@@ -47,12 +47,10 @@ VOICE.append((t, "n5")); t += LEN["n5"] + 0.6
 T["s4"] = t; SFX.append((t, "whoosh")); t += 0.3
 VOICE.append((t, "n6c")); T["feat"] = t; t += LEN["n6c"] + 0.6
 T["sg"] = t; SFX.append((t, "whoosh")); t += 0.3
-VOICE.append((t, "ngames")); T["games"] = t; t += LEN["ngames"] + 0.7
+VOICE.append((t, "ngames")); T["games"] = t; t += max(LEN["ngames"] + 0.7, 2.6)
 T["sp"] = t; SFX.append((t, "whoosh")); t += 0.3
 VOICE.append((t, "npet")); T["pet"] = t; t += LEN["npet"] + 0.9
-T["s5"] = t; SFX.append((t, "whoosh")); t += 0.3
-VOICE.append((t, "n7")); T["cheer"] = t; t += LEN["n7"] + 0.1
-SFX.append((t, "ulul")); T["ulul"] = t; t += 1.7
+T["s5"] = T["cheer"] = T["ulul"] = t
 T["s6"] = t; SFX.append((t, "whoosh")); t += 0.3
 VOICE.append((t, "n8")); T["price"] = t; t += LEN["n8"] + 0.4
 SFX.append((t, "ding")); VOICE.append((t, "n8b")); T["full"] = t; t += LEN["n8b"] + 0.9
@@ -226,7 +224,7 @@ def verdict(ok, words, at, until):
 verdict(False, "እስቲ እንደገና!", T["fail1"], T["try2"] - 0.1)
 verdict(False, "እረ ወይኔ!", T["fail2"], T["try3"] - 0.1)
 verdict(True, "ጀግና! አልፈዋል", T["pass"], T["s4"])
-CONFETTI = [(T["pass"], 2.4), (T["pet"] + LEN["npet"] * 0.62, 2.2), (T["ulul"] - 0.6, 2.6)]
+CONFETTI = [(T["pass"], 2.4), (T["pet"] + LEN["npet"] * 0.62, 2.2)]
 
 # 4. features
 add(text_sprite("ፊደል ኢንግሊሽ ውስጥ…", 74, GOLD), 540, 380, T["feat"], T["sg"], "rise")
@@ -247,11 +245,6 @@ for i, e in enumerate(GICONS):
     tile = rrect(220, 220, 50, CARD + (255,), (70, 130, 100, 255), 4); ic = emoji_sprite(e, 140)
     tile.alpha_composite(ic, ((220 - ic.width) // 2, (220 - ic.height) // 2))
     add(shadow(tile, 12, 110), 225 + (i % 4) * 210, 720 + (i // 4) * 240, T["games"] + 0.3 + i * 0.12, T["sp"], "pop", 0.3)
-for k, (e, w) in enumerate([("🐺", "መንደሩን ያድኑ!"), ("🧟", "ከዞምቢዎች ያምልጡ!"), ("💣", "ቦምቡን ያክሽፉ!")]):
-    cap = rrect(860, 150, 50, (60, 48, 10, 255), GOLD + (255,), 5); ic = emoji_sprite(e, 100); cap.alpha_composite(ic, (40, 25))
-    ImageDraw.Draw(cap).text((170, 38), w, font=font(70), fill=WHITE)
-    at = T["games"] + LEN["ngames"] * (0.38 + k * 0.2)
-    add(shadow(cap, 14), 540, 1560, at, (T["games"] + LEN["ngames"] * (0.58 + k * 0.2)) if k < 2 else T["sp"], "pop", 0.3)
 SFX.extend([(T["games"] + 0.3 + i * 0.12, "pop") for i in range(12)])
 
 # 4c. English Pet Academy: the pet grows as you learn
@@ -280,13 +273,6 @@ add(text_sprite("Level up! እሰይ!", 84, GOLD), 540, 1680, t1 + 0.1, T["s5"],
 add(emoji_sprite("💖", 110), 820, 760, t2, T["s5"], "bounce")
 add(text_sprite("በተማሩ ቁጥር ያድጋል!", 74, WHITE), 540, 460, T["pet"] + 0.8, T["s5"], "rise")
 SFX.extend([(t1, "ding"), (t2, "ding")])
-
-# 5. cheers montage
-words = [("እሰይ እሰይ!", 140, GOLD, 600), ("ጎበዝ!", 170, WHITE, 860), ("ጀግና!", 190, GOLD, 1120)]
-for i, (w, sz, col, y) in enumerate(words):
-    add(text_sprite(w, sz, col), 540, y, T["cheer"] + i * LEN["n7"] / 3, T["s6"], "pop", 0.35)
-add(text_sprite("እልልልልል!", 150, WHITE), 540, 1400, T["ulul"], T["s6"], "pop", 0.35)
-add(emoji_sprite("🎉", 200), 540, 1620, T["ulul"], T["s6"], "pop", 0.35)
 
 # 6. price
 add(text_sprite("1 ቀን በነፃ", 160, GOLD), 540, 470, T["price"] + 0.1, T["s7"], "pop")
