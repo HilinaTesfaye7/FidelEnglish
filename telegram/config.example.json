@@ -12,6 +12,6 @@
   "price_month": 300,
   "price_full": 1000,
   "price_premium": 1000,
-  "trial_days": 3,
+  "trial_days": 1,
   "reminder_hour": 19
 }

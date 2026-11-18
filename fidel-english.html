@@ -1829,7 +1829,7 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
-const APP_VERSION = "2026.11.18-h";
+const APP_VERSION = "2026.11.18-i";
 const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);
 function audioBase(){ return null; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
@@ -1965,8 +1965,8 @@ function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; cle
 // Month 1: Beginner + first 5 pronunciation lessons. Month 2: Intermediate + last 5 pronunciation lessons.
 // Month 3: Advanced. Month 4: 5 real-life vocabulary lessons, speaking challenge, big review and final exam.
 // Each payment (300 Birr) opens the next month at once; 1000 Birr opens all 4. Opened months stay open.
-// The 3-day free trial opens Month 1. store.months is set by the payment (Telegram bot). The page owner sees everything.
-const TRIAL_DAYS = 3, PRICE_MONTH = 300, PRICE_FULL = 1000, MONTHS_TOTAL = 4;
+// The 1-day free trial opens Month 1, games and the pet. After it, everything is locked until a payment. store.months is set by the payment (Telegram bot). The page owner sees everything.
+const TRIAL_DAYS = 1, PRICE_MONTH = 300, PRICE_FULL = 1000, MONTHS_TOTAL = 4;
 let isOwner = false;
 const MONTHS = [
   { n:1, en:"Month 1", am:"ወር 1", sub:"Beginner", subAm:"ጀማሪ" },
@@ -1986,6 +1986,7 @@ function monthOf(l){
 }
 function monthsOpen(){ return Math.max(0, Math.min(MONTHS_TOTAL, +store.months || 0)); }
 function trialLeft(){ return Math.max(0, TRIAL_DAYS - (Date.now() - store.trialStart) / 86400000); }
+function hasAccess(){ return isOwner || monthsOpen() > 0 || trialLeft() > 0; }   // games and the pet need this
 function canUseMonth(m){ return isOwner || m <= monthsOpen() || (m === 1 && trialLeft() > 0); }
 function canUse(feature){
   if (isOwner) return true;
@@ -2003,7 +2004,7 @@ function showPaywall(want){
   }
   const open = monthsOpen(), nm = nextMonth(), m = typeof want === "number" ? want : nm;
   const head = (!open && trialLeft() <= 0)
-    ? `<h1>Your 3-day free trial has ended</h1><p class="am">የ3 ቀን ነፃ ሙከራዎ አልቋል። ለመቀጠል ይክፈሉ።</p>`
+    ? `<h1>Your free trial has ended</h1><p class="am">ነፃ ሙከራዎ አልቋል። ትምህርቶቹን፣ ጨዋታዎቹንና የቤት እንስሳዎን ለመቀጠል ይክፈሉ።</p><p style="margin:0">Pay to keep learning, playing the games and caring for your pet. Your progress and your pet are saved. 💛</p>`
     : `<h1>${MONTHS[m-1].en} is locked 🔒</h1><p class="am">${MONTHS[m-1].am} ተቆልፏል</p>`;
   const order = m > nm ? `<p style="margin:0">Months open one after another. Next to open: <b>${MONTHS[nm-1].en}</b>.<br><span class="am">ወራቶቹ በቅደም ተከተል ይከፈታሉ። ቀጣዩ፦ ${MONTHS[nm-1].am}</span></p>` : "";
   $("#v-pay").innerHTML = `<div class="goal">${head}<p style="font-size:14px">${open} of ${MONTHS_TOTAL} months open · <span class="am">${open}/${MONTHS_TOTAL} ወራት ተከፍተዋል</span></p></div>${order}
@@ -2081,7 +2082,7 @@ function renderSignup(){
         ? `<label for="suContact">Phone number · <span class="am">ስልክ ቁጥር</span></label><input id="suContact" type="tel" inputmode="tel" autocomplete="tel" placeholder="09 12 34 56 78">`
         : `<label for="suContact">Gmail address · <span class="am">የጂሜይል አድራሻ</span></label><input id="suContact" type="email" inputmode="email" autocomplete="email" placeholder="name@gmail.com">`}
         <span class="err" id="suErr" aria-live="polite"></span></div>
-      <button class="btn primary" type="submit">Start my 3-day free trial · <span class="am">ነፃ ሙከራ ይጀምሩ</span></button>
+      <button class="btn primary" type="submit">Start my free trial (${TRIAL_DAYS} day) · <span class="am">ነፃ ሙከራ ይጀምሩ</span></button>
     </form>
     <p class="foot">You can change this later in your profile · <span class="am">በኋላ በመገለጫዎ መቀየር ይችላሉ</span></p>`;
   show("signup");
@@ -2104,7 +2105,7 @@ function renderSignup(){
     store.profile = { name, method:SU.method, contact, avatar:"🦁", goal:10, remind:"19:00", created:Date.now() };
     store.trialStart = Date.now(); store.nudged = dayStr(new Date()); saveStore();
     renderHome();
-    modal(`<div class="big" aria-hidden="true">🦁</div><h2>Selam ${esc(name)}!</h2><p>Your 3-day free trial has started. Let's begin!</p><p class="am">የ3 ቀን ነፃ ሙከራዎ ተጀምሯል። እንጀምር!</p>`,
+    modal(`<div class="big" aria-hidden="true">🦁</div><h2>Selam ${esc(name)}!</h2><p>Your free trial (${TRIAL_DAYS} day) has started. Try the lessons, the games and your own pet!</p><p class="am">የ${TRIAL_DAYS} ቀን ነፃ ሙከራዎ ተጀምሯል። ትምህርቶቹን፣ ጨዋታዎቹንና የቤት እንስሳውን ይሞክሩ!</p>`,
       [{ label:"Find my level · ደረጃዬን ልወቅ", fn:startPlacement }, { label:"Go to lessons · ወደ ትምህርቶች" }]);
   };
 }
@@ -2219,7 +2220,7 @@ function renderHome(){
   if (!store.placed) acts += `<button class="action gold" id="aPlace"><span class="ic">${ICON_TARGET}</span><span style="flex:1;min-width:0"><b>Find your level</b><span class="s am">ደረጃዎን ይወቁ · 3-minute test</span></span></button>`;
   if (nextL) acts += `<button class="action" data-open="${nextL.id}"><span class="ic">${ICON_PLAY}</span><span style="flex:1;min-width:0"><b>Next lesson: ${esc(nextL.en)}</b><span class="s am">ቀጣይ ትምህርት፡ ${esc(nextL.am)}</span></span></button>`;
   acts += petHomeCard();
-  { const gb = (store.game || {}).bestNight; acts += `<button class="action gold" id="aGame"><span class="ic" style="font-size:22px">🎮</span><span style="flex:1;min-width:0"><b>Games: play and learn</b><span class="s"><span class="am">ጨዋታዎች፡ ይጫወቱና ይማሩ!</span> · 19 games${gb ? ` · 🐺 night ${gb}` : ""}</span></span></button>`; }
+  { const gb = (store.game || {}).bestNight; acts += `<button class="action gold" id="aGame"><span class="ic" style="font-size:22px">🎮</span><span style="flex:1;min-width:0"><b>${hasAccess() ? "" : "🔒 "}Games: play and learn</b><span class="s"><span class="am">ጨዋታዎች፡ ይጫወቱና ይማሩ!</span> · 19 games${hasAccess() ? "" : " · Pay to play · ለመጫወት ይክፈሉ"}${gb ? ` · 🐺 night ${gb}` : ""}</span></span></button>`; }
   if (wrongN && canUse("lessons")) acts += `<button class="action" id="aReview"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Review your mistakes (${wrongN})</b><span class="s am">ስህተቶችዎን ይከልሱ</span></span></button>`;
   if (capsReady){
     acts += sampleFn
@@ -2376,6 +2377,7 @@ const SFX = {
 
 function openGame(){ stopSound(); gameStore(); renderGameStart(); }
 function renderGameStart(){
+  if (!hasAccess()){ showPaywall(1); return; }
   GRUN++; const g = gameStore();
   $("#v-game").innerHTML = `<div class="gstart">
     <div class="gart" aria-hidden="true"><span>🌙</span><span>🐾</span><span>🛖🔥🛖</span></div>
@@ -2740,6 +2742,7 @@ const GAMES = [
 function gameBest(id){ return id === "village" ? ((store.game || {}).best || 0) : ((store.games || {})[id] || 0); }
 function setBest(id, v){ if (!store.games) store.games = {}; const rec = v > 0 && v > (store.games[id] || 0); if (rec){ store.games[id] = v; saveStore(); } return rec; }
 function openGames(){
+  if (!hasAccess()){ showPaywall(1); return; }
   stopSound(); GS = null; GRUN++; gameStore();
   const sl = gameStartLv();
   $("#v-game").innerHTML = `<div class="ghub-h"><h1>🎮 Games</h1><p class="am">ጨዋታዎች · ይጫወቱና ይማሩ!</p></div>
@@ -2755,6 +2758,7 @@ function openGames(){
   show("game");
 }
 function gameIntro(id, rules, play){
+  if (!hasAccess()){ showPaywall(1); return; }
   stopSound(); GS = null; GRUN++;
   const g = GAMES.find(x => x.id === id), b = gameBest(id);
   $("#v-game").innerHTML = `<div class="gstart"><div class="gbadge" aria-hidden="true">${g.ic}</div>
@@ -4198,6 +4202,7 @@ function itemLock(P, it){
 // ---- screens ----
 let PV = { panel:null, tab:"acc", preview:null, idle:null, adoptKind:null };
 function openPet(){
+  if (!hasAccess()){ showPaywall(1); return; }
   stopSound(); const P = petData(); petTick(P); saveStore();
   if (!P.active){ petAdoptScreen(); return; }
   PV.panel = null; PV.preview = null; petRender(); show("pet");
@@ -4436,8 +4441,10 @@ function petShowNews(){
 }
 function petHomeCard(){
   const P = petData(), p = petOf(P);
-  if (!p) return `<button class="action gold petcard" id="aPet"><span class="ic" style="font-size:26px">🐾</span><span style="flex:1;min-width:0"><b>Adopt your English pet! · Free</b><span class="s"><span class="am">ነፃ የቤት እንስሳ ይውሰዱ!</span> It grows when you learn.${P.bank.xp ? ` 🥚 ${P.bank.xp} XP waiting` : ""}</span></span></button>`;
+  if (!p) return `<button class="action gold petcard" id="aPet"><span class="ic" style="font-size:26px">🐾</span><span style="flex:1;min-width:0"><b>${hasAccess() ? "" : "🔒 "}Adopt your English pet!${hasAccess() ? " · Free" : ""}</b><span class="s"><span class="am">ነፃ የቤት እንስሳ ይውሰዱ!</span> It grows when you learn.${P.bank.xp ? ` 🥚 ${P.bank.xp} XP waiting` : ""}</span></span></button>`;
   petTick(P); const d = petDef(p.kind), L = petLevel(p.xp), m = petMood(p);
+  if (!hasAccess()) return `<button class="action petcard" id="aPet"><span class="ic petmini">${d.ic}</span><span style="flex:1;min-width:0"><b>🔒 ${esc(p.name)} misses you!</b>
+    <span class="s">Pay to play with ${esc(p.name)} again. Your pet is safe and waiting. · <span class="am">${esc(p.name)} ይጠብቅዎታል! ለመቀጠል ይክፈሉ።</span></span></span></button>`;
   const news = (P.levelups || []).length || (P.newAch || []).length || petDailyToday().some(c => (P.d[c.key] || 0) >= c.n && !P.claimed[`daily:${P.d.day}:${c.id}`]);
   return `<button class="action petcard" id="aPet"><span class="ic petmini">${d.ic}</span><span style="flex:1;min-width:0"><b>${esc(p.name)} · Lv ${L.lv} ${m[0]}${news ? ` <span class="pdot">🎁 New!</span>` : ""}</b>
     <span class="s">🐾 English Pet Academy · 🪙 ${P.coins}</span><span class="pmini" style="margin-top:4px"><i style="width:${L.cur / L.need * 100}%"></i></span></span></button>`;

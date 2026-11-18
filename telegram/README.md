@@ -16,7 +16,7 @@
 
 ## How sign-up works
 New users press Start → tap "Share my phone" → the bot saves their phone number and Telegram ID
-and starts the 3-day trial. The course opens with their Telegram name (no second sign-up).
+and starts the free trial (1 day; `trial_days` in config.json). The course opens with their Telegram name (no second sign-up).
 
 ## 4-month course and downloads
 - Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 real-life words + final exam.

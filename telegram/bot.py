@@ -2,7 +2,7 @@
 
 - Plans: Basic (one month), Premium (one month + AI tutor for 30 days), Full course (all 4 months).
 
-- New users share their phone (saved with their Telegram ID) and get a 3-day free trial of Month 1.
+- New users share their phone (saved with their Telegram ID) and get a free trial of Month 1 (trial_days in config.json, default 1 day).
 - Each payment (default 300 Birr) opens the next month. The full course (default 1000 Birr) opens all 4.
 - Opened months stay open forever.
 - Users pay with Telebirr and send a screenshot + transaction number; the owner approves with one tap.
@@ -23,7 +23,7 @@ PRICE = int(CFG.get("price_month", CFG.get("price_basic", 300)))   # one month
 PRICE_FULL = int(CFG.get("price_full", 1000))                      # all 4 months at once
 PRICE_PREMIUM = int(CFG.get("price_premium", 1000))                # Premium: next month + AI tutor for 30 days
 PREMIUM_DAYS = 30
-TRIAL_DAYS = int(CFG.get("trial_days", 3))
+TRIAL_DAYS = int(CFG.get("trial_days", 1))
 TUTOR_MODEL = CFG.get("tutor_model", "claude-haiku-5-5")
 TUTOR_ON = bool(CFG.get("tutor_enabled", False))                    # false = AI tutor and Premium show "coming soon"
 TUTOR_DAILY_LIMIT = int(CFG.get("tutor_daily_limit", 30))           # messages per student per day
@@ -397,8 +397,8 @@ def decide(pid, ok, cb):
 # ---------- sign-up ----------
 def ask_phone(chat):
     send(chat, "🦁 <b>Welcome to Fidel English!</b>\nእንኳን ወደ ፊደል ኢንግሊሽ በደህና መጡ!\n\n"
-               "To start your <b>3-day free trial</b>, tap the button below to share your phone number.\n"
-               "የ3 ቀን ነፃ ሙከራ ለመጀመር ከታች ያለውን ቁልፍ ተጭነው ስልክ ቁጥርዎን ያጋሩ።",
+               "To start your <b>free trial (%d day%s)</b>, tap the button below to share your phone number.\n"
+               "የ%d ቀን ነፃ ሙከራ ለመጀመር ከታች ያለውን ቁልፍ ተጭነው ስልክ ቁጥርዎን ያጋሩ።" % (TRIAL_DAYS, "" if TRIAL_DAYS == 1 else "s", TRIAL_DAYS),
          markup={"keyboard": [[{"text": "📱 Share my phone · ስልኬን አጋራ", "request_contact": True}]],
                  "resize_keyboard": True, "one_time_keyboard": True})
 
@@ -508,7 +508,7 @@ def reminders():
         n = months_open(us)
         if n == 0 and us.get("trial_until", 0) and not in_trial(us) and not us.get("trial_end_sent"):
             us["trial_end_sent"] = True; changed = True
-            send(int(uid), "🔒 Your 3-day free trial has ended. Open Month 1 for %d Birr to keep learning.\nየ3 ቀን ነፃ ሙከራዎ አልቋል። ወር 1ን በ%d ብር ይክፈቱ።" % (PRICE, PRICE),
+            send(int(uid), "🔒 Your free trial has ended. Lessons, games and your pet are locked. Open Month 1 for %d Birr to keep learning and playing.\nነፃ ሙከራዎ አልቋል። ትምህርቶቹ፣ ጨዋታዎቹና የቤት እንስሳዎ ተቆልፈዋል። ለመቀጠል ወር 1ን በ%d ብር ይክፈቱ።" % (PRICE, PRICE),
                  [[{"text": "💳 Open Month 1 · %d Birr" % PRICE, "callback_data": "plan:month"}],
                   [{"text": "🎓 Full course · %d Birr" % PRICE_FULL, "callback_data": "plan:full"}]])
         if 0 < n < MONTHS and us.get("last_paid") and t - us["last_paid"] > NUDGE_DAYS * DAY_MS and us.get("nudged_for") != us["last_paid"]:
