@@ -1,4 +1,4 @@
-"""Fidel English TikTok ad v4 (vertical 1080x1920, ~57 s): adds 19 games, English Pet Academy and idioms.
+"""Fidel English TikTok ad v4 (vertical 1080x1920, ~57 s): adds 19 games, English Pet Academy and idioms. 1-day free trial; opening line "ወይኔ ጉዴ!".
 300 Birr a month or 1000 Birr full course. Based on make_ad3.py. Funny commercial with Amharic voice, music and sound effects.
 
 Usage:  python make_ad2.py <voice_dir> <ffmpeg> <out.mp4> [stills <out_dir> <t1,t2,...>]
@@ -180,7 +180,7 @@ ctext(ImageDraw.Draw(bub2), 45, "How are you?", font(76), INK, 560)
 add(shadow(bub2), 700, 460, T["how"], T["s2"], "pop")
 add(emoji_sprite("😅", 300), 540, 1080, T["panic"], T["s2"], "shake")
 add(text_sprite("እ... እ...", 110, WHITE), 540, 1380, T["panic"] + 0.1, T["s2"], "rise")
-add(text_sprite("ኧረ ጉድ!", 150, GOLD), 540, 1560, T["panic"] + 1.8, T["s2"], "pop")
+add(text_sprite("ወይኔ ጉዴ!", 150, GOLD), 540, 1560, T["panic"] + 2.05, T["s2"], "pop")
 
 # 2. rescue
 logo = rrect(300, 300, 70, GOLD + (255,)); _l = emoji_sprite("🦁", 210); logo.alpha_composite(_l, ((300 - _l.width) // 2, (300 - _l.height) // 2))
@@ -289,7 +289,7 @@ add(text_sprite("እልልልልል!", 150, WHITE), 540, 1400, T["ulul"], T["s6"
 add(emoji_sprite("🎉", 200), 540, 1620, T["ulul"], T["s6"], "pop", 0.35)
 
 # 6. price
-add(text_sprite("3 ቀን በነፃ", 160, GOLD), 540, 470, T["price"] + 0.1, T["s7"], "pop")
+add(text_sprite("1 ቀን በነፃ", 160, GOLD), 540, 470, T["price"] + 0.1, T["s7"], "pop")
 add(text_sprite("ይሞክሩ!", 120, WHITE), 540, 640, T["price"] + 0.4, T["s7"], "rise")
 price = rrect(880, 300, 60, CARD + (255,), (70, 130, 100, 255), 4); prd = ImageDraw.Draw(price)
 ctext(prd, 30, "በወር", font(58, False), MUTED, 880); ctext(prd, 110, "300 ብር", font(130), WHITE, 880)
