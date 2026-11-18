@@ -1829,7 +1829,7 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
-const APP_VERSION = "2026.11.18-i";
+const APP_VERSION = "2026.11.18-j";
 const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);
 function audioBase(){ return null; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
@@ -1964,9 +1964,10 @@ function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; cle
 // ---------- 4-month course: trial, months, payments ----------
 // Month 1: Beginner + first 5 pronunciation lessons. Month 2: Intermediate + last 5 pronunciation lessons.
 // Month 3: Advanced. Month 4: 5 real-life vocabulary lessons, speaking challenge, big review and final exam.
-// Each payment (300 Birr) opens the next month at once; 1000 Birr opens all 4. Opened months stay open.
-// The 1-day free trial opens Month 1, games and the pet. After it, everything is locked until a payment. store.months is set by the payment (Telegram bot). The page owner sees everything.
-const TRIAL_DAYS = 1, PRICE_MONTH = 300, PRICE_FULL = 1000, MONTHS_TOTAL = 4;
+// One payment (300 Birr) opens all 4 months at once. Opened months stay open.
+// The 3-day free trial opens Month 1, games and the pet. After it, everything is locked until a payment. store.months is set by the payment (Telegram bot). The page owner sees everything.
+const TRIAL_DAYS = 3, PRICE_MONTH = 300, MONTHS_TOTAL = 4;
+const TRIAL_TXT = TRIAL_DAYS + " day" + (TRIAL_DAYS === 1 ? "" : "s");
 let isOwner = false;
 const MONTHS = [
   { n:1, en:"Month 1", am:"ወር 1", sub:"Beginner", subAm:"ጀማሪ" },
@@ -1984,7 +1985,7 @@ function monthOf(l){
   if (l.level === "pron") return PRON_IDS.indexOf(l.id) < 5 ? 1 : 2;
   return 4;
 }
-function monthsOpen(){ return Math.max(0, Math.min(MONTHS_TOTAL, +store.months || 0)); }
+function monthsOpen(){ return (+store.months || 0) > 0 ? MONTHS_TOTAL : 0; }   // one payment opens all 4 months
 function trialLeft(){ return Math.max(0, TRIAL_DAYS - (Date.now() - store.trialStart) / 86400000); }
 function hasAccess(){ return isOwner || monthsOpen() > 0 || trialLeft() > 0; }   // games and the pet need this
 function canUseMonth(m){ return isOwner || m <= monthsOpen() || (m === 1 && trialLeft() > 0); }
@@ -2002,29 +2003,20 @@ function showPaywall(want){
       <div class="plan"><h2>Premium + AI tutor · <span class="am">ፕሪሚየም</span></h2><p>Coming soon · <span class="am">በቅርቡ ይመጣል</span></p></div>`;
     show("pay"); return;
   }
-  const open = monthsOpen(), nm = nextMonth(), m = typeof want === "number" ? want : nm;
+  const open = monthsOpen(), m = typeof want === "number" ? want : nextMonth();
   const head = (!open && trialLeft() <= 0)
     ? `<h1>Your free trial has ended</h1><p class="am">ነፃ ሙከራዎ አልቋል። ትምህርቶቹን፣ ጨዋታዎቹንና የቤት እንስሳዎን ለመቀጠል ይክፈሉ።</p><p style="margin:0">Pay to keep learning, playing the games and caring for your pet. Your progress and your pet are saved. 💛</p>`
     : `<h1>${MONTHS[m-1].en} is locked 🔒</h1><p class="am">${MONTHS[m-1].am} ተቆልፏል</p>`;
-  const order = m > nm ? `<p style="margin:0">Months open one after another. Next to open: <b>${MONTHS[nm-1].en}</b>.<br><span class="am">ወራቶቹ በቅደም ተከተል ይከፈታሉ። ቀጣዩ፦ ${MONTHS[nm-1].am}</span></p>` : "";
-  $("#v-pay").innerHTML = `<div class="goal">${head}<p style="font-size:14px">${open} of ${MONTHS_TOTAL} months open · <span class="am">${open}/${MONTHS_TOTAL} ወራት ተከፍተዋል</span></p></div>${order}
+  $("#v-pay").innerHTML = `<div class="goal">${head}<p style="font-size:14px">${open} of ${MONTHS_TOTAL} months open · <span class="am">${open}/${MONTHS_TOTAL} ወራት ተከፍተዋል</span></p></div>
     <div class="plans">
       <div class="plan best">
-        <h2>Open ${MONTHS[nm-1].en} · <span class="am">${MONTHS[nm-1].am}ን ይክፈቱ</span></h2>
-        <div class="price">${PRICE_MONTH} Birr <small>· ${PRICE_MONTH} ብር</small></div>
-        <ul><li>${MONTHS[nm-1].sub} · <span class="am">${MONTHS[nm-1].subAm}</span></li>
-          <li>Yours forever once opened · <span class="am">አንዴ ከተከፈተ ለዘላለም የእርስዎ ነው</span></li>
-          <li>Finished early? Open the next month any time · <span class="am">ቀጣዩን ወር በማንኛውም ጊዜ ይክፈቱ</span></li></ul>
-        <button class="btn primary" data-plan="month">Pay ${PRICE_MONTH} Birr · <span class="am">ይክፈሉ</span></button>
+        <h2>Full course · all 4 months · <span class="am">ሙሉ ኮርስ፣ 4 ወራት</span></h2>
+        <div class="price">${PRICE_MONTH} Birr <small>· one payment · አንድ ጊዜ ብቻ</small></div>
+        <ul><li>All 4 months open now: Beginner, Intermediate, Advanced, real-life words + final exam · <span class="am">ሁሉም 4 ወራት አሁን ይከፈታሉ</span></li>
+          <li>All 19 games and your English pet · <span class="am">19 ጨዋታዎችና የቤት እንስሳዎ</span></li>
+          <li>Yours forever · <span class="am">ለዘላለም የእርስዎ ነው</span></li></ul>
+        <button class="btn primary" data-plan="full">Pay ${PRICE_MONTH} Birr · <span class="am">ይክፈሉ</span></button>
       </div>
-      ${open === 0 ? `<div class="plan">
-        <span class="tagb">Save ${PRICE_MONTH * MONTHS_TOTAL - PRICE_FULL} Birr</span>
-        <h2>Full course · 4 months · <span class="am">ሙሉ ኮርስ</span></h2>
-        <div class="price">${PRICE_FULL} Birr <small>· one payment · አንድ ጊዜ</small></div>
-        <ul><li>All 4 months open now · <span class="am">ሁሉም 4 ወራት አሁን ይከፈታሉ</span></li>
-          <li>Final exam at the end · <span class="am">የመጨረሻ ፈተና</span></li></ul>
-        <button class="btn gold" data-plan="full">Pay ${PRICE_FULL} Birr · <span class="am">ይክፈሉ</span></button>
-      </div>` : ""}
     </div>
     <p class="paynote">Pay with Telebirr in our Telegram bot · <span class="am">በቴሌግራም ቦታችን በቴሌብር ይክፈሉ</span></p>`;
   show("pay");
@@ -2082,7 +2074,7 @@ function renderSignup(){
         ? `<label for="suContact">Phone number · <span class="am">ስልክ ቁጥር</span></label><input id="suContact" type="tel" inputmode="tel" autocomplete="tel" placeholder="09 12 34 56 78">`
         : `<label for="suContact">Gmail address · <span class="am">የጂሜይል አድራሻ</span></label><input id="suContact" type="email" inputmode="email" autocomplete="email" placeholder="name@gmail.com">`}
         <span class="err" id="suErr" aria-live="polite"></span></div>
-      <button class="btn primary" type="submit">Start my free trial (${TRIAL_DAYS} day) · <span class="am">ነፃ ሙከራ ይጀምሩ</span></button>
+      <button class="btn primary" type="submit">Start my free trial (${TRIAL_TXT}) · <span class="am">ነፃ ሙከራ ይጀምሩ</span></button>
     </form>
     <p class="foot">You can change this later in your profile · <span class="am">በኋላ በመገለጫዎ መቀየር ይችላሉ</span></p>`;
   show("signup");
@@ -2105,7 +2097,7 @@ function renderSignup(){
     store.profile = { name, method:SU.method, contact, avatar:"🦁", goal:10, remind:"19:00", created:Date.now() };
     store.trialStart = Date.now(); store.nudged = dayStr(new Date()); saveStore();
     renderHome();
-    modal(`<div class="big" aria-hidden="true">🦁</div><h2>Selam ${esc(name)}!</h2><p>Your free trial (${TRIAL_DAYS} day) has started. Try the lessons, the games and your own pet!</p><p class="am">የ${TRIAL_DAYS} ቀን ነፃ ሙከራዎ ተጀምሯል። ትምህርቶቹን፣ ጨዋታዎቹንና የቤት እንስሳውን ይሞክሩ!</p>`,
+    modal(`<div class="big" aria-hidden="true">🦁</div><h2>Selam ${esc(name)}!</h2><p>Your free trial (${TRIAL_TXT}) has started. Try the lessons, the games and your own pet!</p><p class="am">የ${TRIAL_DAYS} ቀን ነፃ ሙከራዎ ተጀምሯል። ትምህርቶቹን፣ ጨዋታዎቹንና የቤት እንስሳውን ይሞክሩ!</p>`,
       [{ label:"Find my level · ደረጃዬን ልወቅ", fn:startPlacement }, { label:"Go to lessons · ወደ ትምህርቶች" }]);
   };
 }
@@ -2232,9 +2224,9 @@ function renderHome(){
   if (!isOwner && open < MONTHS_TOTAL){
     const d = Math.ceil(left);
     const txt = !open && left > 0 ? `<b>Free trial: ${d} day${d === 1 ? "" : "s"} left</b><br><span class="am">ነፃ ሙከራ (ወር 1)፡ ${d} ቀን ቀረው</span>`
-      : !open ? `<b>Trial ended</b> · <span class="am">ሙከራው አልቋል</span><br>Open Month 1 for ${PRICE_MONTH} Birr`
+      : !open ? `<b>Trial ended</b> · <span class="am">ሙከራው አልቋል</span><br>Open all 4 months for ${PRICE_MONTH} Birr`
       : `<b>${open} of ${MONTHS_TOTAL} months open</b><br><span class="am">${open}/${MONTHS_TOTAL} ወራት ተከፍተዋል</span>`;
-    banner = `<div class="trial"><span>${txt}</span><button id="aPlans">${open ? "Open " + MONTHS[nextMonth() - 1].en : left > 0 ? "See plans" : "Pay"}</button></div>`;
+    banner = `<div class="trial"><span>${txt}</span><button id="aPlans">${left > 0 ? "See plans" : "Pay"}</button></div>`;
   }
   const P = store.profile || {};
   const doneToday = store.last === dayStr(new Date());
@@ -2251,7 +2243,7 @@ function renderHome(){
     <div class="levels" role="group" aria-label="Month">${MONTHS.map(m =>
       `<button class="lvl" data-month="${m.n}" aria-pressed="${m.n === M.n}">${canUseMonth(m.n) ? "" : "🔒 "}${m.en}<small>${m.am} · ${m.subAm}</small></button>`).join("")}</div>
     <div class="label">${M.en} · ${esc(M.sub)}${list.length ? ` — ${doneM}/${list.length} done` : ""}</div>`;
-  if (!mOpen) html += `<button class="action gold" data-pay="${M.n}"><span class="ic">🔒</span><span style="flex:1;min-width:0"><b>${M.en} is locked</b><span class="s">Pay ${PRICE_MONTH} Birr to open it · <span class="am">ለመክፈት ${PRICE_MONTH} ብር ይክፈሉ</span></span></span></button>`;
+  if (!mOpen) html += `<button class="action gold" data-pay="${M.n}"><span class="ic">🔒</span><span style="flex:1;min-width:0"><b>${M.en} is locked</b><span class="s">Pay ${PRICE_MONTH} Birr once to open all 4 months · <span class="am">በ${PRICE_MONTH} ብር ሁሉንም 4 ወራት ይክፈቱ</span></span></span></button>`;
   let m4html = "";
   if (M.n === 4){
     const ex = store.best.exam;

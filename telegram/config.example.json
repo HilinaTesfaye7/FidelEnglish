@@ -10,8 +10,7 @@
   "tutor_model": "claude-haiku-5-5",
   "tutor_daily_limit": 30,
   "price_month": 300,
-  "price_full": 1000,
   "price_premium": 1000,
-  "trial_days": 1,
+  "trial_days": 3,
   "reminder_hour": 19
 }

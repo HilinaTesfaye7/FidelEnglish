@@ -16,25 +16,24 @@
 
 ## How sign-up works
 New users press Start → tap "Share my phone" → the bot saves their phone number and Telegram ID
-and starts the free trial (1 day; `trial_days` in config.json). The course opens with their Telegram name (no second sign-up).
+and starts the free trial (3 days; `trial_days` in config.json). The course opens with their Telegram name (no second sign-up).
 
 ## 4-month course and downloads
 - Month 1 Beginner · Month 2 Intermediate · Month 3 Advanced · Month 4 real-life words + final exam.
-- Each payment opens the next month; the full course price opens all 4. Opened months stay open.
+- One payment (`price_month`, 300 Birr) opens all 4 months. Opened months stay open.
 - Students learn in Telegram (📚 Open course) or tap 📥 Download course to get an HTML file
   with ONLY their paid months (their name and phone are written inside). It works without internet.
 - After changing `fidel-english.html`, run `python tools/build_telegram.py` to rebuild
   `webapp/index.html` and `offline/month1-4.html`, then push to GitHub and restart the bot.
 
 ## Plans
-- Basic (`price_month`, 300): opens the next month + 📚 course, 📥 download.
-- Premium (`price_premium`, 1000): everything in Basic + 🦁 AI tutor for 30 days. Students with all 4 months
+- Full course (`price_month`, 300): all 4 months + 📚 course, 📥 download.
+- Premium (`price_premium`, 1000): the full course + 🦁 AI tutor for 30 days. Students who already paid
   can buy Premium just for the tutor. Renewing adds 30 more days. Lessons stay open when Premium ends.
-- Full course (`price_full`, 1000): all 4 months at once, no AI tutor (only offered before the first payment).
 
 ## AI tutor switch
 - `"tutor_enabled": false` in config.json (the default): the AI tutor and Premium show "coming soon",
-  and plans offer only Basic and Full course. Set it to `true` (plus the API key) to sell Premium.
+  and plans offer only the Full course. Set it to `true` (plus the API key) to sell Premium.
 
 ## AI tutor
 - AI tutor "Anbessa" (Premium only): students tap 🦁 Chat with Anbessa (or send /tutor) and chat in English;
