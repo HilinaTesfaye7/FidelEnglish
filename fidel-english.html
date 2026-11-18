@@ -256,6 +256,64 @@ html.playing #say,html.playing #slow,html.playing #qsay,html.playing #qslow{anim
 .gmiss{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}.gmiss b{width:100%}
 .gmiss button{padding:6px 10px;border-radius:999px;background:var(--gold-soft);font-size:14px}
 .grow{display:grid;gap:8px}
+
+/* games menu */
+.ghub-h{text-align:center;padding:14px 0 4px}.ghub-h h1{margin:0;font-size:26px}.ghub-h p{margin:.2em 0 0;color:var(--muted)}
+.ghub{display:grid;gap:10px;margin-top:12px}
+.gcard{display:flex;align-items:center;gap:12px;text-align:left;padding:14px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.gcard:active{transform:scale(.98)}
+.gci{font-size:36px;width:52px;height:52px;display:grid;place-items:center;border-radius:14px;background:var(--gold-soft);flex:none}
+.gct{flex:1;min-width:0}.gct b{display:block;font-size:17px}.gct>.am{display:block;font-size:14px;color:var(--gold);font-weight:600}
+.gct small{display:block;color:var(--muted);font-size:12.5px;line-height:1.35;margin-top:2px}
+.gcs{text-align:right;flex:none;font-size:12px}.gcs small{display:block;color:var(--gold);font-weight:700;margin-top:4px}
+.gskill{display:inline-block;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:700;line-height:1.2}
+.gbadge{font-size:64px;line-height:1.1}
+.gsnd{margin-left:auto}
+/* lion run */
+.rprompt{text-align:center;font-size:24px;font-weight:700;padding:4px 0 8px;min-height:44px}
+.rctl{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.rctl button{min-height:56px;border-radius:14px;background:var(--surface);border:2px solid var(--line);font-size:24px}
+.rctl button:active{border-color:var(--gold);transform:scale(.97)}
+/* word tower */
+.tower{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:210px;padding:8px;border-radius:18px;background:linear-gradient(#bfe3f7,#eaf6fc);overflow:hidden}
+.tflag{font-size:22px;height:26px}
+.tfloor{width:150px;height:24px;margin-top:2px;border-radius:4px;background:hsl(var(--hue) 55% 50%);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+.tfloor.drop{animation:tdrop .45s ease-out}
+@keyframes tdrop{from{transform:translateY(-120px);opacity:.2}to{transform:none;opacity:1}}
+.tground{width:100%;text-align:center;font-size:12px;color:#3d5a2a;border-top:4px solid #6aa34a;padding-top:2px;margin-top:2px}
+.shake{animation:gshake .35s}
+@keyframes gshake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
+.ttime{height:8px;border-radius:99px;background:var(--line);margin:10px 0;overflow:hidden}
+.ttime i{display:block;height:100%;width:100%;background:var(--accent);transition:width .1s linear}.ttime i.low{background:var(--bad)}
+.tq{text-align:center;font-size:20px;font-weight:700;min-height:30px}
+.tline{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:46px;margin:10px 0;padding:8px;border-radius:14px;border:2px dashed var(--line)}
+.tline.ok{border-color:var(--good);background:var(--good-soft)}
+.tslot{min-width:44px;min-height:30px;padding:3px 8px;border-radius:8px;background:var(--bg);border-bottom:2px solid var(--line);font-weight:600}
+.tslot.on{background:var(--accent-soft);border-color:var(--accent)}
+.tend{font-weight:700;align-self:flex-end}
+.tshow{font-weight:700;color:var(--bad)}
+.tchips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tchips button{padding:10px 14px;border-radius:12px;background:var(--surface);border:2px solid var(--line);font-weight:600;font-size:16px}
+.tchips button:disabled{opacity:.25}.tchips button.bad{border-color:var(--bad);background:var(--bad-soft);animation:gshake .35s}
+/* save the lion */
+.strack{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:14px 8px;border-radius:18px;background:linear-gradient(90deg,#e7d39b 70%,#4aa3c9 86%)}
+.scell{display:grid;place-items:center;height:44px;font-size:26px;color:rgba(80,60,20,.5)}
+.scell.river{font-size:30px}
+.sq{display:flex;align-items:center;justify-content:center;gap:10px;font-size:22px;font-weight:700;margin:14px 0 6px}
+.sbtn{width:44px;height:44px;border-radius:12px;background:var(--gold-soft);font-size:20px}
+.sword{display:flex;gap:6px;justify-content:center;margin:8px 0 16px;flex-wrap:wrap}
+.sword span{width:34px;height:42px;border-bottom:3px solid var(--fg);display:grid;place-items:center;font-size:24px;font-weight:700}
+.sword.ok span{color:var(--good);border-color:var(--good)}
+.skeys{display:grid;gap:6px}.skeys div{display:flex;gap:4px;justify-content:center}
+.skeys button{flex:1;max-width:36px;min-height:46px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-weight:700;font-size:16px;padding:0}
+.skeys button.ok{background:var(--good-soft);color:var(--good)}.skeys button.no{background:var(--bad-soft);color:var(--bad);opacity:.6}
+/* balloon pop */
+.bctl{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;margin-bottom:10px}.bctl .btn{min-height:46px;font-size:14px;padding:6px}
+.bfield{position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(#7cc4ef,#d8f0fb 70%,#a7d98a 71%)}
+.balloon{position:absolute;left:0;top:0;width:80px;height:96px;border-radius:50% 50% 47% 47%/42% 42% 58% 58%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.55),transparent 32%),var(--c);color:#fff;font-weight:700;font-size:13px;line-height:1.2;padding:6px;display:grid;place-items:center;text-shadow:0 1px 2px rgba(0,0,0,.35);will-change:transform}
+.balloon::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:40px;background:rgba(60,60,60,.5)}
+.balloon.pop{animation:bpop .3s forwards}.balloon.no{filter:grayscale(1)}
+@keyframes bpop{to{scale:1.5;opacity:0}}
 </style>
 
 <div class="app">
@@ -1384,7 +1442,7 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
-const APP_VERSION = "2026.11.18-a";
+const APP_VERSION = "2026.11.18-b";
 const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);
 function audioBase(){ return null; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
@@ -1772,7 +1830,7 @@ function renderHome(){
   let acts = "";
   if (!store.placed) acts += `<button class="action gold" id="aPlace"><span class="ic">${ICON_TARGET}</span><span style="flex:1;min-width:0"><b>Find your level</b><span class="s am">ደረጃዎን ይወቁ · 3-minute test</span></span></button>`;
   if (nextL) acts += `<button class="action" data-open="${nextL.id}"><span class="ic">${ICON_PLAY}</span><span style="flex:1;min-width:0"><b>Next lesson: ${esc(nextL.en)}</b><span class="s am">ቀጣይ ትምህርት፡ ${esc(nextL.am)}</span></span></button>`;
-  { const gb = (store.game || {}).bestNight; acts += `<button class="action gold" id="aGame"><span class="ic" style="font-size:22px">🐺</span><span style="flex:1;min-width:0"><b>Game: Save the Village</b><span class="s"><span class="am">ጨዋታ፡ መንደሩን ከጅቦች አድኑ!</span>${gb ? ` · best: night ${gb}` : ""}</span></span></button>`; }
+  { const gb = (store.game || {}).bestNight; acts += `<button class="action gold" id="aGame"><span class="ic" style="font-size:22px">🎮</span><span style="flex:1;min-width:0"><b>Games: play and learn</b><span class="s"><span class="am">ጨዋታዎች፡ ይጫወቱና ይማሩ!</span> · 5 games${gb ? ` · 🐺 night ${gb}` : ""}</span></span></button>`; }
   if (wrongN && canUse("lessons")) acts += `<button class="action" id="aReview"><span class="ic">${ICON_REDO}</span><span style="flex:1;min-width:0"><b>Review your mistakes (${wrongN})</b><span class="s am">ስህተቶችዎን ይከልሱ</span></span></button>`;
   if (capsReady){
     acts += sampleFn
@@ -1841,7 +1899,7 @@ $("#v-home").addEventListener("click", e => {
   if (e.target.closest("#aPlans")) showPaywall(nextMonth());
   if (e.target.closest("#aPlace")) startPlacement();
   if (e.target.closest("#aReview")) startReview();
-  if (e.target.closest("#aGame")) openGame();
+  if (e.target.closest("#aGame")) openGames();
 });
 
 // ---------- game: Save the Village (hyenas carry Amharic words, tap the English word to throw your spear) ----------
@@ -1882,7 +1940,7 @@ const SFX = {
 
 function openGame(){ stopSound(); gameStore(); renderGameStart(); }
 function renderGameStart(){
-  const g = gameStore();
+  GRUN++; const g = gameStore();
   $("#v-game").innerHTML = `<div class="gstart">
     <div class="gart" aria-hidden="true"><span>🌙</span><span>🐾</span><span>🛖🔥🛖</span></div>
     <h1>Save the Village</h1><p class="am gsub">መንደሩን አድኑ!</p>
@@ -1892,9 +1950,9 @@ function renderGameStart(){
       <li>☕ Collect coffee beans and buy fences, torches and an eagle · <span class="am">ቡና ሰብስበው አጥር፣ ችቦና ንስር ይግዙ</span></li>
       <li>👑 Every 5th night the hyena boss comes · <span class="am">በየ5ኛው ሌሊት የጅቦቹ አለቃ ይመጣል</span></li></ul>
     ${g.bestNight ? `<p class="grec">🏆 Your best: night ${g.bestNight} · ${g.best} points</p>` : ""}
-    <button class="btn gold" id="gPlay">Start · እንጀምር 🔥</button>
+    <div class="grow"><button class="btn gold" id="gPlay">Start · እንጀምር 🔥</button><button class="btn" id="gBack">All games · ሁሉም ጨዋታዎች</button></div>
   </div>`;
-  $("#gPlay").onclick = startGame;
+  $("#gPlay").onclick = startGame; $("#gBack").onclick = openGames;
   show("game");
 }
 function startGame(){
@@ -2092,8 +2150,8 @@ function gameOver(){
     <p class="gbig">Night ${S.night} · ${S.score} ⭐ · ${S.kills} 🐺</p>
     <p class="gsmall">${rec ? "🏆 New record! · <span class=\"am\">አዲስ ክብረ ወሰን!</span> " : `🏆 Best: ${g.best} ⭐ · night ${g.bestNight} `}<span class="am">${esc(ch[0])}</span></p>
     ${missed.length ? `<div class="gmiss"><b>Words to practise · <span class="am">የሚለማመዱ ቃላት</span></b>${missed.map(w => `<button data-sayw="${esc(w[0])}">🔊 ${esc(w[0])} = <span class="am">${esc(w[1])}</span></button>`).join("")}</div>` : ""}
-    <div class="grow"><button class="btn gold" id="gAgain">Play again · እንደገና 🔥</button><button class="btn" id="gHome">Home · ዋና ገጽ</button></div></div>`;
-  $("#gAgain").onclick = startGame; $("#gHome").onclick = renderHome;
+    <div class="grow"><button class="btn gold" id="gAgain">Play again · እንደገና 🔥</button><button class="btn" id="gHome">All games · ሁሉም ጨዋታዎች</button></div></div>`;
+  $("#gAgain").onclick = startGame; $("#gHome").onclick = openGames;
   gameHud();
 }
 
@@ -2155,7 +2213,7 @@ function gameDraw(dt){
       c.globalAlpha = 1; return k < 1; }
     if (f.kind === "text"){ const k = f.t / 1; c.globalAlpha = Math.max(0, 1 - k); c.fillStyle = "#ffd75e"; c.font = "700 16px Lexend, sans-serif"; c.textAlign = "center";
       c.fillText(f.txt, f.x, f.y - k * 30); c.globalAlpha = 1; return k < 1; }
-    if (f.kind === "eagle"){ const k = f.t / .9; c.font = "34px serif"; c.textAlign = "center"; c.globalAlpha = Math.max(0, 1 - k * .6);
+    if (f.kind === "eagle"){ const k = f.t / .9; c.fillStyle = "#000"; c.font = "34px serif"; c.textAlign = "center"; c.globalAlpha = Math.max(0, 1 - k * .6);
       c.fillText("🦅", f.x + k * W * .5, f.y - k * H * .6); c.globalAlpha = 1; return k < 1; }
     return false;
   });
@@ -2186,7 +2244,7 @@ function drawHyena(c, x, y, s, t, h){
   if (h.laugh > 0){ c.fillStyle = "#5a1a1a"; c.beginPath(); c.ellipse(0, s * .08, s * .09, s * .06 + Math.abs(Math.sin(t * 30)) * s * .03, 0, 0, 7); c.fill();
     c.fillStyle = "#fff"; c.fillRect(-s * .06, s * .04, s * .03, s * .03); c.fillRect(s * .03, s * .04, s * .03, s * .03); }
   else { c.beginPath(); c.arc(0, s * .03, s * .07, .3, 2.8); c.stroke(); }
-  if (h.boss){ c.font = `${Math.round(s * .32)}px serif`; c.textAlign = "center"; c.fillText("👑", 0, -s * .42); }
+  if (h.boss){ c.fillStyle = "#000"; c.font = `${Math.round(s * .32)}px serif`; c.textAlign = "center"; c.fillText("👑", 0, -s * .42); }
   if (h.flash > 0){ c.globalAlpha = h.flash / .3; c.fillStyle = "#fff"; c.beginPath(); c.ellipse(0, 0, s * .45, s * .5, 0, 0, 7); c.fill(); c.globalAlpha = 1; }
   c.restore();
   if (h.laugh > 0){ c.font = "700 14px 'Noto Sans Ethiopic', sans-serif"; c.textAlign = "center"; c.fillStyle = "#ffb4a8"; c.fillText("ሃ ሃ ሃ!", x + s * .5, y - s * .3); }
@@ -2228,6 +2286,331 @@ function drawVillage(c, W, H, vy, t, S){
   [["#ff6a1f", 13, 22], ["#ffb43c", 9, 16], ["#fff0a0", 4, 8]].forEach(([col, w, h], i) => {
     c.fillStyle = col; c.beginPath(); c.ellipse(fx, fy - h / 2 - Math.sin(t * 13 + i) * 2, w, h + Math.sin(t * 17 + i) * 2, 0, 0, 7); c.fill(); });
   c.restore();
+}
+
+// ---------- games menu (5 games, each trains one skill) ----------
+let GRUN = 0;
+const GAMES = [
+  { id:"village", ic:"🐺", en:"Save the Village", am:"መንደሩን አድኑ", skill:"Words", skillAm:"ቃላት", d:"Stop the hyenas with English words", dam:"ጅቦቹን በእንግሊዝኛ ቃላት ያስቁሙ" },
+  { id:"run", ic:"🦁", en:"Lion Run", am:"የአንበሳ ሩጫ", skill:"Speed", skillAm:"ፍጥነት", d:"Run through the gate with the right word", dam:"ትክክለኛው ቃል ባለበት በር ይሩጡ" },
+  { id:"tower", ic:"🧱", en:"Word Tower", am:"የቃላት ግንብ", skill:"Grammar", skillAm:"ሰዋሰው", d:"Put the words in order and build a tower", dam:"ቃላቱን በቅደም ተከተል አስቀምጠው ግንብ ይገንቡ" },
+  { id:"spell", ic:"🐊", en:"Save the Lion", am:"አንበሳውን አድኑ", skill:"Spelling", skillAm:"አጻጻፍ", d:"Spell the word before the crocodile bites", dam:"አዞው ሳይደርስ ቃሉን ይጻፉ" },
+  { id:"balloon", ic:"🎈", en:"Balloon Pop", am:"ፊኛ ማፈንዳት", skill:"Listening", skillAm:"ማዳመጥ", d:"Listen and pop the right balloon", dam:"ያዳምጡና ትክክለኛውን ፊኛ ያፈንዱ" }];
+function gameBest(id){ return id === "village" ? ((store.game || {}).best || 0) : ((store.games || {})[id] || 0); }
+function setBest(id, v){ if (!store.games) store.games = {}; const rec = v > 0 && v > (store.games[id] || 0); if (rec){ store.games[id] = v; saveStore(); } return rec; }
+function openGames(){
+  stopSound(); GS = null; GRUN++; gameStore();
+  $("#v-game").innerHTML = `<div class="ghub-h"><h1>🎮 Games</h1><p class="am">ጨዋታዎች · ይጫወቱና ይማሩ!</p></div>
+    <div class="ghub">${GAMES.map(g => { const b = gameBest(g.id);
+      return `<button class="gcard" data-game="${g.id}"><span class="gci">${g.ic}</span><span class="gct"><b>${g.en}</b><span class="am">${g.am}</span>
+        <small>${g.d} · <span class="am">${g.dam}</span></small></span><span class="gcs"><span class="gskill">${g.skill}<br><span class="am">${g.skillAm}</span></span>${b ? `<small>🏆 ${b}</small>` : ""}</span></button>`; }).join("")}</div>
+    <p class="foot">Every game uses words from your lessons. Play every day! · <span class="am">ሁሉም ጨዋታዎች ከትምህርቶችዎ ቃላት ይጠቀማሉ። በየቀኑ ይጫወቱ!</span></p>`;
+  $("#v-game").querySelectorAll("[data-game]").forEach(b => b.onclick = () => ({ village:renderGameStart, run:runIntro, tower:towerIntro, spell:spellIntro, balloon:balloonIntro })[b.dataset.game]());
+  show("game");
+}
+function gameIntro(id, rules, play){
+  stopSound(); GS = null; GRUN++;
+  const g = GAMES.find(x => x.id === id), b = gameBest(id);
+  $("#v-game").innerHTML = `<div class="gstart"><div class="gbadge" aria-hidden="true">${g.ic}</div>
+    <h1>${g.en}</h1><p class="am gsub">${g.am}</p>
+    <ul class="ghow">${rules.map(r => `<li>${r[0]}<br><span class="am">${r[1]}</span></li>`).join("")}</ul>
+    ${b ? `<p class="grec">🏆 Your best: ${b} ⭐</p>` : ""}
+    <div class="grow"><button class="btn gold" id="gPlay">Start · እንጀምር 🔥</button><button class="btn" id="gBack">All games · ሁሉም ጨዋታዎች</button></div></div>`;
+  $("#gPlay").onclick = play; $("#gBack").onclick = openGames;
+  show("game");
+}
+function missedHTML(m){
+  const a = [...m.values()].slice(-8);
+  return a.length ? `<div class="gmiss"><b>Words to practise · <span class="am">የሚለማመዱ ቃላት</span></b>${a.map(w => `<button data-sayw="${esc(w[0])}">🔊 ${esc(w[0])} = <span class="am">${esc(w[1])}</span></button>`).join("")}</div>` : "";
+}
+function gameOverPanel(el, id, score, title, missed, again){
+  GRUN++;
+  const rec = setBest(id, score); if (rec){ party(); SFX.win(); } else SFX.bite();
+  el.innerHTML = `<div class="gshop"><p class="gtitle">${title}</p><p class="gbig">${score} ⭐</p>
+    <p class="gsmall">${rec ? `🏆 New record! · <span class="am">አዲስ ክብረ ወሰን! ${esc(pickOne(CHEER_RIGHT)[0])}</span>` : `🏆 Best: ${gameBest(id)} ⭐ · <span class="am">${esc(pickOne(FAIL_STEPS)[0])}</span>`}</p>
+    ${missedHTML(missed)}
+    <div class="grow"><button class="btn gold" data-g="again">Play again · እንደገና 🔥</button><button class="btn" data-g="games">All games · ሁሉም ጨዋታዎች</button></div></div>`;
+  el.querySelector("[data-g=again]").onclick = again; el.querySelector("[data-g=games]").onclick = openGames;
+  el.scrollIntoView({ block:"nearest" });
+}
+function gameHudHTML(items){ return `<div class="ghud">${items.join("")}<button class="gsnd" aria-label="Sound on or off">${gameStore().sound ? "🔊" : "🔇"}</button></div>`; }
+function wireSnd(){ const b = $("#v-game .gsnd"); if (b) b.onclick = () => { const g = gameStore(); g.sound = !g.sound; saveStore(); b.textContent = g.sound ? "🔊" : "🔇"; }; }
+function fitCanvas(cv, h){
+  const w = cv.parentElement.clientWidth, dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); cv.style.height = h + "px";
+  return { W:w, H:h, dpr };
+}
+const lives = n => "❤️".repeat(Math.max(0, n)) + "🤍".repeat(Math.max(0, 3 - n));
+const sayIfOn = t => { if (gameStore().sound) speak(t); };
+
+// ---------- game 2: Lion Run (speed) ----------
+function runIntro(){ gameIntro("run", [
+  ["🦁 Your lion runs. An Amharic word appears at the top.", "አንበሳዎ ይሮጣል። ከላይ የአማርኛ ቃል ይታያል።"],
+  ["👆 Tap the lane with the right English word (or use ◀ ▶).", "ትክክለኛው የእንግሊዝኛ ቃል ያለበትን መስመር ይንኩ።"],
+  ["💥 Wrong gate = you lose a heart. It gets faster and faster!", "የተሳሳተ በር = አንድ ልብ ያጣሉ። እየፈጠነ ይሄዳል!"]], runPlay); }
+function runPlay(){
+  const run = ++GRUN, all = gamePool().words.filter(w => w[0].length <= 13 && w[1].length <= 18);
+  const R = { lane:1, lx:1, rows:[], t:0, last:0, dist:0, hearts:3, score:0, combo:0, crash:0, missed:new Map(), over:false };
+  $("#v-game").innerHTML = gameHudHTML([`<span id="rLife">${lives(3)}</span>`, `<span>⭐ <b id="rScore">0</b></span>`]) +
+    `<div class="rprompt" id="rPrompt">…</div><div class="gfield"><canvas id="rCan" aria-label="Lion running on a road with word gates"></canvas><div class="gmsg" id="gMsg"></div></div>
+    <div class="rctl" id="rCtl"><button data-mv="-1" aria-label="Left">◀</button><button data-mv="1" aria-label="Right">▶</button></div><div id="rPanel"></div>`;
+  show("game"); wireSnd();
+  const cv = $("#rCan"); let D = fitCanvas(cv, Math.max(300, Math.min(500, window.innerHeight - 310)));
+  const move = d => { if (!R.over) R.lane = Math.max(0, Math.min(2, R.lane + d)); };
+  cv.addEventListener("pointerdown", e => { if (R.over) return; const r = cv.getBoundingClientRect(); R.lane = Math.max(0, Math.min(2, Math.floor((e.clientX - r.left) / (r.width / 3)))); });
+  $("#rCtl").onclick = e => { const b = e.target.closest("[data-mv]"); if (b) move(+b.dataset.mv); };
+  const key = e => { if (current !== "game" || GRUN !== run) { document.removeEventListener("keydown", key); return; } if (e.key === "ArrowLeft") move(-1); if (e.key === "ArrowRight") move(1); };
+  document.addEventListener("keydown", key);
+  const newRow = () => {
+    const w = pickOne(all), opts = gameOpts(w, all).slice(0, 3);
+    if (!opts.includes(w[0])) opts[0] = w[0];
+    const o = shuffle(opts); R.rows.push({ w, opts:o, ans:o.indexOf(w[0]), y:-.1, done:false, pick:-1 });
+  };
+  const prompt = () => { const r = R.rows.find(x => !x.done); $("#rPrompt").innerHTML = r ? `<span class="am">${esc(r.w[1])}</span> <span class="gq">= ?</span>` : "…"; };
+  newRow(); prompt();
+  const loop = ts => {
+    if (GRUN !== run || current !== "game" || !$("#rCan")) return;
+    const dt = R.last ? Math.min(.05, (ts - R.last) / 1000) : 0; R.last = ts; R.t += dt;
+    if (!R.over){
+      const sp = Math.min(.42, .17 + R.score * .007);
+      R.dist += sp * dt; R.lx += (R.lane - R.lx) * Math.min(1, dt * 14); if (R.crash > 0) R.crash -= dt;
+      R.rows.forEach(r => {
+        r.y += sp * dt;
+        if (!r.done && r.y >= .8){
+          r.done = true; r.pick = R.lane;
+          if (R.lane === r.ans){ R.combo++; R.score += 1 + (R.combo >= 5 ? 1 : 0); markRight(r.w[0]); sayIfOn(r.w[0]); gameBeep(660, 990, .12, "triangle", .08); }
+          else { R.combo = 0; R.hearts--; R.crash = .5; R.missed.set(r.w[0], r.w); markWrong(r.w[0]); SFX.bite(); gameMsgIn(`💥 ${r.w[0]}`, r.w[1], 1200); }
+          $("#rScore").textContent = R.score; $("#rLife").textContent = lives(R.hearts); prompt();
+          if (R.hearts <= 0){ R.over = true; setTimeout(() => gameOverPanel($("#rPanel"), "run", R.score, `🦁 The lion is tired! · <span class="am">አንበሳው ደከመ!</span>`, R.missed, runPlay), 500); $("#rCtl").hidden = true; }
+        }
+      });
+      R.rows = R.rows.filter(r => r.y < 1.15);
+      const lastR = R.rows[R.rows.length - 1];
+      if (!lastR || lastR.y > .5) { newRow(); if (R.rows.filter(x => !x.done).length === 1) prompt(); }
+    }
+    runDraw(cv, D, R);
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+}
+function gameMsgIn(en, am, ms){ const m = $("#gMsg"); if (!m) return; m.innerHTML = `<div>${esc(en)}<span class="am">${esc(am || "")}</span></div>`; m.classList.add("on"); clearTimeout(m._t); m._t = setTimeout(() => m.classList.remove("on"), ms || 1400); }
+function runDraw(cv, D, R){
+  const c = cv.getContext("2d"), W = D.W, H = D.H, lw = W / 3;
+  c.setTransform(D.dpr, 0, 0, D.dpr, 0, 0);
+  c.fillStyle = "#86a94f"; c.fillRect(0, 0, W, H);
+  c.fillStyle = "#c99a5e"; c.fillRect(W * .03, 0, W * .94, H);
+  // moving lane lines and grass edges
+  c.strokeStyle = "rgba(255,255,255,.55)"; c.lineWidth = 3; c.setLineDash([18, 22]); c.lineDashOffset = -(R.dist * H) % 40;
+  [lw, lw * 2].forEach(x => { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, H); c.stroke(); }); c.setLineDash([]);
+  c.fillStyle = "rgba(90,60,30,.25)";
+  for (let i = 0; i < 14; i++){ const y = ((i / 14 + R.dist * 1.0) % 1) * H; c.beginPath(); c.arc((i * 37 % 100) / 100 * W, y, 2.5, 0, 7); c.fill(); }
+  // gates
+  c.textAlign = "center"; c.textBaseline = "middle";
+  R.rows.forEach(r => {
+    const y = r.y * H;
+    r.opts.forEach((t, k) => {
+      const x = k * lw + 6, w = lw - 12, h = 38;
+      let bg = "rgba(255,250,240,.95)", fg = "#2a1d0c";
+      if (r.done){ if (k === r.ans){ bg = "#3fae6a"; fg = "#fff"; } else if (k === r.pick){ bg = "#d9534a"; fg = "#fff"; } else { bg = "rgba(255,250,240,.35)"; } }
+      c.fillStyle = "#6b4a2b"; c.fillRect(x + 2, y - h / 2 - 8, 5, h + 16); c.fillRect(x + w - 7, y - h / 2 - 8, 5, h + 16);
+      c.fillStyle = bg; c.beginPath(); if (c.roundRect) c.roundRect(x, y - h / 2, w, h, 9); else c.rect(x, y - h / 2, w, h); c.fill();
+      c.strokeStyle = r.done ? "transparent" : "#e2a93b"; c.lineWidth = 2; c.stroke();
+      c.fillStyle = fg; c.font = `700 ${t.length > 9 ? 13 : 15}px Lexend, sans-serif`; c.fillText(t, x + w / 2, y + 1, w - 8);
+    });
+  });
+  // lion
+  const lx = (R.lx + .5) * lw, ly = H * .87 + Math.sin(R.t * 16) * 3;
+  c.fillStyle = "rgba(0,0,0,.2)"; c.beginPath(); c.ellipse(lx, H * .87 + 22, 20, 6, 0, 0, 7); c.fill();
+  c.fillStyle = "#000"; c.font = "44px serif"; c.fillText("🦁", lx, ly);
+  if (R.crash > 0){ c.globalAlpha = Math.min(1, R.crash * 2); c.font = "36px serif"; c.fillText("💥", lx + 18, ly - 22); c.globalAlpha = 1; }
+  c.textBaseline = "alphabetic";
+}
+
+// ---------- game 3: Word Tower (grammar) ----------
+function towerIntro(){ gameIntro("tower", [
+  ["🧱 You see a sentence in Amharic and English words mixed up.", "የአማርኛ ዓረፍተ ነገርና የተደባለቁ የእንግሊዝኛ ቃላት ያያሉ።"],
+  ["👆 Tap the words in the right order before time runs out.", "ጊዜው ሳያልቅ ቃላቱን በትክክለኛ ቅደም ተከተል ይንኩ።"],
+  ["🏗️ Each correct sentence adds one floor. How tall can you build?", "እያንዳንዱ ትክክለኛ ዓረፍተ ነገር አንድ ፎቅ ይጨምራል። ምን ያህል ከፍ ይገነባሉ?"]], towerPlay); }
+function towerPlay(){
+  const run = ++GRUN, P = gamePool();
+  const pool = [...P.words, ...P.sents].filter(w => isSentence(w) && toks(w[0]).length <= 8 && w[1].length <= 40);
+  const T = { floors:0, hearts:3, score:0, missed:new Map(), q:null, picked:[], time:0, max:0, lock:false };
+  $("#v-game").innerHTML = gameHudHTML([`<span id="tLife">${lives(3)}</span>`, `<span>🏗️ <b id="tFloors">0</b></span>`, `<span>⭐ <b id="tScore">0</b></span>`]) +
+    `<div class="tower" id="tTower" aria-label="Your tower"></div><div class="ttime"><i id="tBar"></i></div>
+    <div class="tq" id="tQ"></div><div class="tline" id="tLine"></div><div class="tchips" id="tChips"></div><div id="tPanel"></div>`;
+  show("game"); wireSnd();
+  const drawTower = (drop) => {
+    const n = T.floors, shown = Math.min(n, 6);
+    let h = `<div class="tflag">${n ? "🚩" : ""}</div>`;
+    for (let i = n; i > n - shown; i--) h += `<div class="tfloor ${i === n && drop ? "drop" : ""}" style="--hue:${(i * 37) % 360}">${i}</div>`;
+    h += `<div class="tground">${n > 6 ? `+${n - 6} more · ` : ""}🌍</div>`;
+    $("#tTower").innerHTML = h;
+  };
+  const next = () => {
+    if (GRUN !== run) return;
+    const w = pickOne(pool), q = orderQuestion(w); if (!q){ next(); return; }
+    T.q = q; T.picked = []; T.lock = false;
+    T.max = Math.max(9, 7 + q.parts.length * 2.6 - Math.min(T.floors, 12) * .35); T.time = T.max;
+    $("#tQ").innerHTML = `<span class="am">${esc(w[1])}</span>`;
+    render();
+  };
+  const render = () => {
+    const q = T.q;
+    $("#tLine").innerHTML = q.parts.map((_, i) => `<span class="tslot ${i < T.picked.length ? "on" : ""}">${i < T.picked.length ? esc(q.parts[q.order[T.picked[i]]]) : ""}</span>`).join("") + `<span class="tend">${esc(q.end)}</span>`;
+    $("#tChips").innerHTML = q.order.map((pi, k) => `<button data-k="${k}" ${T.picked.includes(k) ? "disabled" : ""}>${esc(q.parts[pi])}</button>`).join("");
+  };
+  $("#tChips").onclick = e => {
+    const b = e.target.closest("[data-k]"); if (!b || T.lock) return;
+    const k = +b.dataset.k, q = T.q, want = q.parts[T.picked.length];
+    if (q.parts[q.order[k]] === want){
+      T.picked.push(k); gameBeep(500 + T.picked.length * 60, 700 + T.picked.length * 60, .08, "triangle", .07); render();
+      if (T.picked.length === q.parts.length){
+        T.lock = true; T.floors++; T.score += 10 + Math.round(T.time); markRight(q.word[0]);
+        $("#tFloors").textContent = T.floors; $("#tScore").textContent = T.score; drawTower(true); sayIfOn(q.word[0]);
+        $("#tLine").classList.add("ok"); setTimeout(() => { $("#tLine") && $("#tLine").classList.remove("ok"); next(); }, 900);
+      }
+    } else {
+      b.classList.add("bad"); setTimeout(() => b.classList.remove("bad"), 400);
+      T.time = Math.max(0, T.time - 2); gameBeep(200, 120, .15, "square", .06);
+      $("#tTower").classList.add("shake"); setTimeout(() => $("#tTower") && $("#tTower").classList.remove("shake"), 400);
+    }
+  };
+  const tick = setInterval(() => {
+    if (GRUN !== run || current !== "game" || !$("#tBar")){ clearInterval(tick); return; }
+    if (T.lock || !T.q) return;
+    T.time -= .1; $("#tBar").style.width = Math.max(0, T.time / T.max * 100) + "%";
+    $("#tBar").className = T.time < 3 ? "low" : "";
+    if (T.time <= 0){
+      T.lock = true; T.hearts--; const w = T.q.word; T.missed.set(w[0], w); markWrong(w[0]); SFX.bite();
+      $("#tLife").textContent = lives(T.hearts);
+      $("#tLine").innerHTML = `<span class="tshow">⏰ ${esc(w[0])}</span>`; $("#tChips").innerHTML = "";
+      if (T.hearts <= 0){ clearInterval(tick); setTimeout(() => gameOverPanel($("#tPanel"), "tower", T.score, `🏗️ Your tower: ${T.floors} floors · <span class="am">${T.floors} ፎቅ ገነቡ!</span>`, T.missed, towerPlay), 1500); }
+      else setTimeout(next, 2000);
+    }
+  }, 100);
+  drawTower(false); next();
+}
+
+// ---------- game 4: Save the Lion (spelling) ----------
+function spellIntro(){ gameIntro("spell", [
+  ["🐊 A crocodile waits in the river. Your lion walks toward it!", "አዞ ወንዙ ውስጥ ይጠብቃል። አንበሳዎ ወደ እሱ እየሄደ ነው!"],
+  ["🔤 Spell the English word, letter by letter. Tap 🔊 to hear it.", "የእንግሊዝኛውን ቃል ፊደል በፊደል ይጻፉ። ለመስማት 🔊 ይንኩ።"],
+  ["❌ Each wrong letter = one step closer. ✅ Each word = one step back.", "እያንዳንዱ የተሳሳተ ፊደል = አንድ እርምጃ ወደ አዞው። እያንዳንዱ ቃል = አንድ እርምጃ ወደ ኋላ።"]], spellPlay); }
+function spellPlay(){
+  const run = ++GRUN, seen = new Set();
+  const pool = gamePool().words.filter(w => /^[A-Za-z]{3,9}$/.test(w[0]) && !seen.has(w[0].toLowerCase()) && seen.add(w[0].toLowerCase()));
+  const STEPS = 6, L = { step:0, score:0, words:0, missed:new Map(), w:null, got:null, used:new Set(), lock:false };
+  $("#v-game").innerHTML = gameHudHTML([`<span>✅ <b id="sWords">0</b></span>`, `<span>⭐ <b id="sScore">0</b></span>`]) +
+    `<div class="strack" id="sTrack" aria-label="The lion and the crocodile"></div>
+    <div class="sq"><span class="am" id="sAm"></span><button class="sbtn" id="sHear" aria-label="Hear the word">🔊</button></div>
+    <div class="sword" id="sWord"></div><div class="skeys" id="sKeys"></div><div id="sPanel"></div>`;
+  show("game"); wireSnd();
+  const track = () => { let h = ""; for (let i = 0; i <= STEPS; i++) h += `<span class="scell ${i === STEPS ? "river" : ""}">${i === L.step ? "🦁" : i === STEPS ? "🐊" : "·"}</span>`; $("#sTrack").innerHTML = h; };
+  const keys = () => { $("#sKeys").innerHTML = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"].map(r => `<div>${[...r].map(ch => {
+      const u = L.used.has(ch), ok = u && L.w[0].toUpperCase().includes(ch);
+      return `<button data-ch="${ch}" ${u ? "disabled" : ""} class="${u ? (ok ? "ok" : "no") : ""}">${ch}</button>`; }).join("")}</div>`).join(""); };
+  const word = () => { $("#sWord").innerHTML = [...L.w[0]].map((ch, i) => `<span class="${L.got[i] ? "on" : ""}">${L.got[i] ? ch.toUpperCase() : ""}</span>`).join(""); };
+  const next = () => {
+    if (GRUN !== run) return;
+    L.w = pickOne(pool); L.used = new Set(); L.lock = false;
+    L.got = [...L.w[0]].map((_, i) => i === 0);
+    L.used.add(L.w[0][0].toUpperCase()); L.got = [...L.w[0]].map(ch => ch.toUpperCase() === L.w[0][0].toUpperCase());
+    $("#sAm").textContent = L.w[1]; word(); keys(); track();
+    setTimeout(() => { if (GRUN === run) speak(L.w[0], true); }, 300);
+  };
+  const guess = ch => {
+    if (L.lock || L.used.has(ch)) return;
+    L.used.add(ch);
+    if (L.w[0].toUpperCase().includes(ch)){
+      L.got = L.got.map((g, i) => g || L.w[0][i].toUpperCase() === ch); gameBeep(700, 900, .08, "triangle", .07);
+      if (L.got.every(Boolean)){
+        L.lock = true; L.words++; L.score += 10 + L.w[0].length * 2; L.step = Math.max(0, L.step - 1); markRight(L.w[0]);
+        $("#sWords").textContent = L.words; $("#sScore").textContent = L.score; SFX.win(); sayIfOn(L.w[0]);
+        $("#sWord").classList.add("ok"); setTimeout(() => { $("#sWord") && $("#sWord").classList.remove("ok"); next(); }, 1100);
+      }
+    } else {
+      L.step++; L.missed.set(L.w[0], L.w); markWrong(L.w[0]); gameBeep(220, 110, .18, "square", .07);
+      $("#sTrack").classList.add("shake"); setTimeout(() => $("#sTrack") && $("#sTrack").classList.remove("shake"), 400);
+      if (L.step >= STEPS){
+        L.lock = true; L.got = L.got.map(() => true); word(); track();
+        $("#sKeys").innerHTML = "";
+        setTimeout(() => gameOverPanel($("#sPanel"), "spell", L.score, `🐊 The crocodile got the lion! · <span class="am">አዞው አንበሳውን ያዘው!</span> ${L.words} words`, L.missed, spellPlay), 1200);
+        return;
+      }
+    }
+    word(); keys(); track();
+  };
+  $("#sKeys").onclick = e => { const b = e.target.closest("[data-ch]"); if (b) guess(b.dataset.ch); };
+  $("#sHear").onclick = () => speak(L.w[0], true);
+  const key = e => { if (current !== "game" || GRUN !== run){ document.removeEventListener("keydown", key); return; } if (/^[a-z]$/i.test(e.key)) guess(e.key.toUpperCase()); };
+  document.addEventListener("keydown", key);
+  next();
+}
+
+// ---------- game 5: Balloon Pop (listening) ----------
+function balloonIntro(){ gameIntro("balloon", [
+  ["🔊 Listen: the game says an English word.", "ያዳምጡ፡ ጨዋታው አንድ የእንግሊዝኛ ቃል ይናገራል።"],
+  ["🎈 Pop the balloon with its Amharic meaning before it flies away.", "ፊኛው ከመብረሩ በፊት ትርጉሙ ያለበትን ፊኛ ያፈንዱ።"],
+  ["👀 Can't hear? Tap 'Show word' (fewer points).", "መስማት አልቻሉም? 'Show word' ይንኩ (ነጥቡ ያንሳል)።"]], balloonPlay); }
+function balloonPlay(){
+  const run = ++GRUN, all = gamePool().words.filter(w => w[0].length <= 16 && w[1].length <= 16);
+  const B = { hearts:3, score:0, round:0, missed:new Map(), bs:[], w:null, shown:false, last:0, over:false, wait:false };
+  const COLORS = ["#e2574c", "#f2b134", "#3fae6a", "#3a8fd9", "#a35bd6", "#ef7fb0"];
+  $("#v-game").innerHTML = gameHudHTML([`<span id="bLife">${lives(3)}</span>`, `<span>⭐ <b id="bScore">0</b></span>`]) +
+    `<div class="bctl"><button class="btn" id="bHear">🔊 Listen again · <span class="am">እንደገና</span></button><button class="btn" id="bShow">👀 Show word</button></div>
+    <div class="bfield" id="bField"><div class="gmsg" id="gMsg"></div></div><div id="bPanel"></div>`;
+  show("game"); wireSnd();
+  const field = $("#bField"); field.style.height = Math.max(320, Math.min(520, window.innerHeight - 300)) + "px";
+  const round = () => {
+    if (GRUN !== run || B.over) return;
+    B.round++; B.shown = false; B.wait = false; $("#bShow").textContent = "👀 Show word";
+    field.querySelectorAll(".balloon").forEach(x => x.remove());
+    const w = pickOne(all); B.w = w;
+    const others = shuffle(all.filter(x => x[1] !== w[1] && x[0] !== w[0])).slice(0, 3);
+    const set = shuffle([w, ...others]), FH = field.clientHeight, FW = field.clientWidth;
+    const speed = Math.min(95, 38 + B.round * 3.2);
+    B.bs = set.map((x, i) => {
+      const el = document.createElement("button"); el.className = "balloon"; el.style.setProperty("--c", COLORS[(B.round + i) % COLORS.length]);
+      el.innerHTML = `<span class="am">${esc(x[1])}</span>`; field.appendChild(el);
+      const b = { el, w:x, x:(i + .5) / set.length, y:FH + 30 + Math.random() * 90, sp:speed * (.85 + Math.random() * .3), ph:Math.random() * 6, popped:false };
+      el.onclick = () => pop(b); return b;
+    });
+    setTimeout(() => { if (GRUN === run) speak(w[0]); }, 250);
+  };
+  const lose = (msg) => {
+    B.hearts--; B.missed.set(B.w[0], B.w); markWrong(B.w[0]); SFX.bite(); $("#bLife").textContent = lives(B.hearts);
+    gameMsgIn(msg + " " + B.w[0], B.w[1], 1400);
+    B.wait = true;
+    if (B.hearts <= 0){ B.over = true; setTimeout(() => gameOverPanel($("#bPanel"), "balloon", B.score, `🎈 Game over · <span class="am">ጨዋታው አለቀ!</span> ${B.round - 1} rounds`, B.missed, balloonPlay), 1300); }
+    else setTimeout(round, 1500);
+  };
+  const pop = b => {
+    if (B.wait || b.popped || B.over) return;
+    b.popped = true; b.el.classList.add("pop");
+    if (b.w === B.w){
+      B.wait = true; B.score += B.shown ? 4 : 10 + Math.min(10, B.round); markRight(B.w[0]);
+      $("#bScore").textContent = B.score; gameBeep(300, 1200, .12, "triangle", .1);
+      gameMsgIn("🎉 " + B.w[0], pickOne(CHEER_RIGHT)[0], 900); setTimeout(round, 1000);
+    } else { b.el.classList.add("no"); lose("✖"); }
+  };
+  $("#bHear").onclick = () => B.w && speak(B.w[0]);
+  $("#bShow").onclick = () => { if (!B.w) return; B.shown = true; $("#bShow").textContent = "👀 " + B.w[0]; };
+  const loop = ts => {
+    if (GRUN !== run || current !== "game" || !document.body.contains(field)) return;
+    const dt = B.last ? Math.min(.05, (ts - B.last) / 1000) : 0; B.last = ts;
+    if (!B.wait && !B.over){
+      const FW = field.clientWidth;
+      B.bs.forEach(b => {
+        if (b.popped) return;
+        b.y -= b.sp * dt; b.ph += dt * 2;
+        b.el.style.transform = `translate(${b.x * FW - 40 + Math.sin(b.ph) * 6}px, ${b.y}px)`;
+      });
+      const target = B.bs.find(b => b.w === B.w);
+      if (target && !target.popped && target.y < -110) lose("💨");
+    }
+    requestAnimationFrame(loop);
+  };
+  round(); requestAnimationFrame(loop);
 }
 
 // ---------- tip box (grammar / pronunciation) ----------
