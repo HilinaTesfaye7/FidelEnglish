@@ -63,9 +63,9 @@ if (FROM_BOT){
     rep('if (b) toast("Payment is coming soon · ክፍያ በቅርቡ ይጀምራል");',
         'if (b){ const bot = QS.get("b"); if (TG && bot){ toast("Opening payment in the chat… If nothing happens, close this and tap 💳 Pay · ቻቱ ውስጥ 💳 Pay ይጫኑ"); try { TG.openTelegramLink("https://t.me/" + bot + "?start=" + b.dataset.plan); } catch(e){} setTimeout(() => { try { TG.close(); } catch(e){} }, 2500); } else toast("Open the course from our Telegram bot, then tap 💳 Pay · ከቴሌግራም ቦቱ ይክፈሉ"); }')
     rep('store.trialStart = Date.now(); store.nudged', 'if (!FROM_BOT) store.trialStart = Date.now(); store.nudged')
-    rep('  show("signup");\n  $("#v-signup .seg")', '''  show("signup");
+    rep('  show("signup");\n  $("#suForm").onsubmit', '''  show("signup");
   if (TG && TG.initDataUnsafe && TG.initDataUnsafe.user && !$("#suName").value) $("#suName").value = TG.initDataUnsafe.user.first_name || "";
-  $("#v-signup .seg")''')
+  $("#suForm").onsubmit''')
     rep('if (store.profile){ renderHome(); checkMissed();', '''if (TG && TG.initDataUnsafe && TG.initDataUnsafe.user && (!store.profile || store.profile.tgId !== TG.initDataUnsafe.user.id)){
   const tu = TG.initDataUnsafe.user;
   store.profile = Object.assign({ avatar:"🦁", goal:10, remind:"19:00", created:Date.now() }, store.profile || {},

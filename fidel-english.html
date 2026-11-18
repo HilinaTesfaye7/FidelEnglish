@@ -1829,7 +1829,7 @@ function browserSpeak(text, slow, retry){
 // ---------- recorded audio ----------
 // Every sentence of the course is recorded once (Kokoro voice, Apache-2.0) as audio/<id>.mp3.
 // The Telegram and downloaded versions set where the files are; this page has none and uses the voices below.
-const APP_VERSION = "2026.11.18-j";
+const APP_VERSION = "2026.11.18-k";
 const AUDIO_IDS = new Set(/*AUDIO_IDS*/[]);
 function audioBase(){ return null; }
 function audioId(t){ let h = 0x811c9dc5; for (const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); }
@@ -2058,7 +2058,7 @@ function modal(html, buttons){
   document.body.appendChild(m); m.querySelector("[data-mb]").focus();
 }
 
-const SU = { method:"phone" };
+const SU = { method:"phone" };   // sign-up is by phone number only
 function renderSignup(){
   $("#v-signup").innerHTML = `
     <div class="hero"><div class="big" aria-hidden="true">🦁</div>
@@ -2067,21 +2067,12 @@ function renderSignup(){
     <form class="form" id="suForm" novalidate>
       <div class="field"><label for="suName">Your name · <span class="am">ስምዎ</span></label>
         <input id="suName" autocomplete="given-name" placeholder="Abebe"></div>
-      <div class="seg" role="group" aria-label="Sign up with">
-        <button type="button" data-m="phone" aria-pressed="${SU.method==="phone"}">Phone · <span class="am">ስልክ</span></button>
-        <button type="button" data-m="gmail" aria-pressed="${SU.method==="gmail"}">Gmail</button></div>
-      <div class="field">${SU.method === "phone"
-        ? `<label for="suContact">Phone number · <span class="am">ስልክ ቁጥር</span></label><input id="suContact" type="tel" inputmode="tel" autocomplete="tel" placeholder="09 12 34 56 78">`
-        : `<label for="suContact">Gmail address · <span class="am">የጂሜይል አድራሻ</span></label><input id="suContact" type="email" inputmode="email" autocomplete="email" placeholder="name@gmail.com">`}
+      <div class="field"><label for="suContact">Phone number · <span class="am">ስልክ ቁጥር</span></label><input id="suContact" type="tel" inputmode="tel" autocomplete="tel" placeholder="09 12 34 56 78">
         <span class="err" id="suErr" aria-live="polite"></span></div>
       <button class="btn primary" type="submit">Start my free trial (${TRIAL_TXT}) · <span class="am">ነፃ ሙከራ ይጀምሩ</span></button>
     </form>
     <p class="foot">You can change this later in your profile · <span class="am">በኋላ በመገለጫዎ መቀየር ይችላሉ</span></p>`;
   show("signup");
-  $("#v-signup .seg").onclick = e => {
-    const b = e.target.closest("[data-m]"); if (!b) return;
-    const name = $("#suName").value; SU.method = b.dataset.m; renderSignup(); $("#suName").value = name; $("#suContact").focus();
-  };
   $("#suForm").onsubmit = e => {
     e.preventDefault();
     const name = $("#suName").value.trim(), raw = $("#suContact").value.trim(), err = $("#suErr");
